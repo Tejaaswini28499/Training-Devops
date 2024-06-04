@@ -21,5 +21,7 @@ sudo nano ~/.git-credentials
 git config --global credentials.helper 'cache --timeout=3600'
 git clone https://github.com/Tejaaswini28499/Training-Devops.git
 
+Git version new
+
 
 
