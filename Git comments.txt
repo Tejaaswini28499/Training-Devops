@@ -10,5 +10,11 @@ git checkout "branch name"- switching to new branch
 git fetch- repo level
 git stash
 
+How to install git in AWS machine
+Commands:
+sudo dnf update -y
+sudo dnf install git -y
+git --version
+
 
 
