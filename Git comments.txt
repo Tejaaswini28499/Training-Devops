@@ -15,6 +15,11 @@ Commands:
 sudo dnf update -y
 sudo dnf install git -y
 git --version
+git config --global user.name "Tejaaswini28499"
+git config --global user.email "preethimahesh666@gmail.com"
+sudo nano ~/.git-credentials
+git config --global credentials.helper 'cache --timeout=3600'
+git clone https://github.com/Tejaaswini28499/Training-Devops.git
 
 
 
