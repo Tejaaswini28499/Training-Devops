@@ -9,6 +9,7 @@ git checkout -b "branch name"- To create a new branch
 git checkout "branch name"- switching to new branch
 git fetch- repo level
 git stash
+hello this is my new project 
 
 How to install git in AWS machine
 Commands:
