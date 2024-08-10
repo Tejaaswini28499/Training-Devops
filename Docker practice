@@ -1,0 +1,22 @@
+  
+  
+  
+  1  sudo dnf update -y
+    2  sudo dnf install docker -y
+    3  sudo systemctl start docker
+    4  sudo systemctl enable docker
+    5  sudo usermod -aG docker $USER
+    6  sudo curl -L "https://github.com/docker/compose/releases/download/v2.20.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+    7  sudo chmod +x /usr/local/bin/docker-compose
+    8  docker-compose --version
+    9  vi docker-compose.yml
+   10  ls
+   11  docker-compose pull
+   12  docker login
+   13  docker-compose pull
+   14  docker-compose up -d
+   15  sudo dnf update -y
+   16  sudo dnf install nginx -y
+   17  sudo systemctl start nginx
+   18  sudo systemctl enable  nginx
+   19  sudo systemctl status nginx

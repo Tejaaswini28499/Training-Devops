@@ -1,0 +1,32 @@
+version: "3.9"
+services:
+       qrtap-backend:
+               container_name: qrtap-backend
+               image: justwicks/qrtap-backend
+               ports:
+                       - "6000:3000"
+               environment:
+                       - SECRET=j2dfjf@234svi@3civHVo
+                       - PORT=3000
+                       - ACCESS_KEY=jva2q3w4lr3a7yxjjnra7vw7h5bq
+                       - SECRET_KEY=j2uhb2gxk4zs3rj6oplfhghux52bpovrxxt4kxbnnuica366gcxva
+                       - CONNECTION_STRING=mongodb+srv://dharshan:29032000@atlascluster.0vnpf5z.mongodb.net/decsto
+                       - EMAIL=dharshangowda2000@gmail.com
+                       - PASS=qtox vlko otaa xizv
+                       - BASE_URL=https://dash.decsto.com/
+                       - BASE_URL=https://qrtap.in/
+                       - MOBILE_CLIENT_ID=607587848458-g52145nen2bco7fmeksvkjldau9ucev3.apps.googleusercontent.com
+                       - WEB_CLIENT_ID=607587848458-s66s0dmgk3v8s81qhl94sl65qorjkh24.apps.googleusercontent.com
+                       - REDIS_URL=redis://:550IkpmgJnMrB9FGOgRbnW7iyMS9Wixm@redis-17290.c212.ap-south-1-1.ec2.redns.redis-cloud.com:17290
+       qrtap-be:
+               container_name: qrtap-be
+               image: justwicks/qrtap-be
+               ports:
+                       - "5000:3000"
+               environment:
+                       - JWT_SECRET=testingsecretkeyy
+                       - PORT=3000
+                       - EMAIL=clyogesh5@gmail.com
+                       - PASS=bxwx mlye yyhz ebho
+                       - MONGODB_URI=mongodb+srv://web3chaintechnology:k54Q3KUvmhFLxiX0@qrtap.pvf7oed.mongodb.net/?retryWrites=true&w=majority
+                       - REDIS_URL=redis://:550IkpmgJnMrB9FGOgRbnW7iyMS9Wixm@redis-17290.c212.ap-south-1-1.ec2.redns.redis-cloud.com:17290
