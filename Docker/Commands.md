@@ -11,7 +11,4 @@ docker-compose up -d
 ```
 docker login
 ```
-
-
-username: justwicks
-password: oifjsdfewe
+ 
