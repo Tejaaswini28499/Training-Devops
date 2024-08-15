@@ -6,6 +6,8 @@ or else
 You need to create a file eg:"deploymentnew.yaml" and pass the necessary instruction inside that like what is the kind here its Deployment
 How much replicaset requried
 How much Specs and so on
+For each replica set there will be a 1 Pod created by default,eg: 2 replica set 2 pods,1 deployment,1 replicaset.
+Unless until you mention service, config map, secrets it wont create default only pods are created default.
 ```
 
 ## YAML Format to create/Config the Deployment 

@@ -13,4 +13,9 @@ minikube kubectl -- get po -A
 alias kubectl="minikube kubectl --"
 minikube dashboard
 ```
+## minikube Requriement
 
+```
+t3.medium with 2CPU and 4GB memory
+always use Ubuntu
+adjust vloume as requried

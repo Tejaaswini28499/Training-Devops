@@ -1,5 +1,5 @@
-Git Hub commands:
-
+## Git Hub commands:
+```
 git status
 git add .
 git commit -m "comments"
@@ -9,11 +9,11 @@ git checkout -b "branch name"- To create a new branch
 git checkout "branch name"- switching to new branch
 git fetch- repo level
 git stash
-hello this is my new project
-Hi Tejaaswini this is Rob
+```
 
-How to install git in AWS machine
-Commands:
+## How to install git in AWS machine Commands:
+
+```
 sudo dnf update -y
 sudo dnf install git -y
 git --version
@@ -22,8 +22,8 @@ git config --global user.email "preethimahesh666@gmail.com"
 sudo nano ~/.git-credentials
 git config --global credentials.helper 'cache --timeout=3600'
 git clone https://github.com/Tejaaswini28499/Training-Devops.git
-
 Git version new
+```
 
 
 
