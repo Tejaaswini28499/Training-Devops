@@ -3,7 +3,12 @@ kind: Deployment
 metadata:
   name: qrtap-redirect
 spec:
-  replicas: 3
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1           # Specifies the maximum number of Pods that can be unavailable during the update process
+      maxSurge: 1                  # Specifies the maximum number of Pods that can be created over the desired number of Pods
   selector:
     matchLabels:
       app: qrtap-redirect
@@ -35,10 +40,10 @@ spec:
                 configMapKeyRef:
                   name: qrtap-config
                   key: PATH_NAME
-          volumeMounts:                       # Corrected indentation
+          volumeMounts:
             - name: my-storage
               mountPath: /app/data
-      volumes:                                # Corrected indentation
+      volumes:
         - name: my-storage
           persistentVolumeClaim:
             claimName: my-pvc
