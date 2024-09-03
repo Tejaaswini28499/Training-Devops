@@ -20,6 +20,7 @@ spec:
       containers:
         - name: qrtap-redirect
           image: justwicks/qrtap-redirect:latest
+          imagePullPolicy: Always  # Add imagePullPolicy here
           ports:
             - containerPort: 3000
           env:
@@ -34,7 +35,7 @@ spec:
                   name: qrtap-config
                   key: NODE_ENV
             - name: REDIS_URL
-              value: "redis://10.103.47.229:6379"
+              value: "redis://10.97.90.108:6379"
             - name: PATH_NAME
               valueFrom:
                 configMapKeyRef:
