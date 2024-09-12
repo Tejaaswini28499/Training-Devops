@@ -1,0 +1,18 @@
+you can make a user as a sudo user with 2 types.
+
+1. by getting into the "visudo" file and changing as requried 
+
+note: In MYAWS machine when open visudo file there is a group called wheel so if any 
+user is added to that group he will become the sudo user.
+
+2. sudo su - you will become the root user
+cd /etc/sudoers.d - inside root etc and inside etc go tp sudoers directory
+ls- you will find the list of file already exits.
+
+ec2-user ALL=(ALL) NOPASSWD:ALL - this will be the content inside the file.
+ALL= ALL permission 
+NOPASSWD: it should not ask password while doing anything or while it 
+ask password this step will be skipped 
+
+note: always include sudo before the sudo user to become the root user 
+

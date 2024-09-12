@@ -1,0 +1,13 @@
+DNS setup in Cloudfare
+
+1. Login in to cloudflare
+2. click on the domain you want to setup an IP address.
+3. Go to DNS
+4. if you are setting the subdomain there are many way 
+ a. A- For IPV4
+ b. AAAA - IPV6
+ c. Email - for email
+ d. CNAME- 
+5. mention the subdomain as requried
+6. and uncheck the proxy button
+7. click on save
