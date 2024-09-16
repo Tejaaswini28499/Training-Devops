@@ -1,0 +1,55 @@
+name: Build and Push Docker Image to ECR
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Check out the repository
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Step 2: Set up AWS credentials
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: <password-AKIAQCYPVL3NLHBHJ2XF>
+          aws-secret-access-key: <password-v7+r3OrgLBuLfLeneZKeJJ5uFfBBU3rRGyo5OyLs>
+          aws-region: ap-south-2  # Change to your preferred AWS region
+
+      # Step 3: Log in to Amazon ECR
+      - name: Log in to Amazon ECR
+        id: ecr-login
+        uses: aws-actions/amazon-ecr-login@v2
+
+      # Step 4: Build the Docker image
+      - name: Build Docker image
+        run: docker build . --file Dockerfile --tag qrtap.in
+
+      # Step 5: Tag the Docker image
+      - name: Tag Docker image
+        run: |
+          IMAGE_URI=005938437850.dkr.ecr.ap-south-2.amazonaws.com/gitactions
+          docker tag qrtap.in:latest $IMAGE_URI:latest
+
+      # Step 6: Push the Docker image to Amazon ECR
+      - name: Push Docker image to ECR
+        run: |
+          IMAGE_URI=005938437850.dkr.ecr.ap-south-2.amazonaws.com/gitactions
+          docker push $IMAGE_URI:latest
+
+------------------------------------------
+Note: Explaination
+
+Line 21: Aws Access Key & secret Access- the values are passed directly
+Line 23: the region where you want the image to place in 
+Note: Before the pipeline setup there should be a ecr folder to be created in the location accordingly
+so here in line 23 you need to provide same region where you created a ECR folder
+Line 37: "Image URI"= when you create the folder you will get the URI copy and paste here
+Line 38: docker tag = provide a tag as requried
+
