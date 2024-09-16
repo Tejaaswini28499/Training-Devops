@@ -26,3 +26,20 @@ Fe env file there will pass the backend url in the keyname. fe will be deployed.
 note: default in the end of ip address there will be 443 which is the HTTPS port  Default it will run in HTTPS(when you generate the Certbot automatically http request will turn into https) So this certbot creation will happen in nginx.conf file and nginx will be lizesing to only 443 port which is HTTPS so once its come inside the nginx based on the subdomain it will go inside the service so inside that there will be many containers like /main /storej and so on based on the link passed in the fe it will go to requried port.
 ```
 
+vi nginx.conf - configured nginx.conf as in prod
+nginx -t - tested the file and there was an error the code was correct only error due to below reason
+sudo systemctl restart nginx - So tried to restart
+sudo useradd -r -s /sbin/nologin nginx - there was no nginx user so the nginx user was added
+nginx -t - and then tested again now the test passed
+sudo systemctl restart nginx - restrated nginx
+
+sudo apt update -y - certboot installation 
+sudo apt install certbot python3-certbot-nginx
+
+sudo dpkg --configure -a - As there was an error installing we configured dpkg package
+sudo apt --fix-broken install - As there was an error installing we configured this
+
+sudo apt install certbot python3-certbot-nginx- again run this command
+sudo certbot --nginx -- helps to install sucessfully
+
+docker ps- to check its successfully running container 

@@ -29,3 +29,5 @@ spec:
       imagePullSecrets:
         - name: yogi-ass
       restartPolicy: Always
+
+env:[{name:mong, value:'dsf'},{}]
