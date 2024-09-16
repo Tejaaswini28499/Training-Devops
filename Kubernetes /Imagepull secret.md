@@ -6,6 +6,10 @@ kubectl create secret docker-registry yogi-ass \
     --docker-password=<password> \
     --docker-email=<your-email>
 ```
+kubectl create secret docker-registry image-secret1 \
+    --docker-server=https://index.docker.io/v1/ \
+    --docker-username=justwicks \
+    --docker-password=<password> -n qrtap-backend
 
 ## JSON Structure
 ```
