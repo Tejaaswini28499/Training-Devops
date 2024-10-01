@@ -5,6 +5,7 @@ rm -rf - delete with file&folder
 rm filename
 cp sourcepath destinationpath - copy 
 cp -r sourcepath destinationpath - copy all things in directory
+cp -r sourcepath/* destinationpath (will copy all the files inside to new path)
 cat 
 touch
 cd / - go to root directory
@@ -15,7 +16,7 @@ su - ec2-user = back to normal user
 
 pwd - present working directory
 rm *.txt - in directory remove only .text file
-rm -rf * - delete all note: dont use this command as a root user as it deletes entire system
+rm -rf * - delete all note: don't use this command as a root user as it deletes entire system
 
 mkdir image{1..5} - To create 5 image with naming image1, image2..image5
 touch Filename{1..5}.txt - to create 5 files with "Filename1.txt , Filename2.txt... Filename5.txt"
