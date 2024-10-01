@@ -13,3 +13,5 @@ yum install zip unzip
 
 zip archive_name.zip newfile.txt
 zip -r archive_name.zip "directoryname"
+unzip filename.zip 
+unzip filename.zip -d /path/to/destination/
