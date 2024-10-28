@@ -42,7 +42,7 @@ spec:
 ## Summary
 ```
 ClusterIP: Internal-only access within the cluster.
-NodePort: Exposes the Service on a specific port on each node, accessible externally.
-LoadBalancer: Exposes the Service externally using a cloud provider’s load balancer.
+NodePort: Exposes the Service on a specific port on each node, accessible externally.(using IP)
+LoadBalancer: Exposes the Service externally using a cloud provider’s load balancer.(using URL)
 ExternalName: Maps a Service to an external DNS name
 ```

@@ -1,4 +1,4 @@
-## how to extent volume in ubuntu machine after expanding in EBS
+## how to extent volume in ubuntu machine after expanding in EBS 
 
 ```
 expand the volume in AWS as requried
@@ -12,3 +12,4 @@ extent volume in ubuntu machine: to do this follow below steps
     Note: you cannot decrease the volume you can only increase it.
 
 
+## Linux Machine

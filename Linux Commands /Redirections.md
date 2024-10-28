@@ -47,6 +47,6 @@ cat print.txtt &> sam.txt = The &> operator in this context ensures that all out
 
 cat print.txtt &>> sam.txt = >> will append the new o/p with the old o/p and when you can you will see all the o/p as specified before ">" will overide and ">>" will not overide it will append to existing.
 
-free -m = give the RAM specification
-df -h = 
+free -m = give the RAM specification / memory available
+df -h = disk usuage
 

@@ -27,7 +27,7 @@ grep -i baby file1 - returns both the line as -i removes the case sensitive
  tail -15 <filename> - returns last 15 lines 
  tail -f <filename> - this will not exit from the file 
  less <filename> - It will open file in vi mode
- more <filename> - It will some percentange of file and pressing enter we can see other file content.
+ more <filename> - It will return some percentange of file and pressing enter we can see other file content.
  ```
 
 

@@ -18,4 +18,4 @@ grep 2918: Filters the output to show only lines that contain the string "2918".
 Use Case: This command is typically used to check if a process with a specific PID (in this case, 2918) is running, or to look for processes related to that PID.
 
 5. kill "PID" - Kill the ProcessID mentioned.(this will slowly kill with all parent PID and others)
-6. kill -9 "PID" - this will force kill the processID (This will Kill only the PID mentioned)
+6. kill -9 "PID" - this will force kill the processID (This will Kill only the PID mentioned) -9(force kill)

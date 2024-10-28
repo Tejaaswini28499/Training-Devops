@@ -7,7 +7,8 @@ DNS setup in Cloudfare
  a. A- For IPV4
  b. AAAA - IPV6
  c. Email - for email
- d. CNAME- 
+ d. CNAME- URL
+ e. TXT- verification
 5. mention the subdomain as requried
 6. and uncheck the proxy button
 7. click on save

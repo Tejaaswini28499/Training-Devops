@@ -7,6 +7,7 @@ Types of files in Linux
  C = Special File
  s = Socket
  p = pipe
+ hw = hardware information
 
 file <filename> = return the filetype.
 

@@ -9,7 +9,7 @@ Secondary Groups: A user can also belong to additional groups (secondary groups)
 
 ## Group Management Commands:
 ```
-groupadd groupname: Adds a new group.
+groupadd groupname: Adds/Create a new group.
 groupdel groupname: Deletes a group.
 gpasswd: Administers group membership and passwords.
 usermod -aG groupname username: Adds a user to a secondary group.
