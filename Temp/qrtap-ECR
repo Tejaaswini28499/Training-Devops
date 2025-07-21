@@ -1,0 +1,55 @@
+name: Docker Image CI push
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ap-south-2
+
+    - name: Install AWS CLI
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y awscli
+
+    - name: Get ECR login token
+      run: |
+        aws ecr get-login-password --region ap-south-2 | docker login --username AWS --password-stdin ${{ secrets.ECR_REGISTRY }}
+
+    - name: Retrieve the current version
+      id: get_version
+      run: |
+        VERSION=$(cat .version 2>/dev/null || echo "1.0.0")
+        echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+    - name: Increment the version
+      id: increment_version
+      run: |
+        NEW_VERSION=$(echo "$VERSION" | awk -F. -v OFS=. '{$NF += 1 ; print}')
+        echo "$NEW_VERSION" > .version
+        echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
+
+    - name: Build the Docker image
+      run: |
+        docker build . --file Dockerfile --tag ${{ secrets.ECR_REGISTRY }}/qrtap.in:$NEW_VERSION
+
+    - name: Push the Docker image to ECR
+      run: |
+        docker push ${{ secrets.ECR_REGISTRY }}/qrtap.in:$NEW_VERSION
+
+    - name: Output build duration
+      run: |
+        echo "Build and push process took $SECONDS seconds."

@@ -18,6 +18,7 @@ spec:
         ports:
         - containerPort: 6379
 
+----
 
 apiVersion: v1
 kind: Service
