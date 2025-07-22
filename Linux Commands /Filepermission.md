@@ -22,5 +22,5 @@ u- if the user wants all the permission then that should be 7
 group- wants all permission then that should be 7
 others- wants all permsiion then it should be 7 
 
-eg: chmod 770 file1.txt, chmod 421 file1.txt, chmod 123 teju
+eg: chmod 770 file1.txt, chmod 421 file1.txt, chmod 124 teju
 

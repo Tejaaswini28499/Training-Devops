@@ -46,7 +46,7 @@ yogi:$6$Oo8baXhvu/W1KgC/$X7FOBPlqEExRIUYaWqc49T8PDC/C8nnJxKx65iDyHdw1PhgaFw3o5EE
 ```
 note: If you are inside the user and asking for password and you dont know then exit and then you will be the root user.
 
-stat file1 : This way, you can quickly identify the owner (user) and group of any file.
+stat filename : This way, you can quickly identify the owner (user) and group of any file.
 File: file1
   Size: 21              Blocks: 8          IO Block: 4096   regular file
 Device: 10301h/66305d   Inode: 506116      Links: 1

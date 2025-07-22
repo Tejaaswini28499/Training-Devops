@@ -386,5 +386,99 @@ tail -f /var/log/syslog
 * What does `tail -f /var/log/syslog` do?
 
 ---
+Great questions! Here's a clear explanation of each:
 
-Would you like this in **Google Sheets** format too for daily tracking?
+---
+
+## 🧱 **1. What is the difference between `/bin` and `/usr/bin`?**
+
+### 📁 `/bin` — **Essential system binaries**
+
+* Contains **critical commands** needed for system **booting, repairing, and single-user mode**.
+* Available even when only the **root partition (`/`) is mounted** (i.e., before `/usr` is available).
+* Typical commands: `ls`, `cp`, `mv`, `bash`, `mkdir`, `sh`, `cat`, `echo`.
+
+### 📁 `/usr/bin` — **Non-essential user binaries**
+
+* Contains **most user commands** that are not essential for basic boot or recovery.
+* Usually mounted **after boot**.
+* Contains: `python3`, `gcc`, `vim`, `firefox`, `nano`, etc.
+
+### 🔍 Summary:
+
+| `/bin`                   | `/usr/bin`                      |
+| ------------------------ | ------------------------------- |
+| Critical system binaries | Non-essential user applications |
+| Available in early boot  | Mounted after root filesystem   |
+| Minimal set of tools     | Full set of user programs       |
+
+---
+
+## ⚙️ **2. Where would you find configuration files?**
+
+### 📁 `/etc` — The **main directory for configuration files**
+
+* Contains **system-wide** config files for:
+
+  * Users, networking, services, and applications.
+* These files **should be text-editable** and not binary.
+
+### 🔍 Examples:
+
+| Config File            | Purpose                 |
+| ---------------------- | ----------------------- |
+| `/etc/passwd`          | User account details    |
+| `/etc/hostname`        | System hostname         |
+| `/etc/resolv.conf`     | DNS configuration       |
+| `/etc/ssh/sshd_config` | SSH server config       |
+| `/etc/fstab`           | Disk mount info at boot |
+| `/etc/systemd/`        | Service unit files      |
+
+> 📌 User-specific configs go in hidden files in the user's home directory like `~/.bashrc`, `~/.gitconfig`.
+
+---
+
+## 🔐 **3. What does `/etc/shadow` contain?**
+
+* `/etc/shadow` stores **hashed passwords** for all system users.
+* It is readable **only by the root** user for security reasons.
+
+### 🧬 Format of Each Line:
+
+```bash
+username:hashed_password:last_changed:min:max:warn:inactive:expire
+```
+
+### 🧾 Example Line:
+
+```bash
+tejaaswini:$6$rounds=656000$abc123...:19500:0:99999:7:::
+```
+
+### 🧠 Field Meaning:
+
+| Field | Description                                                 |
+| ----- | ----------------------------------------------------------- |
+| 1     | Username                                                    |
+| 2     | Hashed password (or `!` / `*` for locked accounts)          |
+| 3     | Days since epoch when password was last changed             |
+| 4     | Minimum days before password can be changed                 |
+| 5     | Maximum days before password must be changed                |
+| 6     | Warning period before password expires                      |
+| 7     | Inactive period after expiration before account is disabled |
+| 8     | Account expiration date (in days since epoch)               |
+
+> 📌 Use `chage` command to view or change password aging info for users.
+
+---
+
+### 🧪 Interview Questions Recap:
+
+1. **What is the difference between `/bin` and `/usr/bin`?**
+2. **Where are system-wide configuration files stored?**
+3. **What kind of data is in `/etc/shadow` and how is it secured?**
+4. **How would you prevent unauthorized access to user credentials in Linux?**
+5. **What’s the difference between `/etc/passwd` and `/etc/shadow`?**
+
+
+
