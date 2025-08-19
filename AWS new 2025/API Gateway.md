@@ -186,3 +186,12 @@ But if you want only your friends (with secret key) to use it → then enable AP
 
 Do you want me to show you **how to add API Key & Usage Plan** in AWS API Gateway step by step?
 
+My understanding: API gateway is like a shopkeeper where he knows where the items are and he route to that place and get the correct items to the people 
+
+API Gateway hit the Lambda function and get the correct data from the backend without touching the DB and API gateway gives back to the app 
+
+Not Mandatory these are optional
+API keys - you are giving permission for the person with API key for the security purpose 
+Usuage Plan - limit of sending the request of 1000 per day (rules basically)
+
+
