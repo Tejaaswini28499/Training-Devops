@@ -194,4 +194,10 @@ Not Mandatory these are optional
 API keys - you are giving permission for the person with API key for the security purpose 
 Usuage Plan - limit of sending the request of 1000 per day (rules basically)
 
+Read: 
+1. What is API Gateway
+2. Types of API Gateway
+3. Benifits of API Gateway
+4. Pricing of API Gateway
+
 
