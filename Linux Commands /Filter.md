@@ -18,6 +18,26 @@ grep -i baby file1 - returns both the line as -i removes the case sensitive
  grep -Rv baby teju - As we are working from the homepath -Rv is mentioned 
  grep -Riv baby teju - in this case nothing will return
 ```
+-i = remove case senstive
+-r = recursively
+-n = show the line number
+^ = starting
+$ = ending
+-v = exclude
+-R = conect from home path inside any directory
+-o = It tells grep to print only the part of the line that matches the pattern — not the whole line.
+
+diff btw grep and egrep
+
+| Feature           | `grep`                              | `egrep` (or `grep -E`)                 |    |
+| ----------------- | ----------------------------------- | -------------------------------------- | -- |
+| Uses which regex? | **Basic Regular Expressions (BRE)** | **Extended Regular Expressions (ERE)** |    |
+| Parentheses       | `\(` and `\)` (need escaping)       | `(` and `)` (no escape needed)         |    |
+| OR operator       | Use `\|`                            | Use \`                                 | \` |
+| Plus `+` symbol   | `\+`                                | `+`                                    |    |
+| Question mark `?` | `\?`                                | `?`                                    |    |
+| Performance       | Same (almost identical underneath)  | Same                                   |    |
+
 
  ## Other commands to search
  ```
