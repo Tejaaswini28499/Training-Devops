@@ -138,3 +138,68 @@ Perfect 👍 Here’s a **list of common mistakes with AWS Lambda** that intervi
 They often ask: *“You built a Lambda function, but it’s failing/slow/expensive. What could be wrong?”* → These mistakes are the hidden answers.
 
 Do you want me to prepare a **mock interview Q\&A** where I play the interviewer and you try answering these Lambda scenario questions? That will feel like a real interview practice.
+Great question 👌 this comes up often in interviews because **Lambda + Step Functions** is one of the most powerful AWS serverless combos. Let me break it down simply:
+
+---
+
+## 🔹 **How AWS Lambda and Step Functions Work Together**
+
+* **AWS Lambda** → Runs your **code** (short tasks, like resize an image, validate input, call an API).
+* **AWS Step Functions** → Orchestrates (like a manager) multiple tasks into a **workflow** with decisions, retries, and sequences.
+
+👉 You can think of it like this:
+
+* **Lambda** = Worker (does the job).
+* **Step Functions** = Boss (decides what order, what happens if it fails, when to retry).
+
+---
+
+## 🔹 Example Workflow
+
+Imagine you have an **order processing system**:
+
+1. **Receive Order** (Step Function starts)
+2. Call Lambda → **Validate Order**
+3. If valid → Call Lambda → **Charge Payment**
+
+   * If payment fails → Retry 3 times → Else → Fail workflow.
+4. Call Lambda → **Update Inventory**
+5. Call Lambda → **Send Confirmation Email**
+6. End
+
+📌 Here, **Step Functions controls the flow**, while **Lambdas handle each step**.
+
+---
+
+## 🔹 Why Use Them Together?
+
+1. **Error Handling & Retries** – Step Functions can automatically retry failed Lambdas.
+2. **State Tracking** – Step Functions keep track of progress (what succeeded/failed).
+3. **Long Workflows** – Lambda alone times out at max 15 mins. Step Functions can run workflows for **days, weeks, or even a year**.
+4. **Branching Logic** – Step Functions can make decisions (`if order > 10 items → send to approval`, else process directly).
+5. **Cost Efficient** – You only pay for Lambda execution + Step Functions state transitions.
+
+---
+
+## 🔹 Real-World Use Case
+
+* **ETL Pipeline**
+
+  * Step Functions trigger Lambda to **Extract** data from API
+  * Next Lambda **Transform** data (clean, validate)
+  * Next Lambda **Load** into DynamoDB/S3
+  * If failure → Step Function sends alert via SNS
+
+---
+
+✅ **Interview Tip**:
+If asked *“Why not just one big Lambda instead of Step Functions?”*
+👉 Answer:
+
+* A single Lambda becomes hard to manage/debug.
+* Step Functions let you break into smaller, reusable Lambdas.
+* They give monitoring, retries, and visual workflow in AWS Console.
+
+---
+
+Would you like me to also create a **step-by-step interview scenario** (with example JSON workflow definition for Step Functions) so you can explain with confidence?
