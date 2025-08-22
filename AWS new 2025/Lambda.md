@@ -203,3 +203,25 @@ If asked *“Why not just one big Lambda instead of Step Functions?”*
 ---
 
 Would you like me to also create a **step-by-step interview scenario** (with example JSON workflow definition for Step Functions) so you can explain with confidence?
+--------
+My Understaning: 
+
+Lambda is a serverless compute service and you need not manage the severs its not running everytime it would only run if actions like S3 file upload, API Gateway request or for the other things which are configured 
+its a pay as you use model and language supported is Python, Node and others, stateless as each and every lambda are independent of each other its scaleable if you get one request or million request it would handle
+Monitoring: add cloud watch or Alarms to get the alerts 
+
+Disadvantages: cold start: as lambda is on and off the 1st request when the lambda is on it would take few seconds to process so to overcome this we can have provision concurrency which means there will be some Lambda instances for which you need to pay and will be available all the time so always the request willnot be having delay this can be used if there are latency issue.
+
+Retrying Lambda: retrying manytimes may have many request to process
+
+connection to DB services : Multiple connection can cost very high (whenever the lambda is on and off you need to connect to lambda again and again so it would cost more)
+
+over and under Provisioning: where you allocate more memory for less request and visaversa
+
+Large deployment package: where lambda cant handle this but you can take help of s3 and EFS to mount the data 
+
+Timeout misconfig: where you configure only 5 min for request to process in real its taking 10 min
+
+
+
+
