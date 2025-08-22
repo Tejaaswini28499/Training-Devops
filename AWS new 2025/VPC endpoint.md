@@ -66,3 +66,9 @@ They usually ask:
 ---
 
 Do you want me to also prepare a **step-by-step example** in AWS Console (say: private EC2 accessing S3 using VPC endpoint) so you can practice?
+
+ENI
+An ENI is a virtual network card that you can attach to an EC2 instance in a VPC.
+It’s what gives your EC2 an IP address, MAC address, and network connectivity.
+
+Think of it as the network adapter (LAN card) of your virtual machine in AWS.
