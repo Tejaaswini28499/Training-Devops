@@ -15,3 +15,126 @@ That means you don’t need to create or manage servers. You just write your cod
 Imagine you upload a photo to an S3 bucket. A Lambda function can be triggered to automatically resize the image and save it back to another bucket.
 
 Would you like me to also explain **how it is different from EC2** (so it’s clearer)?
+Got it 👍 Here are some **AWS Lambda scenario-based interview questions** (the kind they usually ask in interviews, not just definitions):
+
+---
+
+### 🔹 Basic Scenarios
+
+1. **Scenario:** Your team wants to run a small script whenever a file is uploaded to S3. How would you design it with Lambda?
+   👉 Expected Answer: Configure **S3 event notification** → trigger Lambda → process the file (e.g., resize image, validate, transform data).
+
+2. **Scenario:** You have an API built using API Gateway + Lambda. A user complains of high latency. How do you troubleshoot?
+   👉 Expected Answer:
+
+   * Check **CloudWatch Logs** for Lambda execution time.
+   * Verify **cold starts** (function not invoked for a while → longer start time).
+   * Increase **memory/timeout settings**.
+   * Use **provisioned concurrency** to reduce cold starts.
+   * Optimize code (e.g., DB connections, package size).
+
+3. **Scenario:** A Lambda function processes messages from an SQS queue, but some messages are failing. How do you handle this?
+   👉 Expected Answer: Configure a **Dead Letter Queue (DLQ)** (SQS or SNS) so failed messages go there. Investigate and reprocess later.
+
+---
+
+### 🔹 Advanced Scenarios
+
+4. **Scenario:** You have a Lambda that queries a database (RDS). During peak hours, DB connections are getting exhausted. What will you do?
+   👉 Expected Answer:
+
+   * Use **RDS Proxy** to manage DB connections.
+   * Reuse connections (don’t open new ones every invocation).
+   * Consider DynamoDB if suitable.
+
+5. **Scenario:** Lambda is failing because the deployment package is too large (exceeds limit). What’s your solution?
+   👉 Expected Answer:
+
+   * Use **Lambda Layers** to separate dependencies.
+   * Store large code/artifacts in **S3 + EFS** and mount to Lambda.
+
+6. **Scenario:** Your Lambda is processing millions of events but costs are going very high. How would you optimize cost?
+   👉 Expected Answer:
+
+   * Reduce function execution time (optimize code).
+   * Right-size memory (more memory can finish faster, less billed time).
+   * Batch processing from SQS/Kinesis instead of per-message invocation.
+   * Consider Step Functions for orchestration.
+
+---
+
+### 🔹 Security Scenarios
+
+7. **Scenario:** A developer gave Lambda full admin IAM role to access AWS services. What’s wrong here?
+   👉 Expected Answer: Use **least privilege IAM roles** → Lambda should only have permissions it needs.
+
+8. **Scenario:** You need to store database credentials securely for Lambda. How do you do it?
+   👉 Expected Answer: Store credentials in **AWS Secrets Manager** or **SSM Parameter Store (with KMS encryption)** and retrieve at runtime.
+
+---
+
+⚡ Pro Tip: In interviews, they don’t just check “what Lambda is,” but **how you use it in real-world problems (scalability, performance, security, cost optimization).**
+
+Do you want me to also give you a **short list of common mistakes with Lambda** (these are often asked as trick questions)?
+Perfect 👍 Here’s a **list of common mistakes with AWS Lambda** that interviewers love to test as trick or scenario questions:
+
+---
+
+### 🔹 **Common Mistakes & Interview Traps**
+
+1. **Cold Starts Ignored**
+
+   * Mistake: Not considering latency when Lambda is idle for a while (cold start).
+   * Fix: Use **Provisioned Concurrency** for critical APIs.
+
+2. **Not Reusing Connections**
+
+   * Mistake: Opening a new DB connection on every invocation → DB gets overloaded.
+   * Fix: Reuse connections (define outside the handler) or use **RDS Proxy**.
+
+3. **Over-Provisioning or Under-Provisioning Memory**
+
+   * Mistake: Giving too little memory (slower, more billed time) or too much (expensive).
+   * Fix: Use the **AWS Lambda Power Tuning tool** to find the right balance.
+
+4. **Large Deployment Package**
+
+   * Mistake: Putting all libraries in one big zip (exceeds limits, slow deploy).
+   * Fix: Use **Lambda Layers** or **EFS mount** for dependencies.
+
+5. **Hardcoding Secrets/Config**
+
+   * Mistake: Writing DB passwords or API keys in code.
+   * Fix: Use **AWS Secrets Manager** or **SSM Parameter Store**.
+
+6. **Ignoring Retry Behavior**
+
+   * Mistake: Not realizing that failed Lambda invocations (from SQS/Kinesis) **auto-retry** and can cause duplicate processing.
+   * Fix: Implement **idempotency** (same event processed once) + use **DLQ**.
+
+7. **Timeout Misconfiguration**
+
+   * Mistake: Keeping Lambda timeout too short (fails before finishing) or too long (wastes money).
+   * Fix: Set proper timeout; for long workflows use **Step Functions** instead.
+
+8. **Running Heavy Tasks Inside Lambda**
+
+   * Mistake: Using Lambda for long-running jobs (video processing, ML training).
+   * Fix: Use **ECS/Fargate/Batch** for heavy compute tasks.
+
+9. **Not Monitoring Properly**
+
+   * Mistake: No visibility into errors, performance, or costs.
+   * Fix: Use **CloudWatch Logs, X-Ray, Metrics, and Alarms**.
+
+10. **IAM Over-Permissions**
+
+* Mistake: Giving Lambda `AdministratorAccess`.
+* Fix: Apply **least privilege principle** → only allow needed actions.
+
+---
+
+✅ **Why this matters in interviews**:
+They often ask: *“You built a Lambda function, but it’s failing/slow/expensive. What could be wrong?”* → These mistakes are the hidden answers.
+
+Do you want me to prepare a **mock interview Q\&A** where I play the interviewer and you try answering these Lambda scenario questions? That will feel like a real interview practice.
