@@ -222,7 +222,7 @@ Do you want me to also make a **visual mindmap/diagram** (like flow: user → ed
 Got it 👍 Let’s break down **AWS Content Delivery Network (CDN)** in a way that’s simple, clear, and interview-ready.
 
 ---
-
+main read and my understanding
 # 🌐 AWS Content Delivery Network (CDN)
 
 ### 1️⃣ What is a CDN?
