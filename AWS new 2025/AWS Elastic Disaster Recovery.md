@@ -114,3 +114,29 @@ Okay 👍 let’s go step by step:
 **AWS Elastic Disaster Recovery = Affordable, fast, and reliable way to replicate and recover workloads into AWS in case of a disaster.**
 
 Would you like me to also give you **interview-style Q\&A** for this service (like we did for CloudFront, IAM, etc.)?
+Good question 👍 Let’s clear that.
+
+### **Source Servers in AWS Elastic Disaster Recovery (DRS)**
+
+* A **source server** is the **original server** that you want to protect and replicate to AWS.
+* It can be:
+
+  * An **on-premises physical server** (Linux/Windows).
+  * A **virtual machine** (VMware vSphere, Microsoft Hyper-V, etc.).
+  * A **cloud instance** (even an AWS EC2 instance from another region or account).
+
+### **How it works with DRS:**
+
+1. You install the **AWS Replication Agent** on the **source server**.
+2. The agent captures data changes at the **block level**.
+3. This data is sent to a **staging area in AWS** continuously.
+4. In case of disaster, AWS spins up **recovery instances** (full-sized EC2 copies) from the replicated data.
+
+---
+
+👉 Think of **source server = the system where your actual application/data is running today**, which you don’t want to lose during a disaster.
+
+---
+
+Do you want me to also explain **what is staging area and recovery instance** (so you’ll have a full picture of DRS flow)?
+
