@@ -1,0 +1,1 @@
+Containerization is a method of packaging an application with all its dependencies (libraries, configuration files, runtime) into a single, portable unit called a Container. These containers run consistently across environments, whether on a developer’s laptop, a test server, or in production, without compatibility issues.
