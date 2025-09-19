@@ -82,3 +82,5 @@ Since container layers are temporary, Docker provides persistent storage methods
 ---
 
 Do you want me to also explain **how storage differs between `volumes`, `bind mounts`, and container writable layers** with a simple comparison table?
+
+read: https://www.geeksforgeeks.org/cloud-computing/data-storage-in-docker/
