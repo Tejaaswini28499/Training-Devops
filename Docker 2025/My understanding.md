@@ -76,12 +76,12 @@ Explain Docker file and diff btw entrypoint: you can override the values here an
 
 port mapping from container- 8000 to EC2 add inbound traffic rules allow port 8000 (tcp) to security group
 
-
+-------------------------------
 
 Commands:
 docker ps - options(a,l,q)
 docker rm - options(f,v,l)
-docker exec - options(d,i,e)
+docker exec - options(d,i,e)                                   
 ------------
 docker ps
 docker login
@@ -98,6 +98,75 @@ docker push
 docker container top <container_id_or_name>
 
 docker image prune
+---------------------------
+Docker:
+
+build the docker image
+run docker image
+check the logs
+login to conatianer
+start and stop restart
+
+---------------
+Docker network:
+
+types of networking:
+1. Bridge networking: 
+2. host networking: this will bind the container with the host ip that is if the host ip is 192.1.3.4 the container ip will be 192.1.3.6 it will be the same subnet range. anyone have access to host will be having access to container but this is not secure 
+3. overlay networking : helpful in having multiple host on single cluster
+
+
+1. make to talk with container 1 with conatiner 2
+2. Isolate from container 1 with container 2
+3. create container with host network
+
+1. whenever you create a container there is virtual ethernet created which is also called as docker 0 helps to talk from one container to another and this is called bridge networking as host as different ip and container has different ip they are not able to talk that is why its called bridge networking also called veth or docker 0
+if you try to delete this default network or bridge network you will be never able to talk to container again from host
+
+2. Isolate: the bridge network allows you to create a custom bridge network
+
+docker run -d --name login nginx:latest
+docker run -d --name logout nginx:latest
+docker exec -it login /bin/bash
+apt update
+apt-get install iputils-ping -y
+docker inspect login
+ping "ip" - as it's in same subnet it will ping from one container to another as it uses bridge ootb bridge networking 
+docker network ls
+docker network rm "name"
+
+
+isolation:
+docker network create secure-network 
+docker run -d --name finance --network=secure-network nginx:latest
+docker inspect finance
+
+create container with host network
+docker run -d --name host-demo --network=host nginx:latest 
+-- ip would be different, no custom ip, binded with host ip itself, no virtual network created
+
+
+Docker Volumes
+Create and manage volumes
+sudo docker volume create geeksforgeeks
+sudo docker volume inspect geeksforgeeks
+sudo docker run -it -v geeksforgeeks:/shared-volume --name my-container-01 ubuntu
+ls
+cd /shared-volume
+echo “GeeksforGeeks” > geeksforgeeks.txt
+ls
+exit
+sudo docker run -it -v geeksforgeeks:/shared-volume --name my-container-02 ubuntu
+If you go to the shared-volume directory and list the files, you will find the geeksforgeeks.txt file that you had created in the same volume but mounted in my-container-01 earlier and it also has the same content inside it. This is so because the volume is shared among the two Containers.
+
+docker volume create my_volume
+docker run -d --name mongo -v mongovol:/data/db   -e MONGO_INITDB_ROOT_USERNAME=devdb -e MONGO_INITDB_ROOT_PASSWORD=devdb123
+docker run --rm -v mongovol:/data/db   busybox ls /data/db
+
+Differences between -v and --mount behavior
+Share Data Between Machines
+
+
 
 
 
