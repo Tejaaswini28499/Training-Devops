@@ -14,8 +14,10 @@ they are tightly separated
 physical server - vm's (solved some problems wit Physical Servers) - containers (solved some problems wit VM's) -- check advantage and disadvantage btw this 3 
 
 Virtual Machine has a complete OS but containers as partial and containers use resources from VM's or Physical servers(host opertating systems) they are running on 
+<img width="946" height="622" alt="image" src="https://github.com/user-attachments/assets/a610b7dc-18f4-4e28-8d9e-faf1023862c2" />
 
 
+<img width="957" height="625" alt="image" src="https://github.com/user-attachments/assets/e9d185d4-2ad7-4b2a-9403-71bba41bd0f7" />
 
 
 
@@ -61,6 +63,7 @@ Files and Folders that containers use from host operating system
 
 Docker daemon lifecycle: you need a docker file(set of instructions) and build it on Docker engine to get the docker image and run the image on docker engine to get the docker container 
 
+<img width="1014" height="514" alt="image" src="https://github.com/user-attachments/assets/0148699a-fd3b-417a-972b-849055b6ba78" />
 
 docker build - using docker file it will build the image 
 docker run - the image will run and create a container 
@@ -124,6 +127,7 @@ types of networking:
 if you try to delete this default network or bridge network you will be never able to talk to container again from host
 
 2. Isolate: the bridge network allows you to create a custom bridge network
+<img width="916" height="508" alt="image" src="https://github.com/user-attachments/assets/af5241ca-7c92-43a0-a133-660b3953d2f2" />
 
 docker run -d --name login nginx:latest
 docker run -d --name logout nginx:latest
