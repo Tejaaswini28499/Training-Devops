@@ -101,6 +101,7 @@ Why service??
 
 Load balancing :
 service will act as a load balancer i.e., each and every pod will be having ip address and whenever the pod deleted and created a new pod the ip address will change and what this service will do is load balancing how it does is with the help of kube-proxy.
+note:by default the deployment doesn't have loadbalancing only if we use service.yml or services will get to use Loadbalancing
 
 eg: as you have 100's of users using your appln you can have a single replica there should be multiple pods running and each pods will be having different ip you cannot say 25 users use 173.2.3.4 another 25 use 173.2.3.5 other 25 use 173.2.3.6 and others 173.2.3.7 instead use service.yml so using load balancing it would help even when the pod is destroyed and generated a new pod service file will help. when creating a service you would give a name say payment.default.svc the kube-proxy will send the traffic to this link payment.default.svc
 
