@@ -351,3 +351,32 @@ nginx.ingress.kubernetes.io/rewrite-target: /
 ✅ That covers **all 25 questions with concise answers**.
 
 Would you like me to also prepare a **cheat sheet diagram** (Ingress vs Service vs LoadBalancer) so you can explain visually in interviews?
+
+My understanding:
+
+what is sticky session in kubernetes : 
+
+what are enterprise loadbalancer support? - exposing one specific ip address 
+
+
+why Ingress ??
+enterprise and TLS load balancing capabalities 
+service of type lb the cloud provider will charge for static public ip address as each and every lb was creating static public ip
+
+service in k8 was doing very simple loadbalanicing but enterprise loadbalancer support was giving very good feature which k8 was not providing
+
+exposes using loadbalancer mode in service in cloud was charging more as it was static public IP address as each and every lb having public ip 
+
+
+what is Ingress?? - its just lb sometimes lb + API gateway
+will allow k8 users to use lb, user will create resource called Ingress in k8 it will tell lb providers to create something called Ingress controller 
+
+
+what if you need path based routing bcz service wont provide as its just have round robbin type of lb
+The lb provided Ingress controller needs to be installed on the k8 cluster you can deploy this using helm or yaml manifest once deploy devops would create ingress yml resource for k8 services this ingress controller will watch for ingress resource and it will provide you the path based routing. as a just we need to create ingress resource as well as deploy ingress controller to deploy we need to go to there official website and there they will tell how can we install ingress controller on our cluster. it is upto organization which ingress controller needs to be used. 
+
+note: you can create one ingress and handle 100's of services using paths if path is A go to service 1 if path is B go to service 2
+
+TLS
+Ingress annotations
+URL rewrites
