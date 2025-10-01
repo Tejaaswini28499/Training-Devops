@@ -139,15 +139,9 @@ Here’s a tailored set of **Ingress interview questions** (beyond basics), suit
 25. Explain how you integrated Ingress with a Service Mesh (Istio/Linkerd).
 
 ---
-
-✅ These 25 questions are **aligned for a 4-year experienced engineer** — you’re expected to know not just **what Ingress is**, but also **how you used it in production, what issues you faced, and how you solved them**.
-
+Get ans for above
 ---
-
-👉 Do you want me to also prepare **sample answers for the top 10 advanced/production Ingress questions** (like TLS setup, troubleshooting, annotations, multi-service routing) so you can speak like an experienced engineer in interviews?
-🔥 Great — let’s go question by question. I’ll give you **crisp + interview-style answers** (not textbook long, but clear and to the point).
-
----
+different
 
 # ✅ **Kubernetes Ingress Interview Q\&A**
 
