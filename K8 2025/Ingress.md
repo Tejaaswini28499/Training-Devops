@@ -373,4 +373,4 @@ note: you can create one ingress and handle 100's of services using paths if pat
 
 TLS
 Ingress annotations
-URL rewrites
+URL rewrites(learn all 3 topics and others in interview questions)
