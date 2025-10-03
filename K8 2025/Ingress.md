@@ -352,6 +352,9 @@ what is sticky session in kubernetes :
 
 what are enterprise loadbalancer support? - exposing one specific ip address 
 
+ Ingress is powerful because you can route multiple backend services with a single Ip address and do path based routing, host based routing, TLS terminatation
+
+ Ingress controller : Evaluate all the rules defined in you cluster, manages redirection, entrypoint to cluster to the domain subdomain that we have defined in Ingress.yml 
 
 why Ingress ??
 enterprise and TLS load balancing capabalities 
@@ -370,7 +373,12 @@ what if you need path based routing bcz service wont provide as its just have ro
 The lb provided Ingress controller needs to be installed on the k8 cluster you can deploy this using helm or yaml manifest once deploy devops would create ingress yml resource for k8 services this ingress controller will watch for ingress resource and it will provide you the path based routing. as a just we need to create ingress resource as well as deploy ingress controller to deploy we need to go to there official website and there they will tell how can we install ingress controller on our cluster. it is upto organization which ingress controller needs to be used. 
 
 note: you can create one ingress and handle 100's of services using paths if path is A go to service 1 if path is B go to service 2
+<img width="674" height="385" alt="image" src="https://github.com/user-attachments/assets/538d04c6-2490-44d3-a866-6d2cdc7c2234" />
 
 TLS
+<img width="669" height="319" alt="image" src="https://github.com/user-attachments/assets/64bd1469-3927-4ad9-94d1-0768343c403e" />
+<img width="669" height="321" alt="image" src="https://github.com/user-attachments/assets/04515399-30b8-46b4-bee5-04bf7be5bbd8" />
+
+
 Ingress annotations
 URL rewrites(learn all 3 topics and others in interview questions)
