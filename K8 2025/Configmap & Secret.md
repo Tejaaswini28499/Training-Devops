@@ -3,7 +3,8 @@ configmap: it resolve storing the data which can we used in later point of time 
 
 secrets: sensitive datas are stored. if you create a kind as secret k8 would encrypt before saving in etcd k8 will give default encryption but even we can create our own custom encryption also
 9, 10,13,14,18,23(read again)
-![Uploading image.png…]()
+<img width="939" height="577" alt="image" src="https://github.com/user-attachments/assets/8be62c21-a5de-43da-8eba-47782ada3c9d" />
+
 
 Got it 👍 Let’s prepare a **solid set of Kubernetes ConfigMap & Secret interview questions** — both **basic** and **advanced** — especially for someone with 3–5 years of Kubernetes/DevOps experience.
 
