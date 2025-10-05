@@ -81,6 +81,11 @@ deployment.yml : here we write the deployment file and we have replicaset which 
 eg: in cluster we have 100 pods and one was deleted by mistake the auto healing will ensure the desired state and cluster state must be same and regenerate the deleted pod.
  <img width="880" height="517" alt="image" src="https://github.com/user-attachments/assets/db5c2b15-cbf7-4960-99ad-430dce36b8ea" />
 
+note: whenever a change made in container in deployment.yml the new set of replica will be created when there is a new rollout the new replicset is created the old once dont get delete bcz if you want to rollback to older version by default k8 will store last 10 replicaset by default
+
+kubectl rollout undo deployment/ngix-deployment --to revision =1 
+the above command will rollback to previous version, revision =2 rollback to 2 previous version back 
+
 commands:
 kubectl get pods
 kubectl get pods -o wide - will give you ip address
