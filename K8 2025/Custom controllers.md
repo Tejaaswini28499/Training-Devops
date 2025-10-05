@@ -142,3 +142,13 @@ for event in watch(myapp):
 If you want, I can make a **diagram showing how a custom controller works with CRDs and pods**—it helps visualize the flow clearly.
 
 Do you want me to make that diagram?
+
+Custom resource defenation
+
+my understanding: OOTB there are few resources available in k8 if you need your own resource or extend the your API or you need to have custom resource like argo cd, Istio or others
+you can extend the API or add new API to kuberenetes using this you can ask your customers to use required resources 
+to extent we have 3 components 1. Custom Resource Defination 2. Custom Resource 3. Custom controller
+1. Custom Resource Defination : K8 is saying you Istio or Argo cd to define new type of API to k8. 
+how are you using??---> custom resource definition(CRD template) here you define in a yml file(like a template), it as all the options that they support and this you need to submit is custom resource(CR) 
+2. custom resource - its a yml file users writes here and its validated with CRD
+3. Custom controller - this controller should be deployed in K8 cluster controller will watch for the CR and acts accordingly - logic behind the controller - Watches for events on your CR using Informer or client-go. Reconciles desired vs. current state. Creates, updates, or deletes Kubernetes resources based on CRD spec.
