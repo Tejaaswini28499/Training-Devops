@@ -1,3 +1,14 @@
+Imagepullbackoff error:
+
+this can happen in 3 different cases
+1. Invalid image: eg nginy:14.2.3 instead of nginx:14.2.3
+2. When the image doesn't exists: it was deleted somehow and you where asked to deply
+3. Private image and you dont use image pull secret for authentication
+
+meaning of backoff
+the pod doesn't give Imagepullbackoff error instantly at 1st it gives error image pull it waits for 5sec and increment the wait and try after 10sec and then try after 5min 
+ 
+
 Let's go through **how to create and use ImagePullSecrets** in Kubernetes for both **Docker Hub (or any Docker registry)** and **AWS ECR (Elastic Container Registry)** 👇
 
 ---
