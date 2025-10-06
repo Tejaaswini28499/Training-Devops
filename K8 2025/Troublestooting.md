@@ -8,6 +8,7 @@ this can happen in 3 different cases
 meaning of backoff
 the pod doesn't give Imagepullbackoff error instantly at 1st it gives error image pull it waits for 5sec and increment the wait and try after 10sec and then try after 5min 
  
+<img width="1201" height="648" alt="image" src="https://github.com/user-attachments/assets/c3d0a0ad-a692-42eb-8faa-410df1977e57" />
 
 Let's go through **how to create and use ImagePullSecrets** in Kubernetes for both **Docker Hub (or any Docker registry)** and **AWS ECR (Elastic Container Registry)** 👇
 
@@ -151,6 +152,7 @@ meaning of CrashloopBackoff error:
 when a pod start at beginning it will run but after sometime or a day it will crash due to above reasons and what we have done for pod is add the restart policy where it will restarting the pod always or on-failure or any reasons this happens in a loop and its keeps on trying so that's the reason 
 
 note: Livness probe is to check whether the pod is healthy or not readniess probe is to check if the pod is ready or not 
+<img width="1300" height="583" alt="image" src="https://github.com/user-attachments/assets/5520abe4-943b-4e6a-9046-058e322d5a8f" />
 
 
 **CrashLoopBackOff** in Kubernetes means:
