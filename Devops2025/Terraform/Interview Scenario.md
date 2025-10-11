@@ -471,6 +471,7 @@ Would you like me to show you exactly **how the `terraform.tfstate` file looks i
 That will help you visualize what Terraform actually records.
 
 
+
 2. Drift detection
    **Drift detection in Terraform** means identifying **differences ("drift")** between what’s currently deployed in your real infrastructure (actual state) and what’s defined in your Terraform configuration/state file (desired state).
 
