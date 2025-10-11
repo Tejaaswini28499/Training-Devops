@@ -467,13 +467,9 @@ You can then manually clean and merge those files into your main repo.
 
 ---
 
-Would you like me to show you exactly **how the `terraform.tfstate` file looks inside** after you run an import (with an example of its JSON structure)?
-That will help you visualize what Terraform actually records.
-
-
-
 2. Drift detection
-   **Drift detection in Terraform** means identifying **differences ("drift")** between what’s currently deployed in your real infrastructure (actual state) and what’s defined in your Terraform configuration/state file (desired state).
+   
+**Drift detection in Terraform** means identifying **differences ("drift")** between what’s currently deployed in your real infrastructure (actual state) and what’s defined in your Terraform configuration/state file (desired state).
 
 ---
 
