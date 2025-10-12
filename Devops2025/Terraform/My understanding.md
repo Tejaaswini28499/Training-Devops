@@ -5,6 +5,7 @@ note: defining variable will be done in variable.tf values are red from terrafor
 there are two types of Variable 
 1. Input variable - pass some information to tf 
 2.output variable - print particular value in output
+<img width="723" height="396" alt="image" src="https://github.com/user-attachments/assets/538820a6-358c-45c5-91e5-f85db0461285" />
 
 
 if you want to completely parameterize, some one want t2.mirco and other wants t1.medium so if these is the case we can use tf.vars file if you have different tf.vars file like dev.tfvars, prod.tfvars, test.tfvars then while terraform apply we need to provide which tf.vars to be the configuration applied on 
@@ -72,6 +73,7 @@ Installation of Vault:
 14. create Approle id and approle secretid
 15. create a vault provider and mount in mount provide the path of the mount and name, which is the secret name given inside the mount eg: detect is path and token is the secret
 
+<img width="904" height="451" alt="image" src="https://github.com/user-attachments/assets/b84fc1f3-595b-4352-9144-45c07381d5ec" />
 
 
 note: If you need to create a resource go to resource in hashicorp document and resource we you want to read the data then go to data resource in hashicorp documnet
@@ -90,6 +92,9 @@ Write matching .tf configuration: Now Terraform knows what resources exist, but 
 You need to recreate the resource configuration in code form
 Validate alignment: terraform plan If everything matches, you’ll see:No changes. Infrastructure is up-to-date.
 Move to remote backend (optional but recommended): terraform init -migrate-state
+
+<img width="1104" height="424" alt="image" src="https://github.com/user-attachments/assets/2bd3b09f-23f9-40e5-8751-d4f56ce574a3" />
+<img width="1131" height="379" alt="image" src="https://github.com/user-attachments/assets/5219f5f9-23e3-4866-94df-ab8aef3f86d9" />
 
 
 
