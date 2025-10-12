@@ -135,6 +135,60 @@ clusterip(10.101.63.207) with 80 is mapped with the nodeport 300007 which means 
 note: you have installed minikube on you laptop you can still be able to access the link from internet bcz the minikube ip and laptop ip are same so will be able to access
 if it should be accessed world wide then give the type as load balancer for this the external ip will be added for cluster ip and Nodeport the external ip's are not allocated and in minikube the external ip would be shown pending as this is done by CCM (cloud controller manager) AWS or Azure or GCP minikube cannot have this privileges so
 
+what is sticky session in kubernetes : 
+
+what are enterprise loadbalancer support? - exposing one specific ip address 
+
+
+why Ingress ??
+enterprise and TLS load balancing capabalities 
+service of type lb the cloud provider will charge for static public ip address as each and every lb was creating static public ip
+
+service in k8 was doing very simple loadbalanicing but enterprise loadbalancer support was giving very good feature which k8 was not providing
+
+exposes using loadbalancer mode in service in cloud was charging more as it was static public IP address as each and every lb having public ip 
+
+
+what is Ingress?? - its just lb sometimes lb + API gateway
+will allow k8 users to use lb, user will create resource called Ingress in k8 it will tell lb providers to create something called Ingress controller 
+
+
+what if you need path based routing bcz service wont provide as its just have round robbin type of lb
+The lb provided Ingress controller needs to be installed on the k8 cluster you can deploy this using helm or yaml manifest once deploy devops would create ingress yml resource for k8 services this ingress controller will watch for ingress resource and it will provide you the path based routing. as a just we need to create ingress resource as well as deploy ingress controller to deploy we need to go to there official website and there they will tell how can we install ingress controller on our cluster. it is upto organization which ingress controller needs to be used. 
+
+Ingress is powerful because you can route multiple backend services with a single Ip address and do path based routing, host based routing, TLS terminatation
+
+Ingress controller : Evaluate all the rules defined in you cluster, manages redirection, entrypoint to cluster to the domain subdomain that we have defined in Ingress.yml 
+note: you can create one ingress and handle 100's of services using paths if path is A go to service 1 if path is B go to service 2
+
+TLS
+Ingress annotations
+URL rewrites
+
+
+
+configmap: it resolve storing the data which can we used in later point of time in your pod(non sensitive data). whenever the resource is created it will be stored in etcd if hacker hack etcd he can hack the entire DB so if this there s no proper security to resolve this problem K8 came with the concept called secrets.
+
+secrets: sensitive datas are stored. if you create a kind as secret k8 would encrypt before saving in etcd k8 will give default encryption but even we can create our own custom encryption also
+9, 10,13,14,18,23
+<img width="939" height="577" alt="image" src="https://github.com/user-attachments/assets/feaa00b4-06ed-4cb4-a8f9-c248dc51fd95" />
+
+
+RBAC:user management and managing the access of service account
+
+service accounts/users
+roles or cluster roles
+role binding or cluster role binding
+
+Custom resource defenation
+
+my understanding: OOTB there are few resources available in k8 if you need your own resource or extend the your API or you need to have custom resource like argo cd, Istio or others
+you can extend the API or add new API to kuberenetes using this you can ask your customers to use required resources 
+to extent we have 3 components 1. Custom Resource Defination 2. Custom Resource 3. Custom controller
+1. Custom Resource Defination : K8 is saying you Istio or Argo cd to define new type of API to k8. 
+how are you using??---> custom resource definition(CRD template) here you define in a yml file(like a template), it as all the options that they support and this you need to submit is custom resource(CR) 
+2. custom resource - its a yml file users writes here and its validated with CRD
+3. Custom controller - this controller should be deployed in K8 cluster controller will watch for the CR and acts accordingly - logic behind the controller - Watches for events on your CR using Informer or client-go. Reconciles desired vs. current state. Creates, updates, or deletes Kubernetes resources based on CRD spec.
 
 
 
