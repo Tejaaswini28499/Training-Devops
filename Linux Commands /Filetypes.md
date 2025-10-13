@@ -222,4 +222,14 @@ Output:
 Would you like me to give you a **diagram + examples for each file type (visual explanation)** next?
 It helps you remember faster for interviews.
 
+Hard Link vs Soft (Symbolic) Link
 
+| Feature                   | Hard Link           | Soft (Symbolic) Link |
+| ------------------------- | ------------------- | -------------------- |
+| Command                   | `ln file1 link1`    | `ln -s file1 link1`  |
+| Points to                 | Inode (actual data) | File path            |
+| Works if original deleted | ✅ Yes               | ❌ No                 |
+| Works across filesystems  | ❌ No                | ✅ Yes                |
+| For directories           | ❌ No                | ✅ Yes                |
+| Inode number              | Same                | Different            |
+| File type                 | Regular (`-`)       | Link (`l`)           |
