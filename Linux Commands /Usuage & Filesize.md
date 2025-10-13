@@ -102,3 +102,52 @@ wc -c file.txt
 If you want, I can also show a **one-liner command to check the size of all files in a directory in human-readable format**—super handy for big directories.
 
 Do you want me to do that?
+The `du` command in Linux is used to **estimate disk usage** of files and directories. Let's break down your command:
+
+```bash
+du -sh <directory_or_file>
+```
+
+### Options:
+
+1. **`-s` → `--summarize`**
+
+   * Instead of showing the disk usage of **every subdirectory** inside the directory, it shows **only the total size of the specified directory**.
+   * Example:
+
+     ```bash
+     du /home/tejaaswini
+     ```
+
+     Might show:
+
+     ```
+     4K    /home/tejaaswini/docs
+     8K    /home/tejaaswini/photos
+     12K   /home/tejaaswini
+     ```
+
+     But with `-s`:
+
+     ```bash
+     du -s /home/tejaaswini
+     ```
+
+     Output:
+
+     ```
+     12K   /home/tejaaswini
+     ```
+
+2. **`-h` → `--human-readable`**
+
+   * Makes the output easier to read by converting sizes into **KB, MB, GB**, etc., instead of just bytes.
+
+### ✅ Summary
+
+* **`-s`** is used to **avoid listing all subdirectories** and show only the **total size**.
+* **`-h`** is optional but makes it human-readable.
+
+So `du -sh` is the **quickest way to get the total size of a folder** in a readable format.
+
+If you want, I can also explain a **few more useful `du` flags** for analyzing disk usage efficiently. Do you want me to do that?
