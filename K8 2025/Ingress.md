@@ -436,3 +436,360 @@ Think of the Ingress Controller as a **base smartphone**, and the add-ons are **
 
 Would you like me to show a **diagram of a production-grade Ingress setup** with these add-ons (cert-manager, external-dns, WAF)? It’s a great visual for interview explanations.
 
+
+if we have api service.yml and frondend service.yml how both can be exposed in one ingress
+Excellent question 👏 — this is a **very common Kubernetes scenario** in real-world DevOps work!
+
+Let’s break it down clearly 👇
+
+---
+
+## 🧩 Scenario
+
+You have two services:
+
+* **API Service** (`api-service.yml`) — backend microservice
+* **Frontend Service** (`frontend-service.yml`) — UI (React/Angular, etc.)
+
+And you want to expose **both under one Ingress** (one domain).
+
+---
+
+## 💡 Goal Example
+
+Let’s say you want this structure:
+
+| URL Path                         | Service  | Port |
+| -------------------------------- | -------- | ---- |
+| `https://myapp.example.com/`     | Frontend | 80   |
+| `https://myapp.example.com/api/` | API      | 8080 |
+
+Both routes are served from the **same domain (Ingress)** but route to **different backend services**.
+
+---
+
+## 🧱 Step 1 — Frontend Service (`frontend-service.yml`)
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-service
+spec:
+  selector:
+    app: frontend
+  ports:
+    - port: 80
+      targetPort: 80
+```
+
+---
+
+## 🧱 Step 2 — API Service (`api-service.yml`)
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: api-service
+spec:
+  selector:
+    app: api
+  ports:
+    - port: 8080
+      targetPort: 8080
+```
+
+---
+
+## 🧱 Step 3 — Ingress (`ingress.yml`)
+
+Here’s how you expose both via **one Ingress**:
+
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: myapp-ingress
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+    - host: myapp.example.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend-service
+                port:
+                  number: 80
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: api-service
+                port:
+                  number: 8080
+```
+
+### 🧠 What Happens:
+
+* Requests to `/` or `/home` or `/about` → go to `frontend-service`.
+* Requests to `/api/...` → go to `api-service`.
+
+---
+
+## ⚙️ Step 4 — DNS & Ingress Controller
+
+Make sure:
+
+1. You have an **Ingress Controller** (like **NGINX Ingress Controller**) installed in your cluster.
+2. Your domain (`myapp.example.com`) points to the **Ingress Controller’s external IP** (via DNS or `/etc/hosts` for local testing).
+
+---
+
+## 🌍 Optional — With TLS (HTTPS)
+
+If you use HTTPS (recommended):
+
+```yaml
+spec:
+  tls:
+    - hosts:
+        - myapp.example.com
+      secretName: myapp-tls-secret
+```
+
+This enables SSL using a TLS secret (which can be auto-managed with **cert-manager** + Let’s Encrypt).
+
+---
+
+## 🧩 Bonus — Folder-style Example for Clarity
+
+```
+k8s/
+├── api-deployment.yml
+├── api-service.yml
+├── frontend-deployment.yml
+├── frontend-service.yml
+└── ingress.yml
+```
+
+All deployed together:
+
+```bash
+kubectl apply -f k8s/
+```
+
+---
+
+## ✅ Summary
+
+| Purpose            | Component                | Example                      |
+| ------------------ | ------------------------ | ---------------------------- |
+| Backend service    | `api-service.yml`        | `/api` route                 |
+| Frontend service   | `frontend-service.yml`   | `/` route                    |
+| Single entry point | `Ingress`                | routes traffic based on path |
+| Ingress controller | Required                 | NGINX or Traefik             |
+| TLS                | Optional but recommended | cert-manager                 |
+
+---
+
+Would you like me to show a **complete working example** (with both deployments + services + ingress) — ready to deploy on a Minikube or EKS cluster?
+
+can we use same ingress file for 2 different appln
+💯 Excellent and **very practical** DevOps question — and the answer is:
+👉 **Yes, you *can* use the same Ingress file for multiple applications**, **but** it depends on **how and where** you deploy them.
+
+Let’s break it down with **clear logic, examples, and best practices** 👇
+
+---
+
+## 🧩 What You Mean by “2 Different Applications”
+
+Let’s define two possible cases:
+
+| Case                                                      | Description                                                             |
+| --------------------------------------------------------- | ----------------------------------------------------------------------- |
+| **Case 1:** Both apps are in the **same namespace**       | Example: `frontend` and `api` deployed together (same team/project)     |
+| **Case 2:** Apps are in **different namespaces or teams** | Example: `orders` app and `inventory` app (different teams or projects) |
+
+---
+
+## 🧱 Case 1 — Same Namespace (✅ Common & Recommended)
+
+If both apps are part of one product (e.g. frontend + backend of same web app),
+➡️ then **one Ingress file** is perfectly fine.
+
+### ✅ Example
+
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: myapp-ingress
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+    - host: myapp.example.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend-service
+                port:
+                  number: 80
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: api-service
+                port:
+                  number: 8080
+```
+
+✅ Both apps (frontend and backend) share **one domain** (`myapp.example.com`)
+✅ Traffic is routed by path rules.
+✅ Best for monolithic or tightly-coupled apps.
+
+---
+
+## 🧱 Case 2 — Different Applications (🟡 Possible, but Not Ideal)
+
+If you have **two unrelated applications** like:
+
+* `shop.example.com` → Shop app
+* `blog.example.com` → Blog app
+
+You **can still use one Ingress file**, but it becomes large and harder to maintain.
+
+### Example:
+
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: multi-app-ingress
+spec:
+  rules:
+    - host: shop.example.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: shop-service
+                port:
+                  number: 80
+    - host: blog.example.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: blog-service
+                port:
+                  number: 80
+```
+
+✅ Works fine.
+❌ But hard to manage if different teams maintain different apps.
+❌ Risk of merge conflicts or misconfigurations.
+
+---
+
+## ⚙️ Alternative — Separate Ingress for Each App (Recommended for Multi-Team)
+
+In larger or enterprise setups:
+
+* Each app has **its own ingress.yml** (clean separation).
+* The Ingress Controller handles all of them automatically.
+* You can still use the **same hostname or domain** if rules don’t conflict.
+
+### Example:
+
+**frontend-ingress.yml**
+
+```yaml
+spec:
+  rules:
+    - host: myapp.example.com
+      http:
+        paths:
+          - path: /
+            backend:
+              service:
+                name: frontend-service
+                port:
+                  number: 80
+```
+
+**api-ingress.yml**
+
+```yaml
+spec:
+  rules:
+    - host: myapp.example.com
+      http:
+        paths:
+          - path: /api
+            backend:
+              service:
+                name: api-service
+                port:
+                  number: 8080
+```
+
+Kubernetes will **merge them automatically** inside the Ingress Controller (e.g., NGINX).
+✅ Easier to manage per-app changes.
+✅ Supports multiple pipelines.
+✅ Follows microservice ownership pattern.
+
+---
+
+## 🧠 Summary
+
+| Scenario                            | Can use same Ingress? | Recommended? | Why                                           |
+| ----------------------------------- | --------------------- | ------------ | --------------------------------------------- |
+| Frontend + API (same app)           | ✅ Yes                 | ✅            | Shared domain & routes                        |
+| Different microservices (same team) | ✅ Yes                 | ⚠️ Maybe     | Works, but YAML gets big                      |
+| Different teams or projects         | ⚠️ Possible           | ❌ No         | Hard to manage, better separate Ingress files |
+
+---
+
+## 🧩 Bonus Tip
+
+If you use **Helm**, you can template one Ingress file and deploy it **with variables** for each app, like:
+
+```yaml
+{{- if .Values.ingress.enabled }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Release.Name }}-ingress
+spec:
+  rules:
+    - host: {{ .Values.ingress.host }}
+      http:
+        paths:
+          - path: {{ .Values.ingress.path }}
+            backend:
+              service:
+                name: {{ .Release.Name }}-service
+                port:
+                  number: {{ .Values.service.port }}
+{{- end }}
+```
+
+→ This allows you to reuse one structure cleanly for multiple apps.
+
+---
+
+Would you like me to show the **best practice Ingress setup** (using separate ingress files for frontend & backend but same domain), like how it’s done in real projects (EKS or GKE)?
