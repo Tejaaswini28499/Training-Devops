@@ -43,13 +43,97 @@ Perfect! Let’s go **section by section** with **short, concise answers** for a
 21. **rwxr-xr--:** Owner read/write/execute; group read/execute; others read only
 22. **Numeric permissions:** 7=rwx, 6=rw, 5=r-x, 4=r
 23. **Change owner/group:** `chown user:group file`
-24. **chmod vs chown vs chgrp:** `chmod` = change permissions, `chown` = owner, `chgrp` = group
-25. **umask:** Sets default file creation permissions
-26. **Default permissions:** Set via `umask`
-27. **SUID, SGID, sticky:** SUID = exec as owner, SGID = exec as group, sticky = delete own files only
-28. **Identify creator:** Check `ls -l` owner or use audit logs
-29. **Execute permission for all:** `chmod a+x file`
-30. **Sticky bit on dir:** Only file owner can delete files
+    Changing file ownership and group ownership in Linux is done using the `chown` command. Let’s break it down clearly:
+
+---
+
+### 1. **Change file owner**
+
+```bash
+chown newuser filename
+```
+
+* `newuser` → the username of the new owner
+* `filename` → the file or directory you want to change
+
+**Example:**
+
+```bash
+chown tejaaswini report.txt
+```
+
+Now `report.txt` is owned by user `tejaaswini`.
+
+---
+
+### 2. **Change group ownership**
+
+```bash
+chown :newgroup filename
+```
+
+* `newgroup` → the new group name
+* `:` → tells `chown` you are changing **only the group**
+
+**Example:**
+
+```bash
+chown :devops report.txt
+```
+
+Now `report.txt` belongs to the group `devops`.
+
+---
+
+### 3. **Change both owner and group at the same time**
+
+```bash
+chown newuser:newgroup filename
+```
+
+**Example:**
+
+```bash
+chown tejaaswini:devops report.txt
+```
+
+* Owner → `tejaaswini`
+* Group → `devops`
+
+---
+
+### 4. **Change ownership recursively**
+
+For directories and their contents, use `-R`:
+
+```bash
+chown -R tejaaswini:devops /home/tejaaswini/project
+```
+
+* `-R` → recursive (applies to all files and subdirectories inside `/project`)
+
+---
+
+### ✅ Quick Summary Table
+
+| Action                  | Command Example                    |
+| ----------------------- | ---------------------------------- |
+| Change owner            | `chown tejaaswini file.txt`        |
+| Change group only       | `chown :devops file.txt`           |
+| Change owner & group    | `chown tejaaswini:devops file.txt` |
+| Recursive for directory | `chown -R tejaaswini:devops /dir`  |
+
+---
+
+If you want, I can also explain **how to check the current owner and group of a file** before changing it—it’s very handy to avoid mistakes. Do you want me to show that?
+
+25. **chmod vs chown vs chgrp:** `chmod` = change permissions, `chown` = owner, `chgrp` = group
+26. **umask:** Sets default file creation permissions
+27. **Default permissions:** Set via `umask`
+28. **SUID, SGID, sticky:** SUID = exec as owner, SGID = exec as group, sticky = delete own files only
+29. **Identify creator:** Check `ls -l` owner or use audit logs
+30. **Execute permission for all:** `chmod a+x file`
+31. **Sticky bit on dir:** Only file owner can delete files
 
 ---
 
