@@ -11,10 +11,16 @@ Absolutely! Since you want **scenario-based Linux questions for a DevOps enginee
 5. Your server is running out of memory; how do you identify which process is the culprit?
 6. How do you check which process is listening on a specific port?
 7. How would you kill a process that refuses to terminate with `kill -9`?
-8. A process has hung during startup. How do you debug it using system logs?
-9. How do you monitor real-time CPU and memory usage for a high-load application?
-10. A daemon is not restarting after failure. How do you debug it in `systemd`?
+Kill stubborn process: Check pstree -p PID for child processes, kill children first. Use kill -9 PID as last resort.
 
+8. A process has hung during startup. How do you debug it using system logs?
+Daemon hang: journalctl -u service_name, systemctl status service_name, check config files.
+
+9. How do you monitor real-time CPU and memory usage for a high-load application?
+Monitor usage: top, htop, vmstat 2, sar -u 2 for CPU trends.
+
+11. A daemon is not restarting after failure. How do you debug it in `systemd`?
+Daemon restart failure: systemctl status service, check /var/log/messages or /var/log/syslog.
 ---
 
 ## **📂 2. File System & Storage Management**
