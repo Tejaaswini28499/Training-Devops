@@ -4,6 +4,8 @@ du (Disk usuage)- du -h filename
 
 stat- file size in Bytes 
 
+Find size of a directory - du -sh /path
+
 In Linux, there are multiple ways to **check the size of a file**. Here’s a clear breakdown:
 
 ---
