@@ -1,7 +1,7 @@
 ls -l = meaning long list
 
 Types of files in Linux
- - = File,
+ '-' = File,
  d = Directory,
  l = link,
  C = Special File,
@@ -10,5 +10,6 @@ Types of files in Linux
  hw = hardware information,
 
 file <filename> = return the filetype.
+
 
 
