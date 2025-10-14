@@ -23,8 +23,9 @@ Note: volumes it should be in the same region and Availability Zone as the Insta
   
 18. mkfs.ext4 /dev/nvme1n1 - To format
 19. sudo mkfs.ext4 /dev/nvme1n1
-  --------------------
+  -------------------
 Repeat
+
 20. ls
 21. fdisk -l
 22. sudo fdisk -l
@@ -34,17 +35,18 @@ Repeat
 26. sudo mkfs.ext4 /dev/nvme2n1
 27. sudo fdisk -l
   -----------------------------
-  creating the new directory called image-backup in tmp 
-  728  cd /var/www/html/images/
-  729  ls
-  730  cd ..
-  731  ls
-  732  mkdir /tmp/image-backup
-  733  sudo fdisk -l
-  734  cd /tmp/image-backup/
-  735  ls
-  736  cd /var/www/html
-  737  ls
+creating the new directory called image-backup in tmp 
+
+28. cd /var/www/html/images/
+29.  ls
+30. cd ..
+31.  ls
+32.  mkdir /tmp/image-backup
+33.  sudo fdisk -l
+34.  cd /tmp/image-backup/
+35.  ls
+36.  cd /var/www/html
+37.  ls
  ------------------------------
  moving the images in the images folder from root volume to tmp 
   755  sudo rsync -av --remove-source-files images/* /tmp/image-backup/
@@ -190,4 +192,5 @@ Ubuntu installation.
 ## File Types
 
    mkfs         mkfs.cramfs  mkfs.ext2    mkfs.ext3    mkfs.ext4    mkfs.fat     mkfs.minix   mkfs.msdos   mkfs.vfat    mkfs.xfs
+
 
