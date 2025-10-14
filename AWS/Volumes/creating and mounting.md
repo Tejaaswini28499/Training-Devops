@@ -7,32 +7,32 @@
 
 Note: volumes it should be in the same region and Availability Zone as the Instance 
 
-df -h
-  711  fdisk
-  712  fdisk -l
-  713  sudo fdisk -l- to see the disk available
+7. df -h
+8. fdisk
+9. fdisk -l
+10. sudo fdisk -l- to see the disk available
 
-  714  sudo fdisk /dev/nvme1n1- doing the partation
- After typing this command you need to give m, 
- next n- to do partation
- enter, enter, enter, enter, give w to save
+11. sudo fdisk /dev/nvme1n1- doing the partation
+12. After typing this command you need to give m, 
+13. next n- to do partation
+14. enter, enter, enter, enter, give w to save
 
-  715  sudo fdisk -l
-  716  mkfs (tab tab)
-  after mkfs click on tab twice.
+15. sudo fdisk -l
+16. mkfs (tab tab)
+17. after mkfs click on tab twice.
   
-  718  mkfs.ext4 /dev/nvme1n1 - To format
-  719  sudo mkfs.ext4 /dev/nvme1n1
+18. mkfs.ext4 /dev/nvme1n1 - To format
+19. sudo mkfs.ext4 /dev/nvme1n1
   --------------------
 Repeat
-  720  ls
-  721  fdisk -l
-  722  sudo fdisk -l
-  723  sudo fdisk /dev/nvme2n1
-  724  sudo fdisk -l
-  725  mkfs.ext4 /dev/nvme2n1
-  726  sudo mkfs.ext4 /dev/nvme2n1
-  727  sudo fdisk -l
+20. ls
+21. fdisk -l
+22. sudo fdisk -l
+23. sudo fdisk /dev/nvme2n1
+24. sudo fdisk -l
+25. mkfs.ext4 /dev/nvme2n1
+26. sudo mkfs.ext4 /dev/nvme2n1
+27. sudo fdisk -l
   -----------------------------
   creating the new directory called image-backup in tmp 
   728  cd /var/www/html/images/
@@ -190,3 +190,4 @@ Ubuntu installation.
 ## File Types
 
    mkfs         mkfs.cramfs  mkfs.ext2    mkfs.ext3    mkfs.ext4    mkfs.fat     mkfs.minix   mkfs.msdos   mkfs.vfat    mkfs.xfs
+
