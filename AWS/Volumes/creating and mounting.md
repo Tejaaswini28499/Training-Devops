@@ -1,9 +1,9 @@
-Take a new volume
-and have to take the volume same as Instance Availability Zone
-attach to the instance
-do fdisk you can see the new volume
-after that you need to do partation 
-do the format
+1. Take a new volume
+2. and have to take the volume same as Instance Availability Zone
+3. attach to the instance
+4. do fdisk you can see the new volume
+5. after that you need to do partation 
+6. do the format
 
 Note: volumes it should be in the same region and Availability Zone as the Instance 
 
@@ -188,4 +188,5 @@ Ubuntu installation.
 
 
 ## File Types
+
    mkfs         mkfs.cramfs  mkfs.ext2    mkfs.ext3    mkfs.ext4    mkfs.fat     mkfs.minix   mkfs.msdos   mkfs.vfat    mkfs.xfs
