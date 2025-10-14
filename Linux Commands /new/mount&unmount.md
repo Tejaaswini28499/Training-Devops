@@ -1,11 +1,6 @@
 mount 
-NAME          MAJ:MIN RM  SIZE RO TYPE MOUNTPOINTS
-zram0         253:0    0  407M  0 disk [SWAP]
-nvme0n1       259:0    0    8G  0 disk 
-├─nvme0n1p1   259:1    0    8G  0 part /
-├─nvme0n1p127 259:2    0    1M  0 part 
-└─nvme0n1p128 259:3    0   10M  0 part /boot/efi
-nvme1n1       259:4    0    2G  0 disk 
+<img width="736" height="337" alt="image" src="https://github.com/user-attachments/assets/78e95e06-b3e4-47c0-b65b-aa3c17d06d48" />
+
 Perfect 👍 — you’ve shared your current disk layout.
 
 Let’s understand it first:
