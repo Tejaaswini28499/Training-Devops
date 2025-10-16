@@ -1,4 +1,4 @@
-https://blocks-images-prod.btw.so/66-linux-devops-interview-questions-to-ask-your-candidates-1726038933797qy3.pdf
+[https://blocks-images-prod.btw.so/66-linux-devops-interview-questions-to-ask-your-candidates-1726038933797qy3.pdf](https://www.adaface.com/blog/linux-devops-interview-questions/)
 
 3.What are some common ways to troubleshoot a Linux server that won’t boot?
 
