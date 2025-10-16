@@ -1,3 +1,5 @@
+https://blocks-images-prod.btw.so/66-linux-devops-interview-questions-to-ask-your-candidates-1726038933797qy3.pdf
+
 3.What are some common ways to troubleshoot a Linux server that won’t boot?
 
 1. **Checking boot messages** using recovery mode or a live CD.
