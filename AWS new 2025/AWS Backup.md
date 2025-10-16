@@ -96,6 +96,20 @@ Good question 👍 Many people confuse **AWS Backup** with **AWS Disaster Recove
 * Minimize downtime |
   \| **Cost** | Pay for backup storage + restore requests. | Pay for replication + storage + failover resources. |
   \| **Example** | Accidentally deleted an RDS table → restore from backup. | Entire data center goes offline → failover to AWS in minutes. |
+Here’s the simple difference 👇
+
+* **RPO (Recovery Point Objective):**
+  ➤ How much **data loss** is acceptable after a failure.
+  📘 Example: If RPO = 1 hour → you can afford to lose up to 1 hour of data.
+
+* **RTO (Recovery Time Objective):**
+  ➤ How much **downtime** is acceptable after a failure.
+  📘 Example: If RTO = 2 hours → your system must be back online within 2 hours.
+
+👉 **In short:**
+
+* **RPO = Data loss tolerance**
+* **RTO = Downtime tolerance**
 
 ---
 
