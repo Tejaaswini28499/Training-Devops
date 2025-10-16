@@ -560,6 +560,77 @@ Client → API Gateway → Lambda → DynamoDB → Response → API Gateway → 
 
 👉 Do you want me to also create a **real-world mini project (step-by-step)** using API Gateway + Lambda + DynamoDB (like a sample To-Do App) so you can practice hands-on?
 
+Here’s a list of the **most important HTTP status codes** you should know — grouped by category 👇
+
+---
+
+## 🟩 **1xx — Informational**
+
+| Code    | Meaning             | Description                                            |
+| ------- | ------------------- | ------------------------------------------------------ |
+| **100** | Continue            | Server received request headers; client can send body. |
+| **101** | Switching Protocols | Protocol change (e.g., HTTP → WebSocket).              |
+| **102** | Processing          | Server is still processing the request (WebDAV).       |
+
+---
+
+## 🟦 **2xx — Success**
+
+| Code    | Meaning         | Description                                                   |
+| ------- | --------------- | ------------------------------------------------------------- |
+| **200** | OK              | Request succeeded (most common).                              |
+| **201** | Created         | New resource created (POST).                                  |
+| **202** | Accepted        | Request accepted but not yet processed.                       |
+| **204** | No Content      | Request successful, no body in response.                      |
+| **206** | Partial Content | Used for range requests (e.g., downloading a file in chunks). |
+
+---
+
+## 🟨 **3xx — Redirection**
+
+| Code    | Meaning                   | Description                                   |
+| ------- | ------------------------- | --------------------------------------------- |
+| **301** | Moved Permanently         | Resource permanently moved (use new URL).     |
+| **302** | Found / Moved Temporarily | Temporary redirection.                        |
+| **304** | Not Modified              | Cached version still valid (used in caching). |
+| **307** | Temporary Redirect        | Same as 302 but keeps HTTP method.            |
+| **308** | Permanent Redirect        | Same as 301 but keeps HTTP method.            |
+
+---
+
+## 🟥 **4xx — Client Errors**
+
+| Code    | Meaning                | Description                                                   |
+| ------- | ---------------------- | ------------------------------------------------------------- |
+| **400** | Bad Request            | Invalid syntax or parameters.                                 |
+| **401** | Unauthorized           | Authentication required or failed.                            |
+| **403** | Forbidden              | Authenticated but no permission.                              |
+| **404** | Not Found              | Resource not found.                                           |
+| **405** | Method Not Allowed     | HTTP method not supported (e.g., PUT on a GET-only endpoint). |
+| **408** | Request Timeout        | Client took too long to send the request.                     |
+| **409** | Conflict               | Resource conflict (e.g., version mismatch).                   |
+| **410** | Gone                   | Resource permanently removed.                                 |
+| **413** | Payload Too Large      | Request body too large.                                       |
+| **414** | URI Too Long           | Request URL too long.                                         |
+| **415** | Unsupported Media Type | Format not supported (e.g., sending XML to JSON API).         |
+| **429** | Too Many Requests      | Rate limiting — client sent too many requests.                |
+
+---
+
+## ⛔ **5xx — Server Errors**
+
+| Code    | Meaning                    | Description                               |
+| ------- | -------------------------- | ----------------------------------------- |
+| **500** | Internal Server Error      | Generic server error.                     |
+| **501** | Not Implemented            | Server doesn’t support the functionality. |
+| **502** | Bad Gateway                | Invalid response from upstream server.    |
+| **503** | Service Unavailable        | Server down or overloaded.                |
+| **504** | Gateway Timeout            | Upstream server didn’t respond in time.   |
+| **505** | HTTP Version Not Supported | Protocol version not supported.           |
+
+---
+
+Would you like me to make a **simplified 1-page cheat sheet (for interview prep)** with only the **top 20 most used status codes**?
 
 
 My understanding: API gateway is like a shopkeeper where he knows where the items are and he route to that place and get the correct items to the people 
