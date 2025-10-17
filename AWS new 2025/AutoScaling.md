@@ -469,3 +469,72 @@ Target Group sends requests to healthy EC2 instances.
 
 Auto Scaling ensures there are always enough EC2 instances available.
 
+---------------
+Explain step scaling vs target tracking scaling policies.
+Sure! Let’s break down **Step Scaling** vs **Target Tracking Scaling** policies in AWS Auto Scaling in a clear way.
+
+---
+
+### **1. Step Scaling Policy**
+
+* **Definition:** Step scaling adjusts the number of instances **in steps** based on **CloudWatch alarms**.
+
+* **How it works:**
+
+  1. You define a **metric** (like CPU utilization).
+  2. You create **thresholds** (steps) and specify **how much to scale** when the metric reaches each step.
+  3. When the alarm triggers, Auto Scaling increases or decreases capacity according to the step.
+
+* **Example:**
+
+  * Metric: CPU > 50%, add 1 instance
+  * Metric: CPU > 70%, add 2 instances
+  * Metric: CPU > 90%, add 4 instances
+  * Metric: CPU < 30%, remove 1 instance
+
+* **Use case:**
+
+  * Useful when you want **fine-grained control** over scaling.
+  * Good for applications where you know exact thresholds for load.
+
+---
+
+### **2. Target Tracking Scaling Policy**
+
+* **Definition:** Target tracking automatically adjusts capacity to **maintain a target metric**.
+
+* **How it works:**
+
+  1. You set a **desired target value** for a metric (like CPU = 60%).
+  2. Auto Scaling automatically increases or decreases instances to **keep the metric near the target**.
+
+* **Example:**
+
+  * Target CPU = 60%
+  * If CPU rises to 70%, Auto Scaling adds instances.
+  * If CPU drops to 50%, Auto Scaling removes instances.
+
+* **Use case:**
+
+  * Best for applications where you want **automatic, hands-off scaling**.
+  * Works well when metric fluctuation is continuous.
+
+---
+
+### **Key Differences**
+
+| Feature               | Step Scaling                         | Target Tracking Scaling               |
+| --------------------- | ------------------------------------ | ------------------------------------- |
+| **Scaling behavior**  | Incremental, based on defined steps  | Automatic, based on target value      |
+| **Metric thresholds** | Manual thresholds                    | Single target metric                  |
+| **Control**           | More fine-grained                    | Less manual, more automatic           |
+| **Use case**          | Predictable spikes, known thresholds | Continuous or unpredictable workloads |
+
+---
+
+✅ **Quick analogy:**
+
+* **Step scaling** = you have stairs → you go up 1, 2, or 4 steps depending on how high you need to go.
+* **Target tracking** = you have a thermostat → it automatically adjusts heating/cooling to keep the room at your desired temperature.
+
+-----------
