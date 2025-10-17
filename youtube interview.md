@@ -1,0 +1,1 @@
+consider e-commernce appln that will be accessible throughout the world its international appln requriment is it should be highly scalable robust and it should be highly available ypu are free to use all AWS resouces
