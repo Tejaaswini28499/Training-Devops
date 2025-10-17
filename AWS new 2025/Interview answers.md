@@ -1850,6 +1850,19 @@ If you want, I can make a **2-3 line version or a “like you’re 10” version
 
 ---------------
 
+How do you test disaster recovery without affecting production?
+
+
+**Testing DR Without Affecting Production:**
+
+1. **Use AWS DRS to launch recovery instances** in the recovery environment (separate VPC/region/account).
+2. **Validate applications and data** on these recovery instances without touching the production servers.
+3. **Automate cleanup** after testing so production traffic continues normally.
+
+If you want, I can also give a **2-line “like you’re 10” version** for interviews.
+
+--------------------
+
 
 
 
