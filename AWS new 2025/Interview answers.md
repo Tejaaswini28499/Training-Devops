@@ -1667,8 +1667,173 @@ Every night, your mom:
 That’s exactly how your **AWS Backup strategy** protects RDS + EFS data! 😄
 
 ---
+Excellent 👏 — this is one of the most important AWS Backup and database configuration topics!
 
-Would you like me to show a **diagram** (architecture view) of this RDS + EFS backup strategy next?
+Let’s go step by step 👇
+
+---
+I have scheduled the backup everyday at 9pm and there was a disatster at 2pm in the noon but there is a data missing from 9.01pm to 2.00pm how can we recovery this data
+That’s a **very good real-world question**, and it touches on **RPO (Recovery Point Objective)** and **backup frequency** concepts. Let’s break it down clearly 👇
+
+---
+
+### 🧩 Scenario:
+
+* **Backup schedule:** Every day at **9:00 PM**
+* **Disaster time:** Next day at **2:00 PM**
+* **Data missing:** From **9:01 PM (last backup)** → **2:00 PM (disaster)**
+
+So, **everything created or changed after 9:01 PM is lost**, because it wasn’t captured in your last backup.
+
+---
+
+### 🔍 Why this happened:
+
+Your **backup frequency** is **once per day** → meaning your **RPO = 24 hours (max data loss up to 1 day)**.
+Since the disaster occurred 17 hours *after* your last backup, the changes made in those 17 hours are not backed up.
+
+---
+
+### 🛠 How to recover or minimize loss:
+
+#### ✅ 1. Check for **incremental or continuous backups**
+
+If you had **incremental backups** or **continuous backups** enabled (like AWS Backup continuous mode or RDS point-in-time recovery), you can restore data closer to the disaster time:
+
+* **For RDS:** Use **Point-in-Time Recovery (PITR)** → you can restore your database up to **a specific second before 2 PM**.
+* **For EFS or EBS:** If you used **AWS Backup with continuous backup**, you can restore to **any point within the last 35 days**.
+
+> 🧠 Continuous backup reduces RPO to seconds or minutes instead of hours.
+
+---
+
+#### ✅ 2. Check **application-level logs or transaction journals**
+
+If you’re using systems like databases (MySQL, PostgreSQL, MongoDB, etc.), check:
+
+* **Bin logs / WAL logs / redo logs** – These may help you replay transactions that happened after your last full backup.
+
+---
+
+#### ✅ 3. Check if **replication or snapshots** were enabled
+
+If you had:
+
+* **Database replication (read replica)**
+* **EBS snapshots taken via automation**
+* **S3 versioning or replication**
+
+Then you might still have recent copies of your data elsewhere.
+
+---
+
+#### ✅ 4. Future Prevention — Improve RPO
+
+To avoid such loss in future:
+
+| Method                            | Description                     | Benefit                    |
+| --------------------------------- | ------------------------------- | -------------------------- |
+| **Increase backup frequency**     | e.g. every 1 or 3 hours         | Lower RPO                  |
+| **Enable continuous backups**     | e.g. RDS PITR or EFS continuous | Near-zero data loss        |
+| **Use replication**               | Cross-region or cross-account   | High availability          |
+| **Enable journaling/log backups** | For databases                   | Transaction-level recovery |
+
+---
+
+### 🧭 Example Answer (for interview):
+
+> “In this case, since the backup was scheduled daily at 9 PM and the disaster occurred at 2 PM, the data created after 9 PM is not in the last backup.
+> If continuous backups or point-in-time recovery were enabled (like in AWS Backup or RDS), we could restore data close to the failure time.
+> Otherwise, we can only recover data up to the last backup at 9 PM. To reduce data loss in future, I’d implement incremental or continuous backups and reduce the backup interval.”
+
+
+----------
+where to set continous backups
+## 🧩 What are Continuous Backups?
+
+Continuous backups let you **restore data to any second within a retention window** (like 35 days).
+You can enable this **in AWS Backup** or **directly in RDS/EFS** — depending on the resource type.
+
+---
+
+## 🧰 1️⃣ **For RDS (Relational Database Service)**
+
+### 🪄 How to enable continuous backups (Point-in-Time Recovery)
+
+You don’t do this in AWS Backup — it’s built into RDS itself.
+
+**Steps:**
+
+1. Go to **AWS Console → RDS → Databases**
+2. Select your database.
+3. Click **Modify**.
+4. Under **Backup**, ensure:
+
+   * ✅ **Enable automated backups** is checked
+   * ✅ Set **Backup retention period** (1–35 days)
+   * ✅ Choose a suitable **backup window** (optional)
+5. Save changes → RDS will now take daily snapshots + continuous transaction logs.
+
+🧠 You can now restore the DB to **any point in time** within that retention window.
+
+---
+
+## 🗂️ 2️⃣ **For EFS (Elastic File System)**
+
+### 🪄 Enable continuous backups using AWS Backup
+
+**Steps:**
+
+1. Go to **AWS Backup → Backup plans**
+2. Create or edit a plan.
+3. Under **Backup rules → Advanced backup settings**, turn on:
+
+   * ✅ **Backup frequency:** Continuous
+   * ✅ **Backup vault:** Choose where backups are stored
+4. Assign your **EFS resource** to this backup plan.
+
+🧠 This enables **continuous backup** with recovery up to the **second** within the **last 35 days**.
+
+---
+
+## 💽 3️⃣ **For EBS Volumes**
+
+EBS doesn’t support true continuous backups, but you can:
+
+* Schedule **frequent incremental snapshots** (e.g., every 15 min or 1 hour) via AWS Backup.
+* Use **AWS Backup → Backup plan → Frequency: Hourly** for near-continuous protection.
+
+---
+
+## 🧰 4️⃣ **For DynamoDB**
+
+You can enable **Point-in-Time Recovery (PITR)** directly:
+
+1. Go to **DynamoDB → Tables → Backups tab**
+2. Enable **Point-in-time recovery**
+3. DynamoDB will then maintain continuous backups for the past 35 days.
+
+---
+
+## ✅ Summary Table
+
+| AWS Service  | Continuous Backup Option       | Where to Enable            | Retention |
+| ------------ | ------------------------------ | -------------------------- | --------- |
+| **RDS**      | Automated backups (PITR)       | In RDS settings            | 1–35 days |
+| **EFS**      | Continuous backup              | In AWS Backup plan         | 35 days   |
+| **DynamoDB** | PITR                           | In DynamoDB table settings | 35 days   |
+| **EBS**      | Frequent incremental snapshots | AWS Backup                 | Custom    |
+
+---
+
+## ⚡ Pro Tip:
+
+If you use **AWS Backup policies across accounts**, you can enforce continuous backups organization-wide using **AWS Organizations + Backup policies**.
+
+---
+
+Would you like me to show you **step-by-step setup in AWS Backup console (with screenshots explained)** for **EFS or EBS** continuous backups?
+
 
 
 
