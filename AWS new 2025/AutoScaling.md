@@ -1415,5 +1415,6 @@ After applying these fixes:
 
 ---
 
-
+What are launch templates and launch configurations?
+“Launch Configurations are the older way to define EC2 settings for an Auto Scaling Group — they’re static and can’t be updated. Launch Templates are the newer, flexible version that support versioning, Spot and On-Demand mix, and other advanced EC2 features. AWS now recommends always using Launch Templates since Launch Configurations are deprecated for most new features.”
 
