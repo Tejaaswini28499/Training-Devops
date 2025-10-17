@@ -1826,13 +1826,30 @@ You can enable **Point-in-Time Recovery (PITR)** directly:
 
 ---
 
-## ⚡ Pro Tip:
+How would you fail back to the primary environment once it’s restored?
+**Failback in AWS DRS:** Once the primary environment is restored, enable **reverse replication** from the recovery site to the primary servers, verify data and application consistency, and then **redirect traffic back** to resume normal operations.
 
-If you use **AWS Backup policies across accounts**, you can enforce continuous backups organization-wide using **AWS Organizations + Backup policies**.
+----------
 
----
+How does DRS handle replication across regions or accounts?
+Here’s a simple, interview-ready explanation:
 
-Would you like me to show you **step-by-step setup in AWS Backup console (with screenshots explained)** for **EFS or EBS** continuous backups?
+**Replication Across Regions or Accounts in AWS DRS:**
+
+1. **Cross-Region Replication:** DRS can replicate source servers to a different AWS region for disaster recovery, keeping **continuous, near real-time copies** of your data. This helps meet **RPO/RTO objectives** in case the primary region fails.
+
+2. **Cross-Account Replication:** DRS can replicate servers to a **different AWS account**. You set up **IAM roles** in the target account that DRS can assume to launch recovery instances securely.
+
+3. **How it Works:**
+
+   * The **replication server** sends data over **secure channels** (encrypted in transit) to the recovery region/account.
+   * Only **authorized roles** can access or launch recovery instances.
+   * Continuous replication ensures the recovery environment is always **up-to-date** with the source servers.
+
+If you want, I can make a **2-3 line version or a “like you’re 10” version** for interviews. Do you want me to?
+
+---------------
+
 
 
 
