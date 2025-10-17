@@ -230,9 +230,510 @@ We use **CORS (Cross-Origin Resource Sharing)** in **API Gateway** **when a web 
 
 ---
 
-If you want, I can give a **real-world example with React frontend calling API Gateway** showing exactly where CORS comes into play. Do you want me to do that?
+What is the role of usage plans and API keys?
+In **AWS API Gateway**, **Usage Plans** and **API Keys** are used together to **control and manage access** to your APIs. Here’s a detailed explanation:
 
-If you want, I can make a **diagram showing how CORS works with OPTIONS and actual request flow in API Gateway**—it’s super helpful for interviews.
+---
 
-Do you want me to do that?
+## **1️⃣ API Keys**
+
+* **Purpose:** Identify and authenticate **individual clients** calling your API.
+* **How it works:**
+
+  * Each client gets a **unique key**.
+  * Clients send the key in requests (usually in `x-api-key` header).
+  * API Gateway can enforce **limits and quotas per key**.
+* **Use Case:** Track usage, restrict access, and differentiate between clients.
+
+---
+
+## **2️⃣ Usage Plans**
+
+* **Purpose:** Define **limits on API usage** for clients.
+* **Components:**
+
+  1. **Throttle Settings**
+
+     * Controls **requests per second (RPS)** and **burst capacity**.
+     * Protects backend from traffic spikes.
+  2. **Quota Settings**
+
+     * Controls **total requests over a period** (day, week, month).
+     * Prevents overuse by any single client.
+* **How it works:**
+
+  * A usage plan is **linked to one or more API stages**.
+  * Clients (API Keys) are **associated with a usage plan**, so limits are applied per client.
+
+---
+
+## **3️⃣ How They Work Together**
+
+1. Create a **Usage Plan** with throttling and quota limits.
+2. Create an **API Key** for a client.
+3. Associate the **API Key with the Usage Plan**.
+4. When the client calls the API:
+
+   * API Gateway identifies the client via API key.
+   * Applies **throttling and quota limits** based on the usage plan.
+   * If limits are exceeded → **HTTP 429 Too Many Requests** is returned.
+
+---
+
+### **4️⃣ Key Points**
+
+* **API Key:** Identifies the client.
+* **Usage Plan:** Controls how much and how fast the client can access the API.
+* **Optional:** You can have multiple usage plans for different tiers (e.g., Free, Pro, Enterprise).
+
+---
+
+💡 **Example Use Case:**
+
+* Free tier → 1,000 requests/day, 10 RPS
+* Pro tier → 100,000 requests/day, 100 RPS
+* Each tier = a **usage plan**, each client = an **API key**
+
+---
+
+How do you handle request validation in API Gateway
+In **AWS API Gateway**, **request validation** is used to **ensure that incoming client requests meet certain criteria** before reaching your backend. This protects your API from invalid or malformed requests and reduces unnecessary backend processing.
+
+Here’s a clear breakdown:
+
+---
+
+## **1️⃣ What Request Validation Does**
+
+* Validates **incoming request parameters and payloads**.
+* Rejects requests if they:
+
+  * Lack required **query parameters**, **headers**, or **path variables**.
+  * Have a **request body that doesn’t match the defined model/schema**.
+* Returns **HTTP 400 Bad Request** automatically if validation fails.
+
+---
+
+## **2️⃣ What You Can Validate**
+
+1. **Request Parameters**
+
+   * **Path parameters:** `/users/{userId}`
+   * **Query strings:** `?status=active`
+   * **Headers:** `Content-Type`, `Authorization`, custom headers
+   * Mark parameters as **required** in the method request.
+2. **Request Body**
+
+   * Define a **JSON Schema model** in API Gateway.
+   * API Gateway validates the body against this schema.
+
+---
+
+## **3️⃣ How to Enable Request Validation**
+
+### **A. Using Console**
+
+1. Go to **API Gateway → Resources → Method** (e.g., GET or POST).
+2. Click **Method Request**:
+
+   * Mark **required parameters** (query, headers, path).
+3. Create a **Model** for your request body:
+
+   * Example JSON schema specifying required fields and types.
+4. Go to **Method Execution → Integration Request → Request Validator**:
+
+   * Options:
+
+     * **Validate body**: only request body is validated
+     * **Validate body and parameters**: validate both body and query/path/header
+     * **Validate parameters only**: only request parameters
+5. Deploy the API.
+
+---
+
+### **B. Using OpenAPI / Infrastructure as Code**
+
+* Define **request models** and **required parameters** in your OpenAPI spec.
+* API Gateway automatically enforces validation.
+
+---
+
+## **4️⃣ Benefits**
+
+* Protects backend from malformed requests.
+* Reduces errors and unexpected behavior.
+* Automatically generates **400 Bad Request** for invalid requests.
+
+---
+
+### **5️⃣ Example**
+
+* API expects POST `/users` with JSON body:
+
+```json
+{
+  "name": "string",
+  "email": "string"
+}
+```
+
+* If client sends `{ "name": "Alice" }` → API Gateway rejects because `email` is missing.
+
+---
+How do you integrate API Gateway with VPC private resources?
+Integrating **API Gateway** with **VPC private resources** (like private EC2 instances, ECS services, or Lambda functions in a VPC) allows your API to access resources that are **not exposed to the public internet**. In AWS, this is done using **VPC Links**. Here’s a clear explanation:
+
+---
+
+## **1️⃣ Use Case**
+
+* You have **backend services running privately in a VPC**.
+* You want to expose them through API Gateway without making them public.
+* Examples:
+
+  * Private EC2 hosting an internal REST API
+  * ECS services behind a private ALB/NLB
+
+---
+
+## **2️⃣ How It Works**
+
+1. API Gateway connects to a **Network Load Balancer (NLB)** in your VPC.
+2. The NLB forwards traffic to your **private resources** (EC2, ECS, or Lambda in VPC).
+3. API Gateway uses a **VPC Link** to securely route requests to the NLB.
+
+> 🔑 Important: API Gateway does **not access resources in VPC directly**; it always goes through a **VPC Link → NLB → backend**.
+
+---
+
+## **3️⃣ Steps to Integrate**
+
+### **A. Create a VPC Link**
+
+1. Go to **API Gateway → VPC Links → Create**.
+2. Select the **NLB** that points to your private resources.
+3. Provide a name and create the link.
+
+### **B. Configure Backend**
+
+* Your private service should be **behind the NLB** in the VPC.
+* Ensure **security groups** allow traffic from the NLB.
+
+### **C. Configure API Gateway Method**
+
+1. Choose **Integration Type → HTTP or HTTP_PROXY**.
+2. Select **VPC Link** and point to your NLB endpoint.
+3. Deploy the API.
+
+---
+
+## **4️⃣ Security Considerations**
+
+* API Gateway can be **private** or **regional**.
+* Use **IAM authorization or Cognito** for secure access.
+* Ensure **security groups and NACLs** allow traffic only from API Gateway (via NLB).
+
+---
+
+## **5️⃣ Summary Flow**
+
+**Client → API Gateway → VPC Link → NLB → Private Resource (EC2/ECS/Lambda in VPC)**
+
+---
+
+💡 **Tip:**
+If you want the API itself to be **private**, combine this with a **Private API Gateway** and **VPC Endpoint**. Then the API is accessible **only inside your VPC**.
+
+---
+without API gateway how this can be done
+Yes! You can expose **private VPC resources** without using **API Gateway**, but it requires other AWS networking components to securely allow access. Here’s how it can be done:
+
+---
+
+## **1️⃣ Direct Access via VPN or Direct Connect**
+
+* **Use Case:** Internal applications or on-prem clients.
+* **How it works:**
+
+  * Set up a **VPN connection** or **AWS Direct Connect** from on-prem or other networks to your VPC.
+  * Private resources (EC2, ECS, RDS) are accessible using **private IPs**.
+* **Pros:** Secure, no public exposure.
+* **Cons:** Only accessible from connected networks.
+
+---
+
+## **2️⃣ Using Load Balancers**
+
+* **Private NLB/ALB** with **internal DNS**:
+
+  * Deploy an **internal NLB/ALB** pointing to EC2/ECS services.
+  * Only accessible within VPC or via **VPC Peering / VPN / Direct Connect**.
+* **Example:**
+
+  * Client in same VPC: access via `http://internal-alb.amazonaws.com`.
+  * Client in another VPC: use **VPC Peering or PrivateLink**.
+
+---
+
+## **3️⃣ Using AWS PrivateLink (VPC Endpoint Services)**
+
+* **Use Case:** Share your service privately with other VPCs or accounts.
+* **How it works:**
+
+  1. Create a **VPC Endpoint Service** (powered by NLB) in your VPC.
+  2. Other VPCs create **Interface Endpoints** to access your service.
+* **Pros:** Fully private, works across accounts, no internet.
+* **Cons:** Only supports TCP protocols, not HTTP features like API Gateway.
+
+---
+
+## **4️⃣ Using NAT Gateway / Bastion Host (less common)**
+
+* Clients access private resources via a **bastion host** or **NAT gateway**, which then forwards requests.
+* **Cons:** More manual, not scalable for APIs.
+
+---
+
+## **5️⃣ Summary Table**
+
+| Approach                   | Accessibility                    | Use Case                     |
+| -------------------------- | -------------------------------- | ---------------------------- |
+| VPN / Direct Connect       | On-prem → VPC                    | Internal applications        |
+| Internal ALB / NLB         | Within VPC or peered VPCs        | Microservices, internal apps |
+| PrivateLink / VPC Endpoint | Other VPCs or accounts privately | Cross-account private APIs   |
+| Bastion / NAT              | Manual forwarding                | Legacy setups                |
+
+---
+
+💡 **Key Difference from API Gateway:**
+
+* Without API Gateway, you **don’t get built-in request routing, throttling, validation, or CORS**.
+* You’re only exposing the **network layer**, not API-level controls.
+
+---
+Explain how to use Custom Authorizers (Lambda or Cognito) for authentication
+Sure! In **AWS API Gateway**, **Custom Authorizers** are used to **control access to your APIs** by validating incoming requests before they reach your backend. You can use **Lambda Authorizers** or **Cognito Authorizers**. Here’s a detailed explanation:
+
+---
+
+## **1️⃣ What Custom Authorizers Do**
+
+* They intercept API requests.
+* They determine whether the client is **authorized** to call the API.
+* If authorization passes → API Gateway forwards the request to the backend.
+* If authorization fails → API Gateway returns **401 Unauthorized** or **403 Forbidden**.
+
+---
+
+## **2️⃣ Types of Authorizers**
+
+### **A. Lambda Authorizer (Custom)**
+
+* **How it works:**
+
+  1. API Gateway calls a **Lambda function** for each request.
+  2. Lambda checks the request (headers, query params, JWT token, API key, etc.).
+  3. Lambda returns an **IAM policy** (Allow/Deny) and optionally **context data**.
+  4. API Gateway enforces the policy.
+* **Use Case:**
+
+  * Custom authentication logic (e.g., validating JWT tokens from your own auth system).
+  * Fine-grained access control per user.
+* **Two types:**
+
+  * **Token-based authorizer:** Receives a token in headers (e.g., `Authorization: Bearer <token>`).
+  * **Request-based authorizer:** Can inspect headers, query strings, path parameters.
+
+---
+
+### **B. Cognito Authorizer**
+
+* **How it works:**
+
+  1. API Gateway integrates with an **Amazon Cognito User Pool**.
+  2. Clients obtain **JWT tokens** from Cognito after logging in.
+  3. API Gateway validates the token automatically.
+* **Use Case:**
+
+  * If you already use **Cognito for authentication**.
+  * Less custom code; token validation is automatic.
+
+---
+
+## **3️⃣ Steps to Use Lambda Authorizer**
+
+1. **Create a Lambda Function** that:
+
+   * Validates the token or credentials.
+   * Returns an **IAM policy document**:
+
+     ```json
+     {
+       "principalId": "user|a1b2c3",
+       "policyDocument": {
+         "Version": "2012-10-17",
+         "Statement": [
+           {
+             "Action": "execute-api:Invoke",
+             "Effect": "Allow",
+             "Resource": "arn:aws:execute-api:region:account-id:api-id/stage/GET/resource"
+           }
+         ]
+       },
+       "context": {
+         "userRole": "admin"
+       }
+     }
+     ```
+2. Go to **API Gateway → Authorizers → Create New Authorizer**:
+
+   * Choose **Lambda Authorizer**.
+   * Provide **Lambda function ARN**, token source (`Authorization` header), and TTL (optional caching).
+3. Attach the authorizer to **API methods**.
+4. Deploy the API.
+
+---
+
+## **4️⃣ Steps to Use Cognito Authorizer**
+
+1. Set up a **Cognito User Pool** and create app clients.
+2. Go to **API Gateway → Authorizers → Create New Authorizer**:
+
+   * Choose **Cognito**.
+   * Select the **User Pool**.
+3. Attach the authorizer to **API methods**.
+4. Clients include **Cognito JWT tokens** in `Authorization` header when calling the API.
+
+---
+
+## **5️⃣ Key Points**
+
+| Feature         | Lambda Authorizer         | Cognito Authorizer                  |
+| --------------- | ------------------------- | ----------------------------------- |
+| Custom Logic    | ✅ Can implement any logic | ❌ Limited to Cognito JWT validation |
+| Token Type      | Custom tokens or JWT      | JWT from Cognito                    |
+| Complexity      | Medium to High            | Low                                 |
+| Caching Support | ✅ Optional TTL            | ✅ Optional TTL                      |
+
+---
+
+💡 **Summary Flow (Lambda Authorizer)**
+
+```
+Client --> API Gateway --> Lambda Authorizer --> (Allow/Deny) --> Backend
+```
+
+💡 **Summary Flow (Cognito Authorizer)**
+
+```
+Client --> API Gateway --> Cognito Token Validation --> Backend
+```
+
+---
+
+How would you handle large payloads or binary data in API Gateway?
+Handling **large payloads** or **binary data** in **AWS API Gateway** requires special configuration because API Gateway has **limits on payload size** and defaults to treating requests/responses as text. Here’s a detailed guide:
+
+---
+
+## **1️⃣ Maximum Payload Limits**
+
+* **REST APIs:** Maximum payload is **10 MB** (request or response).
+* **HTTP APIs:** Maximum payload is **6 MB** by default.
+* **Beyond these limits:** Use **S3** or **multipart upload** for large files.
+
+---
+
+## **2️⃣ Handling Binary Data**
+
+By default, API Gateway treats requests/responses as **UTF-8 text**, so binary data may get corrupted. To handle binary:
+
+### **A. Enable Binary Support**
+
+1. Go to **API Gateway → Settings** (REST API) or **API Gateway → API → Settings** (HTTP API).
+2. Specify **binary media types**:
+
+   * Common types: `application/octet-stream`, `image/png`, `application/pdf`
+   * Or custom types as needed.
+
+### **B. Configure Integration**
+
+* Backend (Lambda, HTTP endpoint) must handle **Base64-encoded data**.
+* API Gateway automatically **encodes/decodes binary data**:
+
+  * Incoming request: Base64 → decoded to original binary
+  * Outgoing response: Binary → Base64 for API Gateway → sent to client
+
+### **C. Lambda Example**
+
+* Enable **Lambda proxy integration**.
+* Set response headers properly:
+
+  ```json
+  {
+    "isBase64Encoded": true,
+    "statusCode": 200,
+    "headers": { "Content-Type": "application/pdf" },
+    "body": "<Base64-encoded binary data>"
+  }
+  ```
+
+---
+
+## **3️⃣ Handling Large Payloads (>10 MB)**
+
+* **Use S3 presigned URLs**:
+
+  1. Client requests a **presigned URL** from API Gateway/Lambda.
+  2. Uploads the large file **directly to S3** using the URL.
+  3. API Gateway only handles **small metadata**, keeping within size limits.
+
+* **Use Multipart Upload in S3** for very large files.
+
+* **Do NOT send >10 MB directly via API Gateway REST API**, it will fail.
+
+---
+
+## **4️⃣ Key Tips**
+
+* Always **set appropriate Content-Type**.
+* For images, PDFs, videos → enable binary media types.
+* For large files → **S3 presigned URLs** are the best practice.
+* Use **compression** (gzip) if data is textual and large.
+
+---
+
+### **Summary Table**
+
+| Payload Type         | Max Size | How to Handle                                   |
+| -------------------- | -------- | ----------------------------------------------- |
+| Text / JSON          | 10 MB    | Directly via API Gateway                        |
+| Binary (small)       | 10 MB    | Enable binary media types, Base64 encode/decode |
+| Large files (>10 MB) | Any size | S3 presigned URLs or multipart upload           |
+
+--------------------------
+
+How do you use Mapping Templates for request/response transformation?
+
+In AWS API Gateway, Mapping Templates are used to transform the request before it reaches your backend or transform the response before it’s sent to the client. This allows you to decouple your API format from the backend format. Here’s a detailed explanation:
+
+1️⃣ What Mapping Templates Do
+
+Convert incoming requests into a format your backend understands.
+
+Convert backend responses into a format clients expect.
+
+Useful when:
+
+Backend expects different field names or structure.
+
+You want to remove sensitive data before returning responses.
+
+You need to enforce a consistent API contract.
+
+--------------------------
+
+
+
+
 
