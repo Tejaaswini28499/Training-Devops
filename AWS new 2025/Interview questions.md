@@ -291,7 +291,88 @@ Here’s a set of **scenario-based IAM (Identity and Access Management) question
 12. **Federated Access:**
     Your company uses an internal identity provider (like Okta) and wants employees to access AWS without creating IAM users for each employee. How would you implement this?
 
+
 ---
+
+## **1. Basic Lambda Concepts**
+
+* What is AWS Lambda and why do we use it?
+* Explain the Lambda execution environment.
+* What languages does AWS Lambda support?
+* How does AWS Lambda pricing work?
+* What is the maximum execution timeout for a Lambda function?
+* What is the difference between **synchronous** and **asynchronous** invocation?
+* Explain **Lambda layers** and how you use them.
+
+---
+
+## **2. Triggers & Event Sources**
+
+* What are the different ways to trigger a Lambda function?
+  *(S3, API Gateway, CloudWatch Events, DynamoDB Streams, SNS, SQS, etc.)*
+* How does Lambda integrate with **API Gateway**?
+* Can Lambda be triggered by multiple sources simultaneously?
+* Explain **event object** in Lambda — give an example for S3 or API Gateway.
+
+---
+
+## **3. Permissions & Security**
+
+* How do you assign permissions to a Lambda function?
+* Explain the **execution role** of Lambda.
+* Difference between **resource-based policy** and **IAM role-based policy** in Lambda.
+* Can Lambda access resources in a VPC? How?
+
+---
+
+## **4. Real-world Usage & Integrations**
+
+* How have you used Lambda in your projects? Give an example.
+* Explain a scenario where Lambda works with **S3, DynamoDB, or RDS**.
+* How do you handle errors and retries in Lambda?
+* How do you integrate Lambda with **SNS/SQS** for asynchronous processing?
+* How do you schedule Lambda functions using **CloudWatch Events / EventBridge**?
+
+---
+
+## **5. Performance & Optimization**
+
+* How do you optimize Lambda cold start times?
+* Difference between **provisioned concurrency** and normal Lambda execution.
+* How do you monitor Lambda performance? *(CloudWatch metrics, logs, X-Ray)*
+* How do you handle **high concurrency** in Lambda?
+
+---
+
+## **6. Troubleshooting & Best Practices**
+
+* How do you debug a failing Lambda function?
+* Explain Lambda **timeouts, memory allocation, and execution limits**.
+* What are common Lambda errors and how to fix them?
+  *(e.g., timeout, out-of-memory, permission errors)*
+* How do you handle large payloads in Lambda? *(limits: 6 MB synchronous, 256 KB async)*
+
+---
+
+## **7. Advanced / Scenario-based Questions (may come up even for 1-year experience)**
+
+* How do you deploy Lambda in multiple environments (Dev, QA, Prod)?
+* How do you use **Lambda Layers** for sharing libraries?
+* Can Lambda connect to **private RDS in a VPC**? How?
+* How do you design a Lambda function for processing **high-volume S3 uploads**?
+* Explain a Lambda architecture where you process streaming data from **Kinesis/DynamoDB Streams**.
+
+---
+
+💡 **Tips for interviews:**
+
+1. Be ready to **explain the event payload** and how Lambda processes it.
+2. Know your **hands-on experience** — interviewers like **real examples**.
+3. Understand **limits and pricing** — basic questions often appear.
+4. Be familiar with **CloudWatch Logs & metrics** for troubleshooting.
+
+---
+
 
 
 
