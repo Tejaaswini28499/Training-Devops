@@ -222,6 +222,630 @@ Large deployment package: where lambda cant handle this but you can take help of
 
 Timeout misconfig: where you configure only 5 min for request to process in real its taking 10 min
 
+----------------------------
+Can Lambda be triggered by multiple sources simultaneously?
+Yes, a Lambda function can be triggered by multiple sources. Each event source can invoke the same function independently, and Lambda automatically scales to handle concurrent invocations from different sources.”
+
+------------------------------
+Explain event object in Lambda — give an example for S3 or API Gateway.
+✅ **Event object in AWS Lambda**
+
+The **event object** is the **input data** passed to your Lambda function when it’s triggered.
+It contains details about *what triggered the function* and *the data associated with that event.*
+
+---
+
+### 🔹 Example 1: **S3 Trigger Event**
+
+When an S3 bucket triggers a Lambda (for example, when a file is uploaded), the event object looks like this:
+
+```json
+{
+  "Records": [
+    {
+      "eventVersion": "2.1",
+      "eventSource": "aws:s3",
+      "awsRegion": "us-east-1",
+      "eventTime": "2025-10-18T12:00:00.000Z",
+      "eventName": "ObjectCreated:Put",
+      "s3": {
+        "bucket": {
+          "name": "my-upload-bucket"
+        },
+        "object": {
+          "key": "images/photo.jpg",
+          "size": 2048
+        }
+      }
+    }
+  ]
+}
+```
+
+📘 **Explanation:**
+
+* `eventSource`: tells Lambda this came from S3
+* `eventName`: describes what happened (`ObjectCreated:Put`)
+* `bucket.name`: name of the S3 bucket
+* `object.key`: file name uploaded
+* `object.size`: size in bytes
+
+👉 You can use this in your Lambda code like:
+
+```python
+def lambda_handler(event, context):
+    bucket = event['Records'][0]['s3']['bucket']['name']
+    key = event['Records'][0]['s3']['object']['key']
+    print(f"New file uploaded: {key} in bucket: {bucket}")
+```
+
+---
+
+### 🔹 Example 2: **API Gateway Trigger Event**
+
+When an API Gateway HTTP request triggers Lambda, the event looks like this:
+
+```json
+{
+  "resource": "/users",
+  "path": "/users",
+  "httpMethod": "POST",
+  "headers": {
+    "Content-Type": "application/json"
+  },
+  "queryStringParameters": {
+    "userId": "123"
+  },
+  "body": "{\"name\": \"Teja\", \"role\": \"DevOps\"}",
+  "isBase64Encoded": false
+}
+```
+
+📘 **Explanation:**
+
+* `httpMethod`: GET, POST, etc.
+* `path`: which resource path was called
+* `queryStringParameters`: URL parameters
+* `body`: request payload (usually in JSON)
+
+👉 Example code:
+
+```python
+import json
+
+def lambda_handler(event, context):
+    body = json.loads(event['body'])
+    name = body['name']
+    print(f"Received POST request for user: {name}")
+    return {
+        "statusCode": 200,
+        "body": json.dumps({"message": f"Hello, {name}!"})
+    }
+```
+
+---
+
+### 💡 Interview Answer:
+
+> The **event object** in Lambda contains the input data that triggered the function.
+> Its structure depends on the event source — for example, an S3 event includes bucket and object details, while an API Gateway event includes HTTP request data like method, path, headers, and body.
+
+---
+What is the difference between synchronous and asynchronous invocation
+✅ **Difference between Synchronous and Asynchronous Invocation in AWS Lambda**
+
+Lambda functions can be invoked in **two main ways** — **synchronously** or **asynchronously** — depending on how the event source interacts with the function.
+
+---
+
+### 🔹 **1. Synchronous Invocation**
+
+* The **caller waits** for the function to finish.
+* The **response (output)** is returned to the caller immediately.
+* Used when you **need the result right away**.
+
+📘 **Examples:**
+
+* API Gateway → Lambda (returns an HTTP response)
+* AWS SDK / CLI direct call (e.g., `aws lambda invoke`)
+* ALB (Application Load Balancer) invoking Lambda
+
+📜 **Flow:**
+
+```
+Caller → Lambda → Waits for result → Gets response
+```
+
+✅ **Characteristics:**
+
+| Feature  | Description                            |
+| -------- | -------------------------------------- |
+| Response | Caller gets result immediately         |
+| Retry    | Caller must retry manually if it fails |
+| Use Case | Request/response-based systems         |
+| Examples | API Gateway, SDK calls, ALB            |
+
+🧠 **Example:**
+When API Gateway triggers Lambda to process a login request — the user waits until Lambda returns the result (“Login successful”).
+
+---
+
+### 🔹 **2. Asynchronous Invocation**
+
+* The **caller doesn’t wait** for Lambda to finish.
+* The event is **queued** and Lambda processes it **in the background**.
+* Used when you **don’t need an immediate response**.
+
+📘 **Examples:**
+
+* S3 (on file upload)
+* SNS
+* EventBridge / CloudWatch Events
+
+📜 **Flow:**
+
+```
+Caller → Lambda (event queued) → Caller moves on → Lambda runs later
+```
+
+✅ **Characteristics:**
+
+| Feature  | Description                                        |
+| -------- | -------------------------------------------------- |
+| Response | No response to caller                              |
+| Retry    | Lambda automatically retries on failure (twice)    |
+| Use Case | Background or decoupled processing                 |
+| Examples | S3 triggers, SNS notifications, EventBridge events |
+
+🧠 **Example:**
+When an image is uploaded to S3, the upload completes immediately, and S3 asynchronously triggers a Lambda to process or resize the image.
+
+---
+
+### ⚖️ **Summary Table**
+
+| Feature               | **Synchronous Invocation** | **Asynchronous Invocation**   |
+| --------------------- | -------------------------- | ----------------------------- |
+| Caller waits?         | Yes                        | No                            |
+| Response              | Immediate                  | None                          |
+| Retry                 | Caller handles             | Lambda auto-retries (2 times) |
+| Event Source Examples | API Gateway, ALB, CLI      | S3, SNS, EventBridge          |
+| Best for              | Request/response           | Background jobs               |
+
+---
+
+💬 **Interview Answer:**
+
+> In synchronous invocation, the caller waits for Lambda to finish and gets a response (like API Gateway calls).
+> In asynchronous invocation, the caller just sends the event, and Lambda processes it later in the background (like S3 or SNS triggers).
+
+---
+How do you assign permissions to a Lambda function?
+✅ **Assigning Permissions to an AWS Lambda Function**
+
+AWS Lambda **needs permissions** to access other AWS services (like S3, DynamoDB, CloudWatch, etc.).
+These permissions are controlled using **IAM roles and policies**.
+
+---
+
+### 🔹 **1. Execution Role (IAM Role)**
+
+Every Lambda function has an **Execution Role** — also called the **Lambda function role**.
+This role defines **what the Lambda is allowed to do** inside AWS.
+
+📘 Example:
+If your Lambda reads from S3 and writes to DynamoDB, the role needs:
+
+* `s3:GetObject` permission
+* `dynamodb:PutItem` permission
+
+---
+
+### 🔹 **How to Assign Permissions**
+
+You can assign permissions in **three main ways:**
+
+#### **(A) While Creating the Function**
+
+* In AWS Console → **Create Function → Permissions section**
+* Choose:
+
+  * ✅ “Create a new role with basic Lambda permissions” (includes CloudWatch Logs)
+  * OR
+  * ✅ “Use an existing role” (attach a custom IAM role)
+
+#### **(B) Modify the Role Later**
+
+* Go to **IAM → Roles → [Your Lambda Role] → Add Permissions → Attach Policy**
+* Example policies:
+
+  * `AWSLambdaBasicExecutionRole` → for writing logs
+  * `AmazonS3ReadOnlyAccess` → to read from S3
+
+#### **(C) Using AWS CLI / IaC**
+
+Example (CLI):
+
+```bash
+aws lambda create-function \
+  --function-name MyLambda \
+  --role arn:aws:iam::123456789012:role/MyLambdaRole \
+  --runtime python3.9 \
+  --handler lambda_function.lambda_handler \
+  --zip-file fileb://function.zip
+```
+
+---
+
+### 🔹 **2. Resource-Based Policies**
+
+Sometimes, *other AWS services* (like S3, SNS, or EventBridge) need permission to **invoke** your Lambda.
+This is controlled using a **resource-based policy** attached directly to the Lambda.
+
+📘 Example — Allow S3 to trigger your Lambda:
+
+```bash
+aws lambda add-permission \
+  --function-name MyLambda \
+  --action "lambda:InvokeFunction" \
+  --principal s3.amazonaws.com \
+  --source-arn arn:aws:s3:::my-upload-bucket \
+  --statement-id s3invoke
+```
+
+This adds a **resource-based policy** allowing S3 to invoke the Lambda function.
+
+---
+
+### ⚙️ **In Summary**
+
+| Type of Permission  | Used For                | Example                                |
+| ------------------- | ----------------------- | -------------------------------------- |
+| **Execution Role**  | What Lambda *can do*    | Read from S3, Write to DynamoDB        |
+| **Resource Policy** | Who *can invoke Lambda* | Allow S3/SNS/EventBridge to trigger it |
+
+---
+
+### 💬 **Interview Answer:**
+
+> Lambda permissions are controlled using IAM roles and policies.
+> The **execution role** gives Lambda permission to access AWS services, while **resource-based policies** allow other services (like S3 or SNS) to invoke the function.
+> You attach the execution role when creating or updating the function.
+
+---
+Can Lambda access resources in a VPC? How?
+✅ **Yes, AWS Lambda can access resources inside a VPC** — but you must **configure it explicitly.**
+
+By default, Lambda runs **outside your VPC** in an AWS-managed network.
+To access private resources like **RDS, EC2, or ElastiCache**, you must **connect your Lambda to the VPC.**
+
+---
+
+### 🔹 **Why Connect Lambda to a VPC?**
+
+Because:
+
+* RDS, EC2, or Redis instances are often in **private subnets** (no public internet access).
+* So Lambda needs to run *inside the same VPC* to reach them.
+
+---
+
+### 🔹 **How It Works**
+
+When you attach your Lambda to a VPC:
+
+1. You specify:
+
+   * **VPC ID**
+   * **Subnet IDs** (usually *private* subnets)
+   * **Security Group IDs**
+2. AWS creates **Elastic Network Interfaces (ENIs)** in those subnets.
+3. Lambda function then uses those ENIs to communicate with your private resources.
+
+---
+
+### 🔹 **Steps to Configure Lambda for VPC Access**
+
+#### 🧭 **Option 1: AWS Console**
+
+1. Open your Lambda function.
+2. Go to **Configuration → Environment → VPC.**
+3. Choose:
+
+   * **VPC:** Your VPC ID
+   * **Subnets:** Private subnets (where your resources live)
+   * **Security Group:** One that allows outbound access to the target (like RDS)
+4. Save → Lambda will redeploy with new ENIs.
+
+---
+
+#### 🧰 **Option 2: Using CLI**
+
+```bash
+aws lambda update-function-configuration \
+  --function-name MyLambda \
+  --vpc-config SubnetIds=subnet-12345,subnet-67890,SecurityGroupIds=sg-abcde
+```
+
+---
+
+### 🔹 **Example Scenario**
+
+You have:
+
+* RDS MySQL inside private subnet.
+* Lambda function `DataProcessor` needs to query RDS.
+
+✅ Solution:
+
+* Attach Lambda to the **same VPC and private subnet**.
+* Ensure **Security Group** rules:
+
+  * Lambda SG → outbound to RDS SG (port 3306)
+  * RDS SG → inbound from Lambda SG (port 3306)
+
+Now Lambda can securely connect to the database.
+
+---
+
+### ⚠️ **Important Notes**
+
+| Point                             | Explanation                                                                                  |
+| --------------------------------- | -------------------------------------------------------------------------------------------- |
+| **No Internet Access by Default** | Once inside a private subnet, Lambda loses internet access unless NAT Gateway is configured. |
+| **Cold Start Impact**             | ENI creation can increase startup time (slightly slower cold starts).                        |
+| **Best Practice**                 | Use minimal subnets & least-privilege security groups to improve performance.                |
+
+---
+
+### 💬 **Interview Answer:**
+
+> Yes, Lambda can access resources in a VPC.
+> You configure it with the VPC ID, subnets, and security groups.
+> AWS creates ENIs in those subnets, allowing the function to securely communicate with private resources like RDS or EC2.
+> If it’s in a private subnet, you need a NAT Gateway for internet access.
+
+---
+What are the different ways to trigger a Lambda function?
+Lambda can be triggered in many ways — by AWS services like S3, API Gateway, SNS, SQS, EventBridge, DynamoDB Streams, or manually using the console, CLI, or SDK.
+It supports synchronous, asynchronous, and stream-based invocations depending on the source.
+
+-----------------------------
+How do you handle errors and retries in Lambda?
+✅ **Handling Errors and Retries in AWS Lambda**
+
+When a Lambda function fails, how the error is handled depends on **how it was invoked** — **synchronously**, **asynchronously**, or via **stream-based sources** (like SQS or Kinesis).
+
+Let’s go step by step 👇
+
+---
+
+### 🔹 **1. Synchronous Invocations**
+
+🟢 **Examples:** API Gateway, CLI, SDK, ALB
+
+* The **caller gets the error response directly**.
+* Lambda **does not automatically retry**.
+* The **caller is responsible** for retrying.
+
+📘 **Example:**
+If API Gateway calls Lambda and it throws an exception:
+
+```json
+{
+  "errorMessage": "Database connection failed",
+  "errorType": "RuntimeError"
+}
+```
+
+→ API Gateway gets this error immediately.
+→ You can handle it in the **application code** or **retry logic** on the client side.
+
+---
+
+### 🔹 **2. Asynchronous Invocations**
+
+🟡 **Examples:** S3, SNS, EventBridge
+
+* Lambda automatically **queues the event** and **retries twice** on failure.
+* Retry happens after:
+
+  * **1st retry:** after 1 minute
+  * **2nd retry:** after 2 minutes
+
+If it still fails after 3 attempts (1 original + 2 retries),
+the event can go to a **Dead-Letter Queue (DLQ)** or **on-failure destination**.
+
+📘 **How to handle:**
+
+* Use **DLQ (SQS or SNS)** → store failed events for debugging.
+* Or use **Event Destinations** for success/failure tracking.
+
+Example DLQ setup (in Lambda config):
+
+```bash
+DeadLetterConfig:
+  TargetArn: arn:aws:sqs:us-east-1:123456789012:lambda-failures
+```
+
+---
+
+### 🔹 **3. Stream-based Invocations**
+
+🟣 **Examples:** DynamoDB Streams, Kinesis, SQS
+
+* Lambda **polls** data streams and **retries automatically** until the record is successfully processed or it expires.
+* If messages continuously fail, they **block processing of newer records** in the same batch (because order must be preserved).
+
+📘 **How to handle:**
+
+* Use **error handling options**:
+
+  * **Maximum retry attempts**
+  * **Bisect batch on error** (split batch to isolate bad record)
+  * **Destination** for failed records (SQS or SNS)
+
+Example (for SQS trigger):
+
+```yaml
+MaximumRetryAttempts: 3
+BisectBatchOnFunctionError: true
+DestinationConfig:
+  OnFailure:
+    Destination: arn:aws:sqs:us-east-1:123456789012:failed-messages
+```
+
+---
+
+### 🔹 **4. Inside Your Lambda Code**
+
+You can also **catch and handle errors** programmatically:
+
+```python
+def lambda_handler(event, context):
+    try:
+        # your logic
+        process_data(event)
+    except Exception as e:
+        print(f"Error occurred: {e}")
+        # optionally send to SNS or log it
+        raise e  # rethrow to trigger retry
+```
+
+---
+
+### ⚙️ **Summary Table**
+
+| Invocation Type  | Retry Behavior                      | Error Handling Options          |
+| ---------------- | ----------------------------------- | ------------------------------- |
+| **Synchronous**  | Caller retries manually             | Handle in code or client        |
+| **Asynchronous** | Lambda retries twice                | DLQ / Event Destinations        |
+| **Stream-based** | Retries until success or expiration | Bisect batch, DLQ, Destinations |
+
+---
+
+### 💬 **Interview Answer (concise):**
+
+> Lambda error handling depends on the invocation type.
+> For synchronous invocations, the caller handles retries.
+> For asynchronous ones (like S3 or SNS), Lambda automatically retries twice and can send failed events to a Dead-Letter Queue.
+> For stream-based sources like SQS or Kinesis, Lambda keeps retrying until success or record expiration.
+
+------------------------
+
+How do you schedule Lambda functions using CloudWatch Events
+You can schedule a Lambda function using CloudWatch Events or EventBridge by creating a rule with a rate or cron expression.
+The rule triggers the Lambda automatically on schedule, similar to a cron job.
+It’s often used for automation tasks like backups or report generation.
+
+-------------------------
+How do you optimize Lambda cold start times?
+Cold starts occur when Lambda spins up a new execution environment.
+To reduce them, you can minimize package size and dependencies, keep initialization lightweight, use provisioned concurrency, optimize VPC setup, and optionally schedule warm-up invocations.
+
+-----------------------------
+Difference between provisioned concurrency and normal Lambda execution.
+Normal Lambda executes on-demand and may experience cold starts.
+Provisioned Concurrency keeps pre-initialized instances ready, eliminating cold starts and providing predictable low latency, but incurs extra cost.
+
+------------------------------------
+Explain Lambda timeouts, memory allocation, and execution limits.
+✅ **AWS Lambda Timeouts, Memory Allocation, and Execution Limits**
+
+AWS Lambda has configurable **resource and execution limits** that affect performance, cost, and reliability. Understanding these is crucial for designing Lambda functions efficiently.
+
+---
+
+## 🔹 1. **Timeouts**
+
+* **Definition:** Maximum duration a Lambda function can run before AWS forcibly terminates it.
+* **Configurable Range:** 1 second to **15 minutes (900 seconds)**.
+* **Default:** 3 seconds.
+
+📘 **Key Points:**
+
+* Functions running longer than the timeout are **terminated** and marked as **failed**.
+* Proper timeout prevents **hung functions** and unexpected costs.
+
+💡 **Best Practice:**
+
+* Set timeout slightly above the expected runtime.
+* For functions triggered by **asynchronous events**, ensure the timeout accommodates **retries** and **external API calls**.
+
+---
+
+## 🔹 2. **Memory Allocation**
+
+* **Range:** 128 MB to **10,240 MB (10 GB)**
+* **Default:** 128 MB
+* **Impact:** Lambda **CPU and network bandwidth scale linearly** with memory.
+
+  * Higher memory → more CPU → faster execution.
+* Cost is based on **memory allocated × execution duration**.
+
+📘 **Example:**
+
+* 512 MB function taking 1 second → cheaper but slower than
+* 2048 MB function taking 0.3 seconds → may cost slightly more but much faster
+
+💡 **Best Practice:**
+
+* Test with different memory settings for optimal **cost vs performance**.
+
+---
+
+## 🔹 3. **Execution Limits**
+
+| Limit                        | Details                                                            |
+| ---------------------------- | ------------------------------------------------------------------ |
+| **Maximum payload size**     | 6 MB (synchronous) / 256 KB (asynchronous) for event input         |
+| **Ephemeral storage (/tmp)** | 512 MB (configurable up to 10 GB in new runtimes)                  |
+| **Deployment package size**  | 50 MB (zip) / 250 MB (uncompressed, including layers)              |
+| **Concurrent executions**    | Default 1000 per region per account (can be increased via request) |
+| **Invocation frequency**     | No hard limit, but subject to concurrency & throttling             |
+| **Environment variables**    | Up to 4 KB per function                                            |
+
+---
+
+### 🔹 **Interrelation Between Memory & CPU**
+
+* Lambda CPU is **proportional to memory**.
+* Increasing memory often **reduces execution duration**, which can **reduce overall cost** even if memory allocation is higher.
+
+📘 **Example:**
+
+| Memory  | Duration | Cost per 1000 invocations |
+| ------- | -------- | ------------------------- |
+| 512 MB  | 1000 ms  | $0.00001667               |
+| 1024 MB | 500 ms   | $0.00001667               |
+
+> Higher memory, lower duration → same cost but faster execution
+
+---
+
+### 🔹 **Best Practices**
+
+1. Set **timeout** slightly above max expected execution.
+2. Tune **memory** to balance speed vs cost.
+3. Monitor **function metrics** (duration, memory usage) in CloudWatch.
+4. Avoid exceeding **concurrent execution limits** to prevent throttling.
+
+---
+
+### 💬 **Interview Answer (Concise):**
+
+> Lambda functions have a **timeout** (1s–15min) to prevent runaway executions, **memory allocation** (128 MB–10 GB) which also scales CPU and affects cost, and **execution limits** like payload size, ephemeral storage, and concurrency.
+> Properly tuning memory and timeout ensures cost-effective, reliable, and performant Lambda functions.
+
+---
+How do you handle large payloads in Lambda?
+Lambda has payload size limits (6 MB sync, 256 KB async). For large payloads, store the data in S3 and pass only the object key to Lambda.
+You can also use streaming, chunking, or pre-signed URLs to handle large files efficiently without exceeding Lambda limits.
+
+---------------
+
+
+
 
 
 
