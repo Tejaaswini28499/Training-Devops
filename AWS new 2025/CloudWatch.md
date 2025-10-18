@@ -146,3 +146,497 @@ Live Tail → Stream logs in real-time.
 Logs Insights → Query logs with SQL-like syntax.
 
 Contributor Insights → Identify top contributors to an issue (e.g., top IPs causing errors).
+
+-----------------------
+What are CloudWatch metrics, and what are some default metrics provided by AWS services?
+Monitoring **EC2 instances** using **CloudWatch** involves tracking metrics, setting alarms, and optionally creating dashboards to get insights into your instance health and performance. Here's a detailed breakdown:
+
+---
+
+### **1. Default Metrics for EC2**
+
+AWS automatically provides **default CloudWatch metrics** for EC2 instances:
+
+| Metric                             | Description                                                    |
+| ---------------------------------- | -------------------------------------------------------------- |
+| `CPUUtilization`                   | Percentage of allocated EC2 compute units in use               |
+| `DiskReadOps` / `DiskWriteOps`     | Number of disk read/write operations                           |
+| `DiskReadBytes` / `DiskWriteBytes` | Amount of data read/written from/to disk                       |
+| `NetworkIn` / `NetworkOut`         | Incoming and outgoing network traffic                          |
+| `StatusCheckFailed`                | Checks instance health (system and instance)                   |
+| `StatusCheckFailed_Instance`       | Checks if instance OS is healthy                               |
+| `StatusCheckFailed_System`         | Checks if underlying hardware or AWS infrastructure is healthy |
+
+> By default, metrics are collected at **5-minute intervals** (basic monitoring). You can enable **detailed monitoring** for **1-minute intervals**.
+
+---
+
+### **2. Steps to Monitor an EC2 Instance**
+
+#### **Step 1: Open CloudWatch Console**
+
+* Go to the **AWS Management Console → CloudWatch → Metrics**.
+* Choose the namespace **EC2 → Per-Instance Metrics**.
+
+#### **Step 2: View Metrics**
+
+* Select the EC2 instance ID you want to monitor.
+* Visualize metrics like CPU, disk I/O, and network traffic in **graphs**.
+
+#### **Step 3: Create Alarms**
+
+* Go to **Alarms → Create Alarm**.
+* Choose a metric (e.g., `CPUUtilization`).
+* Set a **threshold** (e.g., CPU > 80% for 5 minutes).
+* Choose **actions**:
+
+  * Send notification via **SNS** (email/SMS)
+  * Auto-scale or trigger **Lambda function**
+
+#### **Step 4: Enable Detailed Monitoring (Optional)**
+
+* Detailed monitoring collects metrics every **1 minute**.
+* Can be enabled when launching an EC2 instance or later:
+
+  * **EC2 → Actions → Monitor and troubleshoot → Enable detailed monitoring**
+
+#### **Step 5: Create Dashboards (Optional)**
+
+* Go to **CloudWatch → Dashboards → Create Dashboard**
+* Add **widgets** to display CPU, network, disk metrics for one or multiple instances.
+* Useful for **real-time monitoring** and operations dashboards.
+
+---
+
+### **3. Additional Monitoring Options**
+
+1. **Custom Metrics:**
+
+   * Install the **CloudWatch Agent** on EC2 to collect:
+
+     * Memory usage
+     * Disk space utilization
+     * Application-level metrics
+   * Supports Linux and Windows.
+
+2. **Logs Monitoring:**
+
+   * Configure **CloudWatch Logs Agent** to push system or application logs.
+   * Combine with metrics to detect anomalies.
+
+3. **Automated Actions:**
+
+   * Use **CloudWatch Alarms** with **SNS** to get notifications.
+   * Use **Auto Scaling policies** based on CPU, memory, or custom metrics.
+
+---
+
+💡 **Pro Tip:**
+CPU spikes alone may not indicate issues. Combine **CPU, Disk, Network, and Memory (via CloudWatch Agent)** metrics for complete EC2 monitoring.
+
+---
+
+If you want, I can make a **step-by-step diagram showing EC2 monitoring workflow with CloudWatch**, which makes it much easier to visualize.
+
+Do you want me to create it?
+
+-----------------------------------
+how do we assign the IAM btw cloud watch and ec2
+Assigning **IAM permissions between CloudWatch and EC2** usually involves **allowing EC2 instances to send metrics/logs to CloudWatch** using an **IAM role**. Here’s a detailed, step-by-step explanation:
+
+---
+
+### **1. Create an IAM Role for EC2**
+
+1. Go to **IAM → Roles → Create Role**.
+2. Choose **AWS service → EC2** as the trusted entity.
+3. Click **Next: Permissions**.
+
+---
+
+### **2. Attach CloudWatch Permissions**
+
+Attach a policy that allows the EC2 instance to interact with CloudWatch:
+
+* **Managed AWS Policies (common options):**
+
+  * **CloudWatchAgentServerPolicy** → Allows sending custom metrics and logs using CloudWatch Agent.
+  * **CloudWatchFullAccess** → Full access to CloudWatch (less restrictive, usually for testing).
+* If you need, you can also create a **custom policy** like this:
+
+```json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "cloudwatch:PutMetricData",
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
+```
+
+This allows EC2 to push **metrics and logs** to CloudWatch.
+
+---
+
+### **3. Attach IAM Role to EC2**
+
+1. Go to **EC2 → Instances → Select your instance → Actions → Security → Modify IAM Role**.
+2. Select the **IAM role** you just created.
+3. Click **Update IAM Role**.
+
+> Once attached, the EC2 instance can send metrics/logs to CloudWatch without storing access keys on the instance.
+
+---
+
+### **4. Install CloudWatch Agent on EC2 (Optional but Recommended)**
+
+* For detailed monitoring (CPU, memory, disk, logs):
+
+```bash
+# For Amazon Linux
+sudo yum install amazon-cloudwatch-agent
+sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-config-wizard
+sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl \
+    -a start
+```
+
+The agent uses the **IAM role credentials** automatically to push metrics and logs to CloudWatch.
+
+---
+
+✅ **Key Points:**
+
+* EC2 **doesn’t automatically have permission** to send logs or custom metrics; it needs an IAM role.
+* Using **IAM roles is more secure** than storing access keys on EC2.
+* CloudWatch itself does not need IAM attached to read metrics; the **role is for EC2 → CloudWatch communication**.
+
+---
+
+If you want, I can draw a **simple diagram showing EC2, IAM role, and CloudWatch flow** to make it crystal clear.
+
+Do you want me to make that diagram?
+
+--------------------------------------
+What is the difference between CloudWatch and CloudTrail?
+Here’s a clear explanation of the **difference between CloudWatch and CloudTrail**:
+
+---
+
+| Feature              | **CloudWatch**                                                                                                                        | **CloudTrail**                                                                                                               |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| **Purpose**          | Monitoring and observability                                                                                                          | Governance, auditing, and compliance                                                                                         |
+| **Type of Data**     | **Metrics** (CPU, memory, disk, network, custom metrics), **logs**, and **events**                                                    | **API activity logs** – records every API call made in your AWS account                                                      |
+| **Data Source**      | AWS resources (EC2, RDS, Lambda, ELB, etc.) and custom applications                                                                   | AWS Management Console, SDKs, CLI, and other AWS services                                                                    |
+| **Use Cases**        | - Monitor performance of resources <br> - Set alarms for thresholds <br> - Create dashboards <br> - Automate actions based on metrics | - Track “who did what and when” <br> - Audit API usage for compliance <br> - Troubleshoot security incidents                 |
+| **Time Granularity** | Metrics: 1 minute (detailed) or 5 minutes (basic) <br> Logs: near real-time                                                           | Logs: near real-time, stored for 90 days by default in the console or longer in S3                                           |
+| **Example**          | - CPUUtilization of an EC2 instance is 90% <br> - Lambda function errors spike                                                        | - User `Alice` terminated an EC2 instance at 10:05 AM <br> - IAM policy was changed                                          |
+| **Actionability**    | Can trigger alarms, auto-scaling, or notifications based on thresholds                                                                | Cannot trigger alarms directly; primarily for auditing, but logs can be analyzed and combined with CloudWatch for automation |
+
+---
+
+### **In simple terms:**
+
+* **CloudWatch = “What is happening to my resources?”** (metrics, performance, logs)
+* **CloudTrail = “Who did what in my account?”** (API calls, security auditing)
+
+---
+
+💡 **Pro Tip:**
+You can **combine them**:
+
+* CloudTrail logs API activity.
+* CloudWatch can monitor CloudTrail logs to **trigger alerts** if suspicious activity occurs (e.g., root user login).
+
+---
+
+If you want, I can make a **visual diagram showing CloudWatch vs CloudTrail with AWS workflow** so it’s easier to remember for interviews.
+
+Do you want me to make that diagram?
+
+----------------------------------
+What are namespaces in CloudWatch?
+Here’s a detailed explanation of **namespaces in CloudWatch**:
+
+---
+
+### **1. What is a Namespace?**
+
+A **namespace** in CloudWatch is like a **container or logical grouping for metrics**. It helps **organize and isolate metrics** from different AWS services or custom applications so that metrics with the same name from different sources **don’t conflict**.
+
+* Every metric in CloudWatch belongs to **exactly one namespace**.
+* Metrics with the same name in **different namespaces are treated as separate metrics**.
+
+---
+
+### **2. Default Namespaces for AWS Services**
+
+AWS provides a **predefined namespace** for each service. Examples:
+
+| AWS Service | Namespace        |
+| ----------- | ---------------- |
+| EC2         | `AWS/EC2`        |
+| RDS         | `AWS/RDS`        |
+| S3          | `AWS/S3`         |
+| Lambda      | `AWS/Lambda`     |
+| DynamoDB    | `AWS/DynamoDB`   |
+| ELB         | `AWS/ELB`        |
+| CloudFront  | `AWS/CloudFront` |
+
+> Example: `CPUUtilization` metric for EC2 is in `AWS/EC2`. Another service could have a metric named `CPUUtilization`, but it won’t conflict because it would be in its own namespace (like `AWS/RDS`).
+
+---
+
+### **3. Custom Namespaces**
+
+You can also create **your own namespace** for **custom metrics**:
+
+* Use descriptive names to avoid conflicts, e.g., `MyApp/Metrics` or `PaymentService/Latency`.
+* Custom namespaces allow you to **push metrics from applications, scripts, or on-premises servers** using the CloudWatch API.
+
+**Example:**
+
+```bash
+aws cloudwatch put-metric-data \
+    --namespace "MyApp/Metrics" \
+    --metric-name "OrderProcessingTime" \
+    --value 250 \
+    --unit Milliseconds
+```
+
+---
+
+### **4. Key Points**
+
+* Metrics are always **isolated by namespace**.
+* CloudWatch **does not automatically aggregate metrics across namespaces**; you must select the namespace when creating dashboards or alarms.
+* AWS **reserved namespaces** always start with `AWS/`. Custom namespaces **cannot start with `AWS/`**.
+
+---
+
+💡 **Tip for Interviews:**
+Think of a namespace as a **folder for metrics**. AWS services have their default folders (`AWS/EC2`, `AWS/Lambda`) and you can create your own for custom apps (`MyApp/Metrics`).
+
+---
+
+If you want, I can make a **diagram showing namespaces, metrics, and dimensions in CloudWatch** to make it easier to visualize.
+
+Do you want me to do that?
+
+
+----------------------------------
+How do you create a custom metric in CloudWatch?
+Here’s a **step-by-step explanation of creating a custom metric in CloudWatch**:
+
+---
+
+### **1. Understand Custom Metrics**
+
+* **Custom metrics** are metrics you define yourself (not provided by AWS by default).
+* You can push **application-specific or system-level data** to CloudWatch.
+* Each metric must have:
+
+  * **Namespace** (logical container)
+  * **Metric name**
+  * **Value**
+  * **Unit** (optional)
+  * **Timestamp** (optional; defaults to current time)
+  * **Dimensions** (optional; used for filtering/aggregating metrics)
+
+---
+
+### **2. Create Custom Metrics Using AWS CLI**
+
+**Example: Track order processing time in your application**
+
+```bash
+aws cloudwatch put-metric-data \
+    --namespace "MyApp/Metrics" \
+    --metric-name "OrderProcessingTime" \
+    --value 250 \
+    --unit Milliseconds \
+    --dimensions "Service=Payment,Region=us-east-1"
+```
+
+**Explanation:**
+
+* `--namespace "MyApp/Metrics"` → logical group for your metrics
+* `--metric-name "OrderProcessingTime"` → name of your metric
+* `--value 250` → metric value (e.g., 250 ms)
+* `--unit Milliseconds` → optional unit
+* `--dimensions` → optional key-value pairs to filter metrics
+
+---
+
+### **3. Using CloudWatch Agent for System Metrics**
+
+* Install **CloudWatch Agent** on EC2 or on-prem servers.
+* Collect metrics like:
+
+  * Memory usage
+  * Disk space
+  * CPU per process
+* Configure the agent using JSON or wizard:
+
+```bash
+sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-config-wizard
+sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a start
+```
+
+* Metrics pushed will appear in **CloudWatch under the custom namespace** you defined.
+
+---
+
+### **4. Visualize and Set Alarms**
+
+* Go to **CloudWatch → Metrics → Select your custom namespace**.
+* Create **alarms** for thresholds (e.g., if OrderProcessingTime > 500 ms for 5 minutes).
+* Add **dashboards** to monitor trends.
+
+---
+
+### **5. Key Points**
+
+* Custom metrics **incur charges** ($0.30 per metric per month, plus API requests).
+* Always use **descriptive namespaces and metric names** to avoid confusion.
+* Dimensions help **filter metrics**, e.g., track metrics per region, service, or environment.
+
+---
+
+💡 **Tip:** For production apps, it’s common to use:
+
+* Namespace: `CompanyApp/Metrics`
+* Dimensions: `Environment=Prod/Stage, Service=Payment/Orders`
+
+
+-----------------------------
+How long does CloudWatch retain metrics and logs by default?
+Here’s a clear breakdown of **CloudWatch retention periods** for **metrics and logs**:
+
+---
+
+### **1. CloudWatch Metrics Retention**
+
+CloudWatch stores metrics **automatically**, but **retention depends on the period (granularity) of the data**:
+
+| **Period (Granularity)**       | **Retention**         |
+| ------------------------------ | --------------------- |
+| 1-minute (detailed monitoring) | 15 days               |
+| 5-minute (basic monitoring)    | 63 days               |
+| 1-hour                         | 455 days (~15 months) |
+
+**Notes:**
+
+* Basic monitoring (default for EC2) stores data **every 5 minutes**.
+* Detailed monitoring (enabled manually) stores data **every 1 minute**.
+* Metrics older than the retention period are **automatically deleted**.
+
+---
+
+### **2. CloudWatch Logs Retention**
+
+* By default, **log groups do not expire** (retention is **Never Expire**).
+* You can **set a retention policy** for each log group to automatically delete logs after a specific period:
+
+| **Retention Option**                                                                                                | **Description**                                       |
+| ------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------- |
+| 1 day, 3 days, 1 week, 2 weeks, 1 month, 3 months, 6 months, 1 year, 13 months, 2 years, 5 years, 7 years, 10 years | Logs older than this period are automatically deleted |
+| Never Expire                                                                                                        | Logs are stored indefinitely (default)                |
+
+**Example:**
+
+```bash
+aws logs put-retention-policy \
+    --log-group-name MyAppLogGroup \
+    --retention-in-days 30
+```
+
+This will keep logs for **30 days** only.
+
+---
+
+### **Summary**
+
+* **Metrics:** 15 days (1-min) → 63 days (5-min) → 15 months (1-hour).
+* **Logs:** Stored indefinitely by default; retention can be configured per log group.
+
+---
+
+💡 **Tip:**
+
+* For cost optimization, always configure log **retention policies**.
+* Metrics older than 15 months can be archived using **CloudWatch Metric Streams → S3** if needed.
+
+---
+
+If you want, I can also make a **quick visual table showing metrics vs logs retention** for easy memorization for interviews.
+
+Do you want me to make that?
+
+--------------------------------
+Explain the difference between standard resolution and high-resolution metrics
+Here’s a clear explanation of the **difference between standard-resolution and high-resolution metrics in CloudWatch**:
+
+---
+
+### **1. Standard-Resolution Metrics**
+
+* **Frequency / Granularity:** Minimum **1-minute intervals** (60 seconds).
+* **Default:** Most AWS services provide **standard metrics by default**.
+* **Use case:** Suitable for **trend monitoring**, **dashboards**, and **alarms** where **second-by-second data isn’t needed**.
+* **Retention:**
+
+  | Period | Retention             |
+  | ------ | --------------------- |
+  | 1 min  | 15 days               |
+  | 5 min  | 63 days               |
+  | 1 hr   | 455 days (~15 months) |
+
+**Example:** CPU usage of EC2 measured every minute (detailed monitoring) or every 5 minutes (basic monitoring).
+
+---
+
+### **2. High-Resolution Metrics**
+
+* **Frequency / Granularity:** Can be **as small as 1-second intervals**.
+* **Purpose:** Allows **fine-grained monitoring** and **quick detection of anomalies**.
+* **Cost:** More expensive than standard metrics because CloudWatch stores more data points.
+* **Retention:**
+
+  * Data with **1-second granularity** is kept for **3 hours**.
+  * Data can be aggregated into **60-second periods** and stored longer like standard metrics.
+
+**Example Use Case:**
+
+* Detect sudden CPU spikes in EC2 in real-time.
+* Monitor application latency with second-by-second precision.
+
+---
+
+### **3. Key Differences**
+
+| Feature                  | Standard-Resolution             | High-Resolution                                      |
+| ------------------------ | ------------------------------- | ---------------------------------------------------- |
+| Minimum period           | 60 seconds (1 min)              | 1 second                                             |
+| Default for AWS services | ✅                               | ❌ (must enable explicitly)                           |
+| Retention of raw data    | Longer (15 days for 1-min data) | Shorter (3 hours for 1-second data)                  |
+| Cost                     | Lower                           | Higher                                               |
+| Use case                 | General monitoring, trends      | Fine-grained monitoring, real-time anomaly detection |
+
+---
+
+💡 **Tip:**
+
+* Use **standard metrics** for general monitoring and dashboards.
+* Use **high-resolution metrics** when **second-level events matter**, like rapid scaling triggers or high-frequency application metrics.
+
+---
+
+
