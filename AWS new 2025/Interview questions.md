@@ -241,5 +241,57 @@ Perfect 👏 Let’s build this **smartly structured interview prep** for you �
 5. How would you recover if someone accidentally deletes a critical IAM role or policy?
 
 ---
+Here’s a set of **scenario-based IAM (Identity and Access Management) questions** you can use for interview preparation. I’ve categorized them by **basic, intermediate, and advanced** complexity.
+
+---
+
+### **Basic Scenarios**
+
+1. **Temporary Access:**
+   Your developer needs temporary access to upload files to S3 for one day. How would you provide access securely without sharing your root account credentials?
+
+2. **Least Privilege:**
+   You have a new IAM user joining the team. How would you decide which permissions to give them?
+
+3. **MFA Enforcement:**
+   An employee’s account has been compromised. How would enabling MFA have prevented this? How do you enforce MFA for all users?
+
+---
+
+### **Intermediate Scenarios**
+
+4. **Cross-Account Access:**
+   Your EC2 instance in Account A needs to read objects from an S3 bucket in Account B. How would you configure IAM roles and policies to allow this securely?
+
+5. **Policy Evaluation:**
+   You have an IAM policy attached to a user, but the user cannot access a specific S3 bucket. How do you troubleshoot the issue?
+
+6. **Inline vs Managed Policies:**
+   You want to provide a temporary permission to one specific user for testing purposes. Should you use an inline policy or a managed policy? Why?
+
+7. **Role for Service Access:**
+   An application running on EC2 needs to access DynamoDB tables. Should you attach an IAM user to the application, or use a role? Explain why.
+
+---
+
+### **Advanced Scenarios**
+
+8. **Complex Trust Relationships:**
+   You need a third-party vendor to access your AWS resources for auditing purposes, but you don’t want them to have a permanent account. How would you design IAM roles for this scenario?
+
+9. **Permission Boundaries:**
+   Your company wants developers to create IAM users and policies, but you want to restrict the maximum permissions they can grant. How would you implement this?
+
+10. **Automating Least Privilege:**
+    Over time, you notice IAM users have permissions they never use. How would you identify unused permissions and enforce least privilege automatically?
+
+11. **Service-Linked Roles:**
+    You have an Auto Scaling group and need it to create CloudWatch alarms automatically. How does AWS handle permissions in this case?
+
+12. **Federated Access:**
+    Your company uses an internal identity provider (like Okta) and wants employees to access AWS without creating IAM users for each employee. How would you implement this?
+
+---
+
 
 
