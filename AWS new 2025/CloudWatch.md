@@ -638,5 +638,13 @@ Here’s a clear explanation of the **difference between standard-resolution and
 * Use **high-resolution metrics** when **second-level events matter**, like rapid scaling triggers or high-frequency application metrics.
 
 ---
+How do you monitor a Lambda function using CloudWatch?
+Sure 👍 here’s a **4–5 line interview-style answer**:
+
+> AWS Lambda automatically integrates with CloudWatch to monitor function performance.
+> It publishes default metrics like **Invocations, Errors, Duration, and Throttles** in the `AWS/Lambda` namespace.
+> Logs from each execution are stored in **CloudWatch Logs** under `/aws/lambda/<function-name>`.
+> You can also set **CloudWatch Alarms** on these metrics and enable **Lambda Insights** for advanced monitoring like memory and CPU usage.
+
 
 
