@@ -187,4 +187,59 @@ Perfect 👏 Let’s build this **smartly structured interview prep** for you �
 
 ---
 
+## **Basic IAM Interview Questions**
+
+1. What is AWS IAM?
+2. What are IAM Users, Groups, Roles, and Policies?
+3. Difference between IAM Role and IAM User.
+4. What is the difference between inline and managed policies?
+5. How do you attach a policy to a user or group?
+6. What is the principle of least privilege?
+7. What are access keys and secret keys?
+8. Difference between root user and IAM user.
+9. How can you enable MFA (Multi-Factor Authentication) for an IAM user?
+10. What is an IAM policy simulator?
+
+---
+
+## **Intermediate IAM Interview Questions**
+
+1. Explain IAM trust policy and permission policy.
+2. How do you implement cross-account access using IAM roles?
+3. What is AWS STS (Security Token Service)?
+4. How does temporary security credential work in AWS?
+5. Difference between service-linked roles and regular IAM roles.
+6. How do you enforce password policies in IAM?
+7. Explain IAM policy evaluation logic (explicit allow, explicit deny).
+8. How can you restrict access to S3 bucket only from specific IP addresses?
+9. How do you audit IAM permissions using AWS CloudTrail?
+10. How can you delegate access to resources without sharing credentials?
+
+---
+
+## **Advanced IAM Interview Questions**
+
+1. How do you implement a multi-account AWS environment with centralized IAM?
+2. Explain how IAM policies work with resource-based policies.
+3. How to implement cross-region or cross-account logging using IAM roles?
+4. Difference between identity-based policies and resource-based policies.
+5. How to rotate IAM access keys automatically?
+6. How does AWS Organizations integrate with IAM for service control policies (SCPs)?
+7. How do you prevent privilege escalation in AWS?
+8. How do you design a secure CI/CD pipeline that uses IAM roles for EC2, Lambda, or CodeBuild?
+9. How do you handle emergency access for AWS root user in a production environment?
+10. Explain IAM policy evaluation with multiple policies attached (user, group, role, resource policy).
+
+---
+
+## **Scenario-Based Questions**
+
+1. A user needs temporary access to S3 in another account. How would you implement it?
+2. You have multiple developers; you want them to have different access to EC2, S3, and RDS. How do you structure IAM?
+3. How do you detect if someone is misusing IAM permissions?
+4. Your company wants centralized authentication across AWS accounts using SSO. How would you set it up?
+5. How would you recover if someone accidentally deletes a critical IAM role or policy?
+
+---
+
 
