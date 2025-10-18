@@ -676,4 +676,71 @@ Available widgets include **Line, Stacked area, Number, Text, and Gauge** for me
 Dashboards help you **monitor multiple AWS resources** (like EC2, RDS, Lambda) in real time from a single view.
 
 ---------------------------------
+How do you set up metric math in CloudWatch, and give a real-world example?
+**Metric Math** in CloudWatch lets you **perform calculations** on one or more metrics to create **custom insights**.
+You set it up in the **CloudWatch console → Metrics → Graphed metrics → Add a math expression** using formulas like `SUM`, `AVG`, or `RATE`.
+For example, you can calculate **average CPU utilization across multiple EC2 instances** using:
+`AVG([m1, m2, m3])`
+This helps you analyze **aggregate performance** instead of looking at each instance separately — useful for **auto scaling or health monitoring**.
+
+-------------------------------------
+How does CloudWatch handle custom metrics billing?
+CloudWatch bills **custom metrics separately** from default AWS service metrics.
+You’re charged **per custom metric per month**, regardless of how many data points you send.
+Each unique combination of **namespace, metric name, and dimensions** counts as one metric.
+High-resolution metrics (1-second) also incur **higher costs** than standard (1-minute) metrics.
+So, optimizing dimensions and using only necessary custom metrics helps **reduce CloudWatch costs**.
+
+------------------------------------------
+Explain the difference between push-based and pull-based metrics in CloudWatch.
+In **CloudWatch**, metrics can be **push-based** or **pull-based** depending on how data is collected:
+
+* **Push-based metrics** are **sent (pushed)** to CloudWatch by the service or application — for example, **EC2, Lambda, or custom metrics** published via the CloudWatch API.
+* **Pull-based metrics** are **collected (pulled)** by CloudWatch from a service endpoint — this is rare in AWS but common in tools like **Prometheus**.
+  In short, **CloudWatch mainly uses a push model**, where data is actively sent to it, making monitoring near real-time and scalable.
+
+--------------------------------------------
+How can you monitor resources across multiple AWS accounts or regions using CloudWatch? also cross accounr
+Here’s how you can monitor resources across **multiple AWS accounts or regions** using CloudWatch, explained clearly for interviews:
+
+---
+
+### **1. Cross-Region Monitoring**
+
+* CloudWatch metrics are **region-specific by default**.
+* To monitor resources in multiple regions:
+
+  * **Switch regions** in the CloudWatch console to view metrics from that region.
+  * Or, use **CloudWatch Dashboards** to add metrics from **different regions** into a single dashboard.
+  * You can also use **CloudWatch Metric Streams** to send metrics from multiple regions to **a central S3 bucket or a monitoring solution**.
+
+---
+
+### **2. Cross-Account Monitoring**
+
+* You can monitor resources in **other AWS accounts** using **CloudWatch cross-account functionality**.
+* Steps:
+
+  1. **Create an IAM role** in the target account with permissions to **read metrics/logs**.
+  2. **Grant trust** to the monitoring account so it can assume the role.
+  3. In the monitoring account, **assume the role** to query metrics or create dashboards.
+* This allows you to **centralize monitoring** for multiple accounts, useful in multi-account setups or organizations.
+
+---
+
+### **3. Optional: Centralized Logging**
+
+* **CloudWatch Logs subscription filters** can forward logs from multiple accounts or regions to a **central account** using **Lambda or Kinesis Data Firehose**.
+* This is helpful for **security audits, compliance, and centralized alerting**.
+
+---
+
+💡 **Interview Tip:**
+
+* Think **cross-region = same account, different regions**.
+* Think **cross-account = different accounts, same or multiple regions**.
+* Use **IAM roles + dashboards or metric streams** to centralize monitoring.
+
+---
+
 
