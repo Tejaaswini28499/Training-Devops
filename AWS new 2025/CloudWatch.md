@@ -742,5 +742,17 @@ Here’s how you can monitor resources across **multiple AWS accounts or regions
 * Use **IAM roles + dashboards or metric streams** to centralize monitoring.
 
 ---
+What are CloudWatch anomaly detection and its use cases?
+Here’s an **interview-style explanation of CloudWatch Anomaly Detection**:
+
+**CloudWatch Anomaly Detection** automatically applies **machine learning models** to your metrics to identify **normal patterns and deviations**.
+It creates a **band of expected values**; if a metric goes outside this band, it flags it as an **anomaly**.
+**Use cases include:**
+
+* Detecting sudden spikes in **EC2 CPU usage** or **Lambda errors**.
+* Identifying unusual **API call rates** or **traffic patterns** in applications.
+* Triggering **alarms** or **automated responses** when anomalies occur, improving operational efficiency.
+
+It’s useful for **proactive monitoring** without manually setting static thresholds.
 
 
