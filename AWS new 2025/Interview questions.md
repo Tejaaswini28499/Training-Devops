@@ -141,5 +141,51 @@ Perfect 👏 Let’s build this **smartly structured interview prep** for you �
 5. Design a CloudFront distribution for multi-region, low-latency video streaming.
 
 ---
+## 🧩 **6. Cloud Watch**
 
-Would you like me to make a **PDF or Excel table version** of this (organized by topic, level, and type of question: conceptual / scenario-based)? It’ll be very helpful for interview revision.
+## **Basic CloudWatch Questions**
+
+1. What is AWS CloudWatch, and why is it used?
+2. What are CloudWatch metrics, and what are some default metrics provided by AWS services?
+3. Explain CloudWatch Logs. How do they differ from metrics?
+4. What is a CloudWatch Alarm, and how does it work?
+5. How can you monitor EC2 instances using CloudWatch?
+6. What is the difference between CloudWatch and CloudTrail?
+7. What are namespaces in CloudWatch?
+8. How do you create a custom metric in CloudWatch?
+9. How long does CloudWatch retain metrics and logs by default?
+10. Explain the difference between standard resolution and high-resolution metrics.
+
+---
+
+## **Intermediate CloudWatch Questions**
+
+1. How do you monitor a Lambda function using CloudWatch?
+2. Explain the difference between **CloudWatch Logs Insights** and normal log queries.
+3. How do you send CloudWatch metrics to other AWS services like SNS, SQS, or Lambda?
+4. What is a **CloudWatch Contributor Insights** rule?
+5. How can you create dashboards in CloudWatch, and what kind of widgets are available?
+6. How do you set up metric math in CloudWatch, and give a real-world example?
+7. How does CloudWatch handle custom metrics billing?
+8. Explain the difference between **push-based** and **pull-based** metrics in CloudWatch.
+9. What are CloudWatch anomaly detection and its use cases?
+10. How can you monitor resources across multiple AWS accounts or regions using CloudWatch?
+
+---
+
+## **Advanced CloudWatch Questions**
+
+1. How does CloudWatch integrate with **AWS X-Ray** for distributed tracing?
+2. How would you design an alerting system to detect abnormal EC2 behavior using CloudWatch?
+3. Explain **high-resolution metrics** and their impact on cost and granularity.
+4. How do you troubleshoot performance issues using CloudWatch metrics, logs, and dashboards together?
+5. How can you use CloudWatch **metric filters** to trigger alarms or Lambda functions?
+6. Describe how to set up **cross-account log aggregation** in CloudWatch Logs.
+7. How do you automate CloudWatch dashboard creation across multiple accounts/environments?
+8. Explain the architecture of CloudWatch Logs ingestion and storage.
+9. How would you monitor and alert on **serverless microservices** at scale using CloudWatch?
+10. How do you optimize CloudWatch costs for high-volume log data and custom metrics?
+
+---
+
+
