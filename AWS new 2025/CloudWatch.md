@@ -637,7 +637,7 @@ Here’s a clear explanation of the **difference between standard-resolution and
 * Use **standard metrics** for general monitoring and dashboards.
 * Use **high-resolution metrics** when **second-level events matter**, like rapid scaling triggers or high-frequency application metrics.
 
----
+--------------------------------
 How do you monitor a Lambda function using CloudWatch?
 Sure 👍 here’s a **4–5 line interview-style answer**:
 
@@ -646,5 +646,34 @@ Sure 👍 here’s a **4–5 line interview-style answer**:
 > Logs from each execution are stored in **CloudWatch Logs** under `/aws/lambda/<function-name>`.
 > You can also set **CloudWatch Alarms** on these metrics and enable **Lambda Insights** for advanced monitoring like memory and CPU usage.
 
+--------------------------------
 
+Explain the difference between CloudWatch Logs Insights and normal log queries.
+**CloudWatch Logs Insights** is an advanced, interactive log analytics feature that lets you run **SQL-like queries** on your logs for fast, detailed analysis.
+Normal log viewing only allows **basic search and filtering** within log streams.
+With Logs Insights, you can **aggregate, filter, and visualize** patterns across large log groups in seconds.
+It’s ideal for **troubleshooting, performance analysis, and operational insights** beyond simple text searches.
+
+--------------------------  
+How do you send CloudWatch metrics to other AWS services like SNS, SQS, or Lambda?
+You can send CloudWatch metrics to other AWS services by using **CloudWatch Alarms**.
+When a metric crosses a threshold, the alarm’s **action** triggers an **SNS topic**, **SQS queue**, or **Lambda function**.
+For example, an alarm on high CPU utilization can **publish a message to SNS**, which then **notifies users or invokes a Lambda** for automated recovery.
+This setup enables **event-driven automation and alerting** based on CloudWatch metric data.
+
+-----------------------------
+What is a CloudWatch Contributor Insights rule
+A **CloudWatch Contributor Insights rule** analyzes log data in real time to identify the **top contributors** to a specific metric or issue.
+It helps you find **which users, IPs, or resources** are generating the most errors, latency, or traffic.
+You define a **rule pattern** that tells CloudWatch what fields to track (like `sourceIP` or `errorCode`).
+It then displays **visual reports** showing trends and top contributors, helping with **performance optimization and troubleshooting**.
+
+-------------------------------
+How can you create dashboards in CloudWatch, and what kind of widgets are available?
+You can create **CloudWatch Dashboards** from the AWS Management Console, CLI, or API to visualize metrics in one place.
+In the console, go to **CloudWatch → Dashboards → Create dashboard**, then add **widgets** for the metrics you want to monitor.
+Available widgets include **Line, Stacked area, Number, Text, and Gauge** for metrics, and **Log query** or **Alarm status** widgets for deeper insights.
+Dashboards help you **monitor multiple AWS resources** (like EC2, RDS, Lambda) in real time from a single view.
+
+---------------------------------
 
