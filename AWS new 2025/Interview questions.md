@@ -141,7 +141,6 @@ Perfect 👏 Let’s build this **smartly structured interview prep** for you �
 5. Design a CloudFront distribution for multi-region, low-latency video streaming.
 
 ---
-## 🧩 **6. Cloud Watch**
 
 ## **Basic CloudWatch Questions**
 
