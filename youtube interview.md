@@ -16,3 +16,17 @@
 16. what benefits you get when you create a custom modules in terrform and why do you create
 17. have you ever worked on dynamic block if yes what is use of that and why is used
 18. how would you create near perfect devsecops pipeline from init to deploy
+
+----------------------------------
+1. think 5 replica 3 is up 2 is down what may be the reason
+2. can I have the encode base 64 password and store in my configmap inside of secret?
+3. how do you pass output of one module to another in terraform
+4. diff btw contionus delivery and continoud deployment
+5. explain cloud watch alaram and cloud watch event
+6. without internet how would you connect to s3
+7. diff scaling groug in asg
+8. cooldown period in ASG
+9. can you can the private Ip address of running ec2 or once you stop can it be changed
+10. if you want to assign the permanent ip address to ec2 how would you do it
+11. I have to provision two infra primary and secondary in jenkins pipeline how would you ensure the secondary runs only after the primary runs
+12. how would you cleanup the tempoarary file in jenkins workspace 
