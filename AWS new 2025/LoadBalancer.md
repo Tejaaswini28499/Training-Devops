@@ -266,3 +266,165 @@ One Listener → many Rules.
 One Rule → exactly one Target Group.
 
 One Target Group → many EC2 instances (or other targets).
+Here’s a list of **Load Balancer interview questions (Basic + Intermediate)** — especially useful for AWS or general DevOps/cloud interviews 👇
+
+---
+
+## 🟢 **Basic Load Balancer Interview Questions**
+
+### 1. What is a Load Balancer?
+
+A load balancer distributes incoming network or application traffic across multiple servers to ensure **no single server is overwhelmed**, improving availability and reliability.
+
+---
+
+### 2. Why do we use Load Balancers?
+
+* To handle high traffic efficiently
+* Improve fault tolerance and uptime
+* Enable horizontal scaling
+* Provide better performance and redundancy
+
+---
+
+### 3. What are the types of Load Balancers?
+
+* **Hardware Load Balancer** – physical devices
+* **Software Load Balancer** – software-based (e.g., HAProxy, Nginx, AWS ELB)
+* **Cloud Load Balancer** – managed services (e.g., AWS ALB, GCP Load Balancer, Azure LB)
+
+---
+
+### 4. What are the common load balancing algorithms?
+
+* **Round Robin** – distributes requests sequentially
+* **Least Connections** – sends to server with fewest active connections
+* **IP Hash** – based on client IP
+* **Weighted Round Robin / Least Connections** – based on server capacity
+* **Random** – sends requests randomly
+
+---
+
+### 5. What is health check in load balancer?
+
+A **health check** monitors the status of backend instances (EC2, servers).
+If an instance fails, the load balancer **stops routing traffic** to it until it becomes healthy again.
+
+---
+
+### 6. What’s the difference between Layer 4 and Layer 7 Load Balancing?
+
+| Feature          | Layer 4 (Transport) | Layer 7 (Application) |
+| ---------------- | ------------------- | --------------------- |
+| Protocol         | TCP/UDP             | HTTP/HTTPS            |
+| Routing based on | IP, Port            | URL, Headers, Cookies |
+| Example          | AWS NLB             | AWS ALB               |
+
+---
+
+### 7. What happens if all targets behind a load balancer fail?
+
+The load balancer cannot forward requests and will return **5xx errors** (e.g., 503 Service Unavailable) to clients.
+
+---
+
+### 8. What is sticky session or session persistence?
+
+Sticky session ensures all requests from a client are sent to the **same backend instance**, usually using **cookies or IP affinity**.
+
+---
+
+### 9. Difference between Load Balancer and Reverse Proxy?
+
+* **Reverse Proxy**: Forwards client requests to backend servers (can do caching, SSL termination).
+* **Load Balancer**: Distributes traffic among multiple backends for load sharing.
+  👉 A load balancer often acts as a **reverse proxy with extra features**.
+
+---
+
+### 10. What is SSL termination?
+
+The load balancer **decrypts SSL/TLS traffic** before forwarding it to backend servers, reducing CPU load on them.
+
+---
+
+## 🟡 **Intermediate Load Balancer Interview Questions**
+
+### 1. How does an Application Load Balancer (ALB) work in AWS?
+
+* Operates at **Layer 7**
+* Routes based on **path-based** or **host-based** rules
+* Integrates with **target groups**
+* Supports **WebSockets**, **HTTP/2**, and **sticky sessions**
+
+---
+
+### 2. Difference between Application Load Balancer (ALB) and Network Load Balancer (NLB)?
+
+| Feature   | ALB             | NLB                                |
+| --------- | --------------- | ---------------------------------- |
+| OSI Layer | Layer 7         | Layer 4                            |
+| Protocols | HTTP/HTTPS      | TCP, UDP, TLS                      |
+| Routing   | Path/Host-based | IP/Port-based                      |
+| Latency   | Slightly higher | Ultra low                          |
+| Use Case  | Web apps        | High-performance, low-latency apps |
+
+---
+
+### 3. What is a Target Group in AWS Load Balancer?
+
+A **Target Group** is a logical group of backend instances or services (EC2, Lambda, IPs) that the load balancer routes traffic to based on rules.
+
+---
+
+### 4. What are listener rules in ALB?
+
+Listeners check for connection requests using the configured **protocol and port**, and rules define **how requests are routed** (e.g., path `/api/*` → API target group).
+
+---
+
+### 5. How does AWS ALB handle scaling?
+
+The ALB automatically scales **in and out** based on incoming traffic without manual configuration.
+
+---
+
+### 6. What are Cross-Zone Load Balancing and its benefit?
+
+It allows the load balancer to **distribute traffic across all instances in all Availability Zones**, improving fault tolerance and better distribution.
+
+---
+
+### 7. What are some metrics you can monitor for a Load Balancer?
+
+* Request count
+* Latency
+* Target response time
+* HTTP 4xx/5xx errors
+* Healthy/Unhealthy host count
+
+---
+
+### 8. What is connection draining (or deregistration delay)?
+
+It ensures **existing connections complete gracefully** before a target is removed or becomes unhealthy.
+
+---
+
+### 9. Can a Load Balancer handle both HTTP and HTTPS traffic?
+
+Yes. You can configure listeners for **both HTTP (port 80)** and **HTTPS (port 443)**, and redirect HTTP to HTTPS if needed.
+
+---
+
+### 10. What are some common issues with load balancers?
+
+* Unhealthy target configuration
+* SSL certificate mismatch
+* Security group misconfiguration
+* Sticky session misbehavior
+* Incorrect routing rules
+
+---
+
+Would you like me to also include **Advanced-level Load Balancer questions** (like failover, global load balancing, DNS routing, ALB vs API Gateway, etc.) next?
