@@ -63,6 +63,15 @@ Files and Folders that containers use from host operating system
 
 Docker daemon lifecycle: you need a docker file(set of instructions) and build it on Docker engine to get the docker image and run the image on docker engine to get the docker container 
 
+[Daemon Start] --> [Listen for Requests] --> [Manage Containers]
+                                         |--> [Create]
+                                         |--> [Start]
+                                         |--> [Running]
+                                         |--> [Stop]
+                                         |--> [Remove]
+                     --> [Log Events / Monitor]
+                     --> [Daemon Shutdown / Restart]
+
 <img width="1014" height="514" alt="image" src="https://github.com/user-attachments/assets/0148699a-fd3b-417a-972b-849055b6ba78" />
 
 docker build - using docker file it will build the image 
