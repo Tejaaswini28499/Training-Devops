@@ -426,5 +426,174 @@ Yes. You can configure listeners for **both HTTP (port 80)** and **HTTPS (port 4
 * Incorrect routing rules
 
 ---
+Perfect 👍 Here’s a list of **Advanced Load Balancer Interview Questions** — with clear, 4–6 line explanations for each.
+These are often asked for **DevOps, Cloud, and AWS solution architect** interviews.
 
-Would you like me to also include **Advanced-level Load Balancer questions** (like failover, global load balancing, DNS routing, ALB vs API Gateway, etc.) next?
+---
+
+## 🔴 **Advanced Load Balancer Interview Questions**
+
+### 1. What is Global Load Balancing?
+
+Global Load Balancing distributes traffic **across multiple regions or data centers**.
+It uses **DNS-based routing (like Route 53, Cloudflare, or GSLB)** to send users to the nearest or healthiest region for better latency and failover handling.
+🟢 Example: Route 53 + ALB setup across multiple AWS regions.
+
+---
+
+### 2. What is the difference between Load Balancer and Auto Scaling?
+
+* **Load Balancer** handles **traffic distribution** across instances.
+* **Auto Scaling** handles **instance lifecycle** — scaling in/out based on metrics.
+  Together they ensure high availability: the load balancer routes traffic to newly added instances automatically.
+
+---
+
+### 3. How do you design a fault-tolerant Load Balancer architecture?
+
+* Use **multi-AZ (cross-zone)** load balancing
+* Configure **health checks**
+* Deploy **Auto Scaling groups** behind it
+* Use **Route 53 failover policies** for cross-region redundancy
+* Enable **connection draining** for graceful failover
+
+---
+
+### 4. What is DNS Load Balancing and how is it different from Application Load Balancing?
+
+* **DNS Load Balancing** (like Route 53) distributes requests using **DNS records (A, CNAME)**.
+* **Application Load Balancing** uses **real-time traffic routing** at the application layer (HTTP).
+  DNS-based doesn’t react instantly to instance failure due to **DNS caching delays**.
+
+---
+
+### 5. How does AWS ALB handle WebSocket and HTTP/2 connections?
+
+ALB natively supports **WebSocket** and **HTTP/2** protocols, maintaining persistent connections between client and server.
+This is useful for **chat applications, live updates,** and **real-time data streaming**.
+
+---
+
+### 6. How can you achieve zero-downtime deployment using Load Balancer?
+
+* Use **two target groups (blue/green)** behind a load balancer.
+* Deploy the new version to the green group.
+* Test, then switch the listener rule to green group.
+* If issues occur, roll back by switching back to blue.
+
+---
+
+### 7. What is ALPN and how does it help in Load Balancing?
+
+**Application-Layer Protocol Negotiation (ALPN)** allows negotiation between protocols (HTTP/1.1, HTTP/2, gRPC) over a single port (like 443).
+ALB uses ALPN to support modern app communication efficiently.
+
+---
+
+### 8. How does a Load Balancer handle SSL certificates for multiple domains?
+
+* Use **Server Name Indication (SNI)**: ALB can host multiple SSL certificates on the same listener.
+* The correct certificate is chosen based on the **requested domain name**.
+
+---
+
+### 9. What is a Gateway Load Balancer (GLB) in AWS?
+
+Gateway Load Balancer operates at **Layer 3 (Network layer)** and is designed to **deploy and scale virtual appliances** like firewalls, intrusion detection systems, and deep packet inspection tools.
+
+---
+
+### 10. How does AWS ALB integrate with Lambda functions?
+
+ALB can directly invoke **Lambda functions** as targets.
+This enables **serverless web applications**, where ALB handles HTTP(S) requests and Lambda processes them — no EC2 servers needed.
+
+---
+
+### 11. What is the difference between Classic Load Balancer (CLB) and ALB/NLB?
+
+| Feature      | CLB      | ALB                   | NLB                   |
+| ------------ | -------- | --------------------- | --------------------- |
+| Layer        | 4 & 7    | 7                     | 4                     |
+| HTTP Routing | Basic    | Advanced (path, host) | None                  |
+| Performance  | Moderate | Moderate              | Very high             |
+| Use Case     | Legacy   | Web Apps              | High performance apps |
+
+---
+
+### 12. How do you handle session persistence in distributed load balancing?
+
+Use centralized session storage (e.g., **Redis, DynamoDB, ElastiCache**) instead of sticky sessions.
+This way, any backend instance can serve the user while session data stays consistent.
+
+---
+
+### 13. What is latency-based routing in AWS Route 53?
+
+It routes user traffic to the region with the **lowest latency**.
+If one region’s health check fails, Route 53 automatically directs users to the next best-performing region.
+
+---
+
+### 14. What are some ways to secure a Load Balancer?
+
+* Enable **HTTPS (TLS)** with strong ciphers
+* Use **WAF (Web Application Firewall)** in front of ALB
+* Restrict ports with **Security Groups**
+* Use **access logs and CloudTrail** for auditing
+* Configure **shield or firewall appliances** for DDoS protection
+
+---
+
+### 15. How do you troubleshoot Load Balancer latency issues?
+
+* Check **Target response time** metric in CloudWatch
+* Validate **unhealthy targets or security group rules**
+* Analyze **access logs** for high response codes
+* Verify **DNS resolution** and **network path latency**
+* Check if **Cross-zone balancing** is enabled
+
+---
+
+### 16. How does cross-region load balancing work in AWS?
+
+Using **Route 53 + ALBs in multiple regions** with **latency-based or failover routing**.
+If one region becomes unhealthy, traffic automatically fails over to another region’s ALB.
+
+---
+
+### 17. Can Load Balancer perform authentication?
+
+Yes — **AWS ALB supports user authentication** with:
+
+* **Cognito** (for user pools)
+* **OIDC providers** like Okta or Google
+  It can handle auth before routing traffic to the backend.
+
+---
+
+### 18. How do you enable Web Application Firewall (WAF) with Load Balancer?
+
+You can **attach AWS WAF** to an **Application Load Balancer** to filter and block malicious requests based on rules (SQL injection, XSS, IP blocks, etc.).
+
+---
+
+### 19. What are Load Balancer access logs, and why are they useful?
+
+Access logs capture **detailed request/response info** like client IP, target, request path, response code, latency.
+They help with **performance tuning, debugging, and security analysis**.
+
+---
+
+### 20. What is the role of Load Balancer in microservices architecture?
+
+In microservices, load balancers:
+
+* Route traffic to specific microservices
+* Support **path-based routing** (e.g., `/api/users`, `/api/orders`)
+* Provide **service discovery and scaling**
+* Improve fault isolation between services
+
+---
+
+
