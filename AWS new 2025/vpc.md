@@ -397,5 +397,8 @@ When asked **scenario questions**:
 
 ---
 
-👉 Do you want me to turn this into a **diagram-based VPC scenarios cheat sheet (PDF with architecture diagrams)** so you can visually explain in interviews too? That usually impresses interviewers a lot.
+we can reassign different IP to private IP
+Can you change a private IP of an instance?”
+Answer like this 👇
+The primary private IP can’t be changed directly, but I can assign a secondary private IP or attach a new ENI with a different primary IP to achieve the same result.
 
