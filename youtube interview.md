@@ -30,3 +30,18 @@
 10. if you want to assign the permanent ip address to ec2 how would you do it
 11. I have to provision two infra primary and secondary in jenkins pipeline how would you ensure the secondary runs only after the primary runs
 12. how would you cleanup the tempoarary file in jenkins workspace 
+--------------------------------------------
+1. how do you fix isssue when there is a error in production -> hotfix
+2. monday to friday from 9am server will be 8 and at 6pm it will be 2 one day at 5.30 suddendly the CPU spikes and it will hit 10 servers at 6pm what will happend 
+“If there’s a CPU spike at 5:30 PM, the Auto Scaling Group will detect the high load and automatically launch more instances — say, up to 10 — to handle the traffic. However, since a scheduled action is set to reduce servers to 2 at 6 PM, it will still trigger and terminate 8 instances. This can cause performance issues or dropped requests if traffic is still high. To avoid this, we should use dynamic or predictive scaling instead of fixed schedules, add connection draining, and set safe minimum instance limits to prevent sudden scale-in during peak load.”
+3. how the request will flow from browser to pod where your appln is running
+“When a user sends a request from the browser, it first goes to the DNS to resolve the domain name into the external IP of the Load Balancer or Ingress. The request reaches the Load Balancer, which forwards it to the Kubernetes Service (usually a ClusterIP or NodePort). The Service uses kube-proxy and iptables/ipvs rules to route the request to one of the healthy pods behind it. Inside the pod, the containerized application processes the request and sends the response back the same path through the Service, Load Balancer, and finally to the browser.”
+4. How do you troubleshoot unhealthy target groups in k8
+“When a target group shows unhealthy targets in Kubernetes, I first check if the pods are running and ready using kubectl get pods. Then I verify the readiness and liveness probes — misconfigured probes often cause health check failures. Next, I check if the Service and Ingress correctly map to the target port and pod labels. I also review the ALB or NLB health check settings (path, port, timeout) to ensure they match the app. Finally, I check logs in the pod (kubectl logs) and events (kubectl describe pod) to identify application or networking issues.”
+5. can I delete the image out of which my container is running
+6. I need to store certificate related information which to use configmap, secret or AWS secret manager
+7. How would you rotate your secret id associated with AWS secret Manager or Vault
+8. how do you use for each block in terrform
+-----------------------------------------------------
+
+1. Have you written any modules in terraform 
