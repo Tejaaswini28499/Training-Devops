@@ -50,4 +50,37 @@
 5. what is permission boundary in IAM
 6. transfer bucket from one account to another how can we achieve
 7. what is the default route in your route table
+8. how would you diff which is public and which is private instance 
+9. Can we assign public ip of our choice and private ip of our choice
+We can assign a private IP of our choice as long as it’s within the subnet’s CIDR range and not in use.
+For public IPs, we can’t choose arbitrary ones — AWS provides them. However, we can allocate and associate an Elastic IP, which gives us control over a static public IP address.
+10. I have s3 bucket I need to transfer data from acoont A to account B how would you do this
+11. what is trust relationship in IAM
+A trust relationship in IAM is a role’s policy that specifies which principals (users, roles, or services) are allowed to assume the role.
+It defines “who can use the role,” while the role’s permission policy defines “what the role can do.”
+For example, an EC2 instance role has a trust relationship with ec2.amazonaws.com, allowing EC2 to assume it.
+12. I have given s3 full access in my policy but in permission boundry i have given read only access what happens
+When a user has an IAM policy granting full S3 access but a permission boundary granting only read-only access, the effective permissions are limited to read-only.
+This is because permission boundaries define the maximum allowed permissions, and AWS evaluates the intersection of the IAM policy and the boundary.
+13. Types of Autoscaling policies
+14. there is a scheduled auto scaling policy 10 am 3 servers 6pm 1 server also target policy is set CPU> 70 increase the instance one day at 5.30 cpu is more then 70 percen what will happenn
+At 5:30 PM, since CPU > 70%, the target tracking policy will launch additional instances to reduce CPU.
+At 6:00 PM, the scheduled scaling policy runs and sets the desired capacity to 1 instance, overriding the target tracking scale-out.
+After 6 PM, if CPU spikes again, the target tracking policy may scale out again dynamically.
+15. pod affinity and pod anti affinity
+16. service and types of service
+17. troubleshoot target group unhealthy scenario
+If targets in an AWS Target Group are unhealthy, I would troubleshoot by:
+a. Checking health check configuration (path, port, protocol, thresholds, timeout).
+b.Verifying security groups and network ACLs allow traffic from the ALB/ELB.
+c.Ensuring the application is running and responding correctly on the expected port.
+d.Confirming targets are properly registered in the target group.
+e.Reviewing CloudWatch metrics and ALB access logs for errors.
+f.Testing the health check endpoint manually to verify connectivity and response.
+18. connect the ec2 instance with the help of terrform and execute some script how will you do
+19. what is muteable and inmutable in Docker 
+In Docker, images are immutable, meaning their layers cannot be changed after creation. This ensures consistency and reproducibility. Containers are mutable, meaning you can modify files, install software, or change configs while the container is running. Any changes in the container do not affect the original image unless a new image is committed.
+20. ADD and COPY diff
+21. Major challenges you faced while devops engineer what you have learned out of this
+-------------------------
    
