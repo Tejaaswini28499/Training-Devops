@@ -44,4 +44,8 @@
 8. how do you use for each block in terrform
 -----------------------------------------------------
 
-1. Have you written any modules in terraform 
+1. Have you written any modules in terraform
+2. public ip has been assiged to my instace can i chane that into private
+3. what is permission boundary in IAM
+4. transfer bucket from one account to another how can we achieve
+5. what is the default route in your route table
