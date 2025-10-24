@@ -7,13 +7,15 @@ Absolutely! Here’s a comprehensive list of **networking questions** that are r
 These test foundational networking knowledge, which is essential for DevOps engineers working with cloud, CI/CD, and containers.
 
 1. What is the difference between **TCP and UDP**? When would you use each in DevOps setups?
-2. What is an **IP address**, and what is the difference between **public and private IPs**?
-3. Explain **subnetting** and why it’s important in cloud networks.
-4. What is a **default gateway**?
-5. What are **DNS and DHCP**, and how do they work?
-6. How does a **firewall** work, and why is it important in DevOps environments?
-7. What is **NAT (Network Address Translation)**, and when is it used?
-8. How do **ping, traceroute, and nslookup** work? Give examples in troubleshooting.
+    TCP: Use when you need reliable communication or when transferring critical data.
+    UDP: Use when you need fast communication or can tolerate some data loss.
+3. What is an **IP address**, and what is the difference between **public and private IPs**?
+4. Explain **subnetting** and why it’s important in cloud networks.
+5. What is a **default gateway**?
+6. What are **DNS and DHCP**, and how do they work?
+7. How does a **firewall** work, and why is it important in DevOps environments?
+8. What is **NAT (Network Address Translation)**, and when is it used?
+9. How do **ping, traceroute, and nslookup** work? Give examples in troubleshooting.
 
 ---
 
