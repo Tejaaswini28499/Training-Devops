@@ -47,8 +47,7 @@
 1. Have you written any modules in terraform
 2. public ip has been assiged to my instace can i chane that into private
 3. when an Instance is created does It have both public and private ip
-4. You have a web appln abc.com
 5. what is permission boundary in IAM
 6. transfer bucket from one account to another how can we achieve
 7. what is the default route in your route table
-8. 
+   
