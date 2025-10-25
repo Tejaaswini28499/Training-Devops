@@ -153,3 +153,427 @@ Great question 👍 You listed almost **all the important IAM components/feature
 * **SCPs/RCPs** = **Org-level governance**.
 
 Do you want me to make this into a **table format (Feature → Purpose)** for even easier last-minute revision?
+
+-------------------
+what are diff types of policy
+Excellent 👍 — this is a very common **AWS IAM interview question**:
+
+> “What are the different types of IAM policies in AWS?”
+
+Let’s go through them clearly and practically 👇
+
+---
+
+## 🔐 **Types of IAM Policies in AWS**
+
+AWS IAM supports **5 main types of policies**, each with different scopes and use cases 👇
+
+| **Policy Type**                   | **Where It’s Used**                          | **Who Creates It**  | **Attached To**                                     | **Example Use Case**                            |
+| --------------------------------- | -------------------------------------------- | ------------------- | --------------------------------------------------- | ----------------------------------------------- |
+| **1️⃣ AWS Managed Policies**      | Common permissions managed by AWS            | AWS                 | Users, Groups, or Roles                             | `AmazonS3FullAccess`, `AmazonEC2ReadOnlyAccess` |
+| **2️⃣ Customer Managed Policies** | Custom reusable policies created by you      | You (Account Owner) | Users, Groups, or Roles                             | `MyEC2DeveloperAccessPolicy`                    |
+| **3️⃣ Inline Policies**           | Embedded directly into a single identity     | You                 | One specific User, Group, or Role                   | Unique permissions for one Lambda role          |
+| **4️⃣ Resource-Based Policies**   | Attached directly to AWS resources           | You                 | AWS Resource (like S3 bucket, SNS topic, SQS queue) | Allow cross-account S3 access                   |
+| **5️⃣ Permissions Boundaries**    | Restrict maximum permissions for a user/role | You                 | IAM User or Role                                    | Prevent roles from escalating privileges        |
+
+---
+
+## 🧩 **1️⃣ AWS Managed Policy**
+
+✅ Predefined and maintained by AWS.
+You **cannot edit them**, but you can **copy and customize** them.
+
+**Example:**
+`AmazonS3ReadOnlyAccess`
+Gives read-only access to all S3 buckets.
+
+Used for: Common roles like EC2 Admin, Lambda Basic Execution, CloudWatch Logs access, etc.
+
+---
+
+## 🧩 **2️⃣ Customer Managed Policy**
+
+✅ Custom reusable policy **created and managed by you**.
+
+You can define exactly which services and actions are allowed.
+
+**Example:**
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": ["ec2:StartInstances", "ec2:StopInstances"],
+      "Resource": "*"
+    }
+  ]
+}
+```
+
+Attach to multiple IAM users or roles.
+Supports **versioning** and **auditing**.
+
+---
+
+## 🧩 **3️⃣ Inline Policy**
+
+✅ A **one-to-one** relationship — policy exists **only inside** a user, role, or group.
+
+Used when you want very **specific permissions** that should **not be reused**.
+
+**Example:**
+A Lambda role has an inline policy allowing write only to one S3 bucket.
+
+---
+
+## 🧩 **4️⃣ Resource-Based Policy**
+
+✅ Attached **directly to the AWS resource**, not to IAM users/roles.
+
+These are used to **grant access to that resource**, often across accounts.
+
+**Common examples:**
+
+* **S3 Bucket Policy**
+* **SNS Topic Policy**
+* **SQS Queue Policy**
+* **KMS Key Policy**
+* **API Gateway Resource Policy**
+
+**Example (S3 Bucket Policy):**
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {"AWS": "arn:aws:iam::111122223333:user/Alice"},
+      "Action": "s3:GetObject",
+      "Resource": "arn:aws:s3:::my-bucket/*"
+    }
+  ]
+}
+```
+
+✅ Allows cross-account or public access **without attaching IAM policies**.
+
+---
+
+## 🧩 **5️⃣ Permissions Boundary**
+
+✅ A **limit or guardrail** that defines the **maximum permissions** an IAM user or role can have — even if other policies give more.
+
+It doesn’t grant permissions by itself; it **restricts** them.
+
+**Example:**
+If a user has an IAM policy that allows `s3:*`, but the permissions boundary allows only `s3:GetObject`,
+➡️ they can only perform `GetObject`.
+
+Used for:
+
+* Controlling delegated IAM role creation
+* Preventing privilege escalation in large orgs
+
+---
+
+## 🧠 **Interview-Ready Summary Answer**
+
+> “There are five types of IAM policies in AWS:
+> 1️⃣ AWS Managed Policies — predefined by AWS.
+> 2️⃣ Customer Managed Policies — created by users and reusable.
+> 3️⃣ Inline Policies — embedded directly in a single user, group, or role.
+> 4️⃣ Resource-Based Policies — attached directly to AWS resources like S3 or SNS.
+> 5️⃣ Permissions Boundaries — limit the maximum permissions a user or role can have.
+>
+> Managed policies are reusable, inline are unique, and resource-based policies control access to specific resources.”
+
+---
+Explain IAM trust policy and permission policy.
+Excellent 👏 — this is a **core IAM concept** that often confuses people because both *trust* and *permission* policies are JSON-based and look similar — but their **purpose is completely different**.
+
+Let’s break it down step by step with visuals and examples 👇
+
+---
+
+## 🔐 **IAM Trust Policy vs. Permission Policy**
+
+| **Aspect**          | **Trust Policy**                                   | **Permission Policy**                                             |
+| ------------------- | -------------------------------------------------- | ----------------------------------------------------------------- |
+| **Purpose**         | Defines **who can assume** the role.               | Defines **what the role/user can do** once assumed.               |
+| **Attached To**     | **IAM Role** only.                                 | **User, Group, or Role**.                                         |
+| **Key Keyword**     | `"Principal"` → Who is trusted to assume the role. | `"Action"` and `"Resource"` → What actions are allowed or denied. |
+| **Controls**        | *Who can use this role.*                           | *What this identity can do with AWS services/resources.*          |
+| **Example**         | “Allow EC2 service to assume this role.”           | “Allow starting/stopping EC2 instances.”                          |
+| **Evaluation Time** | Checked **when role is assumed** (STS AssumeRole). | Checked **when API calls are made**.                              |
+
+---
+
+## 🧩 **1️⃣ IAM Trust Policy**
+
+A **Trust Policy** defines **which entities (users, roles, or services)** are allowed to **assume a role**.
+
+It answers:
+
+> “Who can use this role?”
+
+🟢 **Attached only to IAM Roles**.
+
+### Example – Trust Policy for EC2 Role
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "ec2.amazonaws.com"
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+```
+
+✅ Meaning:
+
+* EC2 instances are **trusted** to assume this IAM role.
+* Without this trust policy, EC2 cannot assume the role, even if permissions exist.
+
+---
+
+### Example – Cross-Account Role Trust Policy
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "arn:aws:iam::111122223333:role/DevOpsRole"
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+```
+
+✅ Meaning:
+
+* The `DevOpsRole` in another AWS account (`111122223333`) can assume this role.
+
+---
+
+## 🧩 **2️⃣ IAM Permission Policy**
+
+A **Permission Policy** defines **what actions** the identity can perform and **on which resources**.
+
+It answers:
+
+> “What can this identity do in AWS?”
+
+🟢 Attached to **Users**, **Groups**, or **Roles**.
+
+### Example – Permission Policy for EC2 Role
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "s3:ListBucket",
+        "s3:GetObject",
+        "s3:PutObject"
+      ],
+      "Resource": [
+        "arn:aws:s3:::my-app-bucket",
+        "arn:aws:s3:::my-app-bucket/*"
+      ]
+    }
+  ]
+}
+```
+
+✅ Meaning:
+
+* The identity (user/role) can **list**, **read**, and **write** objects in that specific S3 bucket.
+
+---
+
+## 🧠 **Putting It Together**
+
+### 🔹 For a Role to Work Properly:
+
+You need **both policies**:
+
+1. **Trust Policy** → Who can assume it
+2. **Permission Policy** → What it can do after being assumed
+
+### Example – EC2 Instance Role Flow
+
+| Step | Policy Type           | Purpose                                                     |
+| ---- | --------------------- | ----------------------------------------------------------- |
+| 1️⃣  | **Trust Policy**      | Allows EC2 service (`ec2.amazonaws.com`) to assume the role |
+| 2️⃣  | **Permission Policy** | Allows that role to access S3 or CloudWatch                 |
+
+---
+
+### 🧱 **Visual Summary**
+
+```
+         ┌────────────────────────┐
+         │   EC2 Instance Role    │
+         ├────────────────────────┤
+         │ 1️⃣ Trust Policy        │
+         │    → Who can assume?   │
+         │      (EC2 service)     │
+         │                        │
+         │ 2️⃣ Permission Policy   │
+         │    → What can it do?   │
+         │      (S3, CW actions)  │
+         └────────────────────────┘
+```
+
+---
+
+## 🔔 **Interview-Ready Answer**
+
+> “A **Trust Policy** defines *who* can assume a role — for example, allowing EC2 or a specific user to assume it using STS.
+> A **Permission Policy** defines *what actions* that user or role can perform once they have the credentials.
+>
+> Trust policies are attached only to roles and include a `Principal`, while permission policies can attach to users, groups, or roles and include `Action` and `Resource` elements.”
+
+---
+
+✅ **Simple way to remember:**
+
+> 🔸 Trust = *Who can assume me?*
+> 🔸 Permission = *What can I do once assumed?*
+
+---
+How do you implement cross-account access using IAM roles?
+Here’s a **concise, interview-ready answer** in 5–5 lines:
+
+---
+
+### **How to implement cross-account access using IAM roles**
+
+1. **Create a role in the target account** with a **trust policy** allowing the source account to assume it.
+2. **Attach permission policies** to the role defining what resources/actions are allowed in the target account.
+3. **Note the role ARN** (Amazon Resource Name) from the target account.
+4. **In the source account**, use `sts:AssumeRole` to obtain temporary credentials for the target account.
+5. **Use the temporary credentials** to access resources in the target account securely.
+
+---
+What is AWS STS (Security Token Service)?
+“AWS STS (Security Token Service) issues temporary, short-lived credentials for AWS resources.
+It allows secure cross-account access without sharing long-term keys.
+STS is used by IAM roles, federated users, or applications requiring temporary access.
+The credentials include an Access Key ID, Secret Key, and Session Token with limited permissions.
+They expire automatically, reducing the risk of leaked or misused credentials.”
+
+--------------------
+How does temporary security credential work in AWS?
+“Temporary security credentials are short-lived credentials issued by AWS STS.
+They include an Access Key ID, Secret Key, and Session Token.
+Applications or users request them via STS APIs like AssumeRole or GetSessionToken.
+These credentials allow access to AWS resources according to the role’s permissions.
+They automatically expire after a set duration, improving security and reducing risk of leaks.”
+
+--------------------------
+Difference between service-linked roles and regular IAM roles
+“A service-linked role is a predefined role created by an AWS service to allow that service to perform actions on your behalf.
+It has a trust policy automatically set to the service and comes with predefined permissions.
+A regular IAM role is created by the user or admin and can be customized for any purpose.
+Regular roles require manually setting trust and permission policies.
+Service-linked roles simplify management, whereas regular roles offer full control and flexibility.”
+
+-------------------------------
+Perfect — these are classic **AWS IAM and security questions** that often come up in DevOps interviews. Let’s go **question by question** with **concise, interview-ready explanations**.
+
+---
+
+## **1️⃣ How do you enforce password policies in IAM?**
+
+* Use **IAM account password policy** in the AWS Management Console or via CLI.
+* Configure requirements like **minimum length, complexity, uppercase/lowercase, numbers, symbols**.
+* Enforce **password expiration** and **password reuse prevention**.
+* Apply **MFA (Multi-Factor Authentication)** to strengthen account security.
+* IAM users are required to follow this policy when creating or changing passwords.
+
+---
+
+## **2️⃣ Explain IAM policy evaluation logic (explicit allow, explicit deny)**
+
+AWS evaluates IAM policies in a **specific order**:
+
+1. **By default, all requests are denied**.
+2. **Check all applicable policies** (identity-based, resource-based, permission boundaries).
+3. **Explicit Deny** always overrides everything — request is denied if any policy explicitly denies it.
+4. **Explicit Allow** grants access if no explicit deny exists.
+5. Final decision = **Deny if no allow matched**.
+
+✅ **Rule:** Explicit Deny > Explicit Allow > Implicit Deny
+
+---
+
+## **3️⃣ How can you restrict access to an S3 bucket only from specific IP addresses?**
+
+Use an **S3 bucket policy** with **`Condition`** key `aws:SourceIp`.
+
+**Example:**
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": "*",
+      "Action": "s3:*",
+      "Resource": [
+        "arn:aws:s3:::my-bucket",
+        "arn:aws:s3:::my-bucket/*"
+      ],
+      "Condition": {
+        "IpAddress": {"aws:SourceIp": "203.0.113.0/24"}
+      }
+    }
+  ]
+}
+```
+
+✅ Only allows requests originating from **203.0.113.0/24**.
+
+---
+
+## **4️⃣ How do you audit IAM permissions using AWS CloudTrail?**
+
+* **Enable CloudTrail** to log all IAM API calls (CreateUser, AttachPolicy, AssumeRole, etc.).
+* **Store logs** in an S3 bucket with proper encryption.
+* **Analyze events** using CloudTrail Event History or **Athena** for queries.
+* Identify **changes to roles, policies, or user permissions**.
+* Use **AWS Config** or **IAM Access Analyzer** to detect unused or overly permissive policies.
+
+---
+
+## **5️⃣ How can you delegate access to resources without sharing credentials?**
+
+* Use **IAM roles** with **STS temporary security credentials**.
+* Assign a **trust policy** to allow specific users, services, or accounts to assume the role.
+* Call `sts:AssumeRole` to receive **temporary credentials**.
+* Temporary credentials allow **time-limited access** to resources.
+* Avoids sharing long-term access keys or passwords, improving security.
+
+---
+
+
+
+
+
