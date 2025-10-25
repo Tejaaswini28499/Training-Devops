@@ -673,6 +673,29 @@ AWS evaluates IAM requests in this **specific order**:
 
 
 
+AWS evaluates IAM requests in this specific order:
 
+Default Deny:
+
+By default, all requests are denied unless explicitly allowed.
+
+Check All Applicable Policies:
+
+AWS evaluates all identity-based, resource-based, and permissions boundary policies.
+
+Explicit Deny Overrides Everything:
+
+If any policy explicitly denies the action, it is denied, even if other policies allow it.
+
+Explicit Allow Grants Access:
+
+Access is granted only if there is an explicit allow and no explicit deny.
+
+Implicit Deny if No Match:
+
+If no allow exists and no explicit deny exists → request is denied by default.
+
+✅ Rule of Thumb:
+Explicit Deny > Explicit Allow > Implicit Deny
 
 
