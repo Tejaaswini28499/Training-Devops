@@ -756,3 +756,12 @@ It creates a **band of expected values**; if a metric goes outside this band, it
 It’s useful for **proactive monitoring** without manually setting static thresholds.
 
 
+| **Feature**      | **CloudWatch Events / EventBridge**                | **CloudWatch Alarms**               |
+| ---------------- | -------------------------------------------------- | ----------------------------------- |
+| **Purpose**      | Respond to AWS resource state changes or schedules | Monitor metrics and thresholds      |
+| **Trigger Type** | Event-based (e.g., EC2 stopped)                    | Metric-based (e.g., CPU > 80%)      |
+| **Targets**      | Lambda, SNS, SQS, Step Functions                   | Usually SNS or Auto Scaling actions |
+| **Example**      | Trigger Lambda when CodePipeline fails             | Trigger alarm when CPU > 80%        |
+
+CloudWatch Events, now part of EventBridge, is an event-driven service that monitors AWS resources and routes events to targets like Lambda, SNS, or Step Functions. It helps automate responses to state changes or run scheduled tasks.
+For example, I can create a rule to trigger a Lambda function whenever an EC2 instance stops or a CodePipeline build fails. It’s event-based, unlike CloudWatch Alarms which are metric-based.”
