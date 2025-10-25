@@ -169,6 +169,7 @@ Perfect 👏 Let’s build this **smartly structured interview prep** for you �
 8. Explain the difference between **push-based** and **pull-based** metrics in CloudWatch.
 9. What are CloudWatch anomaly detection and its use cases?
 10. How can you monitor resources across multiple AWS accounts or regions using CloudWatch?
+11. Difference Between CloudWatch Events and CloudWatch Alarms
 
 ---
 
