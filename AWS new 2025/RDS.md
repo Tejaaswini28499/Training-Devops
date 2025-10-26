@@ -6,3 +6,12 @@
 <img width="1047" height="435" alt="image" src="https://github.com/user-attachments/assets/62b4ac8b-7c7a-4936-9ccf-8dd555fd727a" />
 <img width="1141" height="555" alt="image" src="https://github.com/user-attachments/assets/7fe2f7fd-e99d-4a20-8c55-0ee093d54805" />
 <img width="940" height="541" alt="image" src="https://github.com/user-attachments/assets/cf6eab95-bdae-4609-828e-a9596545246a" />
+
+
+diff btw db instance and DB instance class
+| Feature            | DB Instance                                | DB Instance Class                                  |
+| ------------------ | ------------------------------------------ | -------------------------------------------------- |
+| Definition         | The running database environment           | The compute & memory configuration of the instance |
+| What it represents | The actual server with your DB engine      | The “size” or “type” of that server                |
+| Configurable?      | Yes, name, storage, engine, multi-AZ, etc. | Yes, CPU/RAM/network performance                   |
+| Examples           | `mydb-instance`, `prod-db-instance`        | `db.t3.micro`, `db.m5.large`, `db.r5.2xlarge`      |
