@@ -209,9 +209,124 @@ How can you encrypt data at rest and in transit in RDS?
 
 ---
 What are RDS event subscriptions?
+---------
 RDS event subscriptions allow you to receive notifications for specific database events via Amazon SNS. You can subscribe to events like backups, failovers, low storage, or maintenance. Notifications are sent to email, Lambda, or other endpoints, helping you monitor and react to important changes in your RDS instances automatically.
 
+-------
+How do you migrate an on-prem database to RDS?
 --------------
+Excellent 👍 — this is one of the **most asked AWS RDS interview questions**, especially for DevOps or Cloud Migration scenarios.
+
+---
+
+## 🎯 **Interview Answer (4–5 lines)**
+
+> To migrate an on-premises database to RDS, I would use **AWS Database Migration Service (DMS)** along with the **Schema Conversion Tool (SCT)**.
+> SCT converts the database schema if the engines differ (e.g., Oracle → PostgreSQL), while DMS handles data replication with minimal downtime.
+> I’d first set up the **RDS instance as the target**, configure **network connectivity** (VPN/Direct Connect), then use DMS to perform **full load + continuous replication** until cutover.
+> Finally, I’d test data integrity and switch the application to RDS.
+
+---
+
+## 🧠 **Detailed Explanation**
+
+### **1️⃣ Pre-Migration Steps**
+
+1. **Assess the source DB**
+
+   * Check DB engine, version, size, and compatibility with RDS.
+   * Example: Oracle, MySQL, SQL Server, PostgreSQL, etc.
+
+2. **Choose migration method:**
+
+   * **Homogeneous migration** (same engine, e.g., MySQL → RDS MySQL) → simpler.
+   * **Heterogeneous migration** (different engines, e.g., Oracle → RDS PostgreSQL) → use AWS SCT + DMS.
+
+3. **Create RDS target instance**
+
+   * Ensure same DB engine/version compatibility.
+   * Configure VPC, subnet, security groups, and parameter groups.
+
+---
+
+### **2️⃣ Network Connectivity**
+
+* RDS must be reachable from on-premises DB.
+* Use one of:
+
+  * **VPN connection**
+  * **AWS Direct Connect**
+  * **Public endpoint (temporary)** for migration only.
+
+---
+
+### **3️⃣ Schema Conversion (if heterogeneous)**
+
+* Use **AWS Schema Conversion Tool (SCT)**:
+
+  * Converts tables, indexes, stored procedures, etc.
+  * Reports incompatibilities and suggests manual fixes.
+
+---
+
+### **4️⃣ Data Migration Using DMS**
+
+* **AWS DMS (Database Migration Service)** steps:
+
+  1. Create **Replication Instance** (runs the migration job).
+  2. Define **Source Endpoint** → on-prem DB.
+  3. Define **Target Endpoint** → RDS instance.
+  4. Create a **Migration Task**:
+
+     * **Full Load** → copies all data.
+     * **CDC (Change Data Capture)** → replicates changes in real time.
+  5. Validate migration and monitor progress in DMS console.
+
+---
+
+### **5️⃣ Cutover**
+
+* Once all changes are synced and validated:
+
+  * Stop app writes on the old DB.
+  * Allow DMS to catch up.
+  * Point the application to the new RDS endpoint.
+
+---
+
+### **6️⃣ Post-Migration Validation**
+
+* Verify:
+
+  * Data consistency.
+  * Application connectivity.
+  * Query performance tuning (analyze, index rebuild).
+
+---
+
+### ✅ **Common Tools**
+
+| Purpose                     | Tool                                          |
+| --------------------------- | --------------------------------------------- |
+| Schema conversion           | AWS SCT                                       |
+| Continuous data replication | AWS DMS                                       |
+| Backup-based migration      | Native DB export/import (mysqldump, pg_dump)  |
+| Large migrations            | AWS Snowball Edge + DMS                       |
+| Verification                | Data validation scripts, AWS Glue, or queries |
+
+---
+
+### 🧩 **Example**
+
+**On-prem MySQL → RDS MySQL**
+
+1. Take initial backup or use DMS Full Load.
+2. Set up DMS with on-prem MySQL as source and RDS MySQL as target.
+3. Enable CDC until cutover.
+4. Switch application connection string to RDS endpoint.
+
+
+--------------------
 How is RDS pricing calculated?
 --------------
 Perfect — AWS RDS pricing is a common **interview question**, and it’s important to understand the **key components**. Here’s a clear explanation.
