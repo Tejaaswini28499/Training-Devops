@@ -1052,6 +1052,105 @@ Then update your application’s write endpoint to point to the new DB.
 
 ---
 
+How do you back up RDS data across accounts?
+Excellent 👏 — this is a **high-value AWS RDS interview question** that tests your understanding of **cross-account data protection** and **backup strategy**.
+
+---
+
+## 🎯 **Interview Answer (4–5 lines)**
+
+> You can back up RDS data across accounts by **copying automated or manual snapshots** to another AWS account.
+> This is done by **sharing the snapshot** using the target account’s AWS Account ID and then performing a **snapshot copy** in that account.
+> It works for both **manual snapshots** and **automated backups** (via AWS Backup).
+> This helps achieve **cross-account disaster recovery** and **data isolation for security compliance**.
+
+---
+
+## 🧠 **Detailed Explanation**
+
+### **1️⃣ RDS Backup Types**
+
+* **Automated Backups** → Managed by AWS; stored in S3; same account only.
+* **Manual Snapshots** → User-created; can be shared **across accounts or regions**.
+
+So for **cross-account backup**, you must **use manual snapshots or AWS Backup.**
+
+---
+
+### **2️⃣ Manual Snapshot Sharing (Direct Method)**
+
+**Steps:**
+
+1. In the **source account** (where RDS resides):
+
+   * Go to **RDS → Snapshots → Select Snapshot → Share Snapshot**.
+2. Provide the **AWS Account ID** of the **target account**.
+3. Ensure the snapshot is **not encrypted with the default AWS-managed KMS key**.
+
+   * If encrypted, use a **customer-managed CMK** and **grant key access** to the target account.
+4. In the **target account**, go to:
+
+   * **RDS → Snapshots → Shared with me → Copy Snapshot**.
+5. Choose destination region (optional) and copy it as your own snapshot.
+
+✅ Result → The target account now owns its own copy (independent of the source).
+
+---
+
+### **3️⃣ Using AWS Backup for Cross-Account Copies**
+
+**Better for automation and compliance.**
+
+Steps:
+
+1. Create a **Backup Vault** in each account.
+2. Use **AWS Backup Plans** to back up RDS automatically.
+3. In the **Backup Vault settings**, enable **cross-account copy**.
+4. Assign the **target account** via **AWS Organizations** or **IAM policy**.
+5. Backups get automatically copied to the target vault in another account.
+
+✅ Works for **automated, encrypted, and continuous backups** — more enterprise-grade.
+
+---
+
+### **4️⃣ Example Use Case**
+
+| Account       | Purpose    | Notes                                                |
+| ------------- | ---------- | ---------------------------------------------------- |
+| **Account A** | Production | Creates RDS snapshots daily                          |
+| **Account B** | DR Account | Receives shared snapshots for restore                |
+| **Account C** | Security   | Stores immutable backups (backup vault lock enabled) |
+
+---
+
+### **5️⃣ For Encryption**
+
+If your RDS snapshot is **encrypted**:
+
+* Use **customer-managed KMS key (CMK)**.
+* Add the **target account’s principal** in the key policy:
+
+  ```json
+  {
+    "Sid": "AllowUseByTargetAccount",
+    "Effect": "Allow",
+    "Principal": { "AWS": "arn:aws:iam::<target-account-id>:root" },
+    "Action": ["kms:Decrypt", "kms:CreateGrant"],
+    "Resource": "*"
+  }
+  ```
+
+---
+
+### ✅ **Best Practices**
+
+* Automate snapshot sharing using **Lambda + EventBridge** (trigger when new snapshot is created).
+* Store DR snapshots in a **different region and account**.
+* Use **Backup Vault Lock** (Write-Once-Read-Many) to prevent deletion by mistake or ransomware.
+
+---
+
+
 
 
 
