@@ -940,6 +940,14 @@ Let’s go step by step with **AWS ALB/NLB examples** and **general load balance
 * Verify **DNS resolution** and **network path latency**
 * Check if **Cross-zone balancing** is enabled
 
+1. If **TargetResponseTime** is high → issue is in backend, not ALB itself.
+2. If **ELB latency** is high but targets are fast → ALB networking/routing issue.
+3. **Check Target Health**: Unhealthy targets → traffic rerouting → temporary latency spike.
+4. **Check health check path** (e.g., /health) responds quickly (<2s).
+5. **Check Backend Performance**:High CPU, memory, or I/O wait? (top, vmstat, sar) or Lambda: High cold start time?
+6. **Check SSL/TLS Handshake**:Old SSL ciphers or misconfigured certificates can slow down connection setup
+7. **Scaling or Load Issues**:Check if Auto Scaling Group has enough instances.If all traffic goes to few targets → enable cross-zone load balancing.
+
 ---
 
 ### 16. How does cross-region load balancing work in AWS?
