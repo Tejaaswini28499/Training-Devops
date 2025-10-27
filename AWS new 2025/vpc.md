@@ -467,4 +467,146 @@ You can peer VPC A and VPC B, and route private traffic between them — your ap
 ---
 
 Would you like me to explain **when to use VPC Peering vs Transit Gateway** (since that’s a common interview question)?
+Here’s a complete list of **AWS VPC (Virtual Private Cloud)** interview questions — categorized as **Basic**, **Intermediate**, and **Advanced**, perfect for **DevOps or Cloud Engineer roles (5 years experience)** 👇
+
+---
+
+## 🌱 **Basic VPC Interview Questions**
+
+1. **What is a VPC?**
+   → Explain that VPC is a logically isolated section of AWS Cloud where you can launch resources in a virtual network you define.
+
+2. **What are the main components of a VPC?**
+   → Subnets, Route Tables, Internet Gateway, NAT Gateway, Security Groups, NACLs, DHCP options set, VPC Peering, and Endpoints.
+
+3. **What is a subnet?**
+   → A segment of a VPC’s IP address range where resources can be placed (Public or Private subnets).
+
+4. **Difference between Public and Private Subnet?**
+   → Public subnets have a route to the Internet Gateway; private subnets don’t.
+
+5. **What is an Internet Gateway (IGW)?**
+   → A horizontally scaled, redundant, and highly available VPC component that allows communication between your VPC and the internet.
+
+6. **What is a Route Table in VPC?**
+   → It contains a set of rules (routes) that determine where network traffic is directed.
+
+7. **What are Security Groups and NACLs?**
+   → SG = Stateful firewall at instance level; NACL = Stateless firewall at subnet level.
+
+8. **Can a subnet be associated with multiple route tables?**
+   → No, one subnet can only be associated with one route table at a time.
+
+9. **What is CIDR block?**
+   → A method for allocating IP addresses and routing, e.g., `10.0.0.0/16`.
+
+10. **How many VPCs can you have per region by default?**
+    → By default, **5 VPCs per region** (can be increased via support ticket).
+
+---
+
+## ⚙️ **Intermediate VPC Interview Questions**
+
+1. **Difference between Security Group and NACL?**
+
+   | Feature          | Security Group                       | NACL                       |
+   | ---------------- | ------------------------------------ | -------------------------- |
+   | Level            | Instance                             | Subnet                     |
+   | Stateful         | Yes                                  | No                         |
+   | Default behavior | Deny all inbound, allow all outbound | Allow all inbound/outbound |
+   | Rules            | Only “Allow”                         | Allow & Deny               |
+
+2. **How does a NAT Gateway work?**
+   → Allows instances in a private subnet to connect to the internet but blocks inbound internet connections.
+
+3. **When do you use VPC Peering?**
+   → To connect two VPCs privately using internal IPs (no overlapping CIDRs allowed).
+
+4. **What is VPC Endpoint?**
+   → A private connection between your VPC and AWS services **without using IGW or NAT**.
+   Types:
+
+   * **Interface Endpoint (ENI)** – for most AWS services (uses PrivateLink)
+   * **Gateway Endpoint** – for S3 and DynamoDB.
+
+5. **Can VPCs in different AWS accounts communicate?**
+   → Yes, through **VPC Peering** or **Transit Gateway**.
+
+6. **What is an Elastic IP (EIP)?**
+   → A static IPv4 address for dynamic cloud computing.
+
+7. **How do you connect your on-prem network to AWS VPC?**
+   → Using **VPN Connection** or **AWS Direct Connect**.
+
+8. **Can you assign multiple subnets to a single Availability Zone?**
+   → Yes, you can have multiple subnets per AZ.
+
+9. **What is a Bastion Host?**
+   → A special-purpose EC2 instance used to securely access instances in private subnets via SSH.
+
+10. **What is PrivateLink?**
+    → It enables private connectivity between VPCs, services, and on-prem networks without using public IPs.
+
+---
+
+## 🚀 **Advanced VPC Interview Questions**
+
+1. **Difference between VPC Peering and Transit Gateway?**
+
+   * Peering: One-to-one connection, no transitive routing
+   * Transit Gateway: Hub-and-spoke model, supports transitive routing and multiple VPCs/accounts.
+
+2. **How do you implement high availability for NAT Gateway?**
+   → Create a NAT Gateway in each Availability Zone and configure route tables accordingly.
+
+3. **What happens when two VPCs have overlapping CIDR blocks?**
+   → Peering or routing between them isn’t possible without reassigning CIDRs.
+
+4. **How to connect multiple VPCs across different regions?**
+   → Use **Inter-Region VPC Peering** or **Transit Gateway (inter-region peering)**.
+
+5. **What is AWS Transit Gateway (TGW)?**
+   → A central hub to connect multiple VPCs and on-prem networks with simplified management.
+
+6. **How do you secure VPC traffic?**
+   → Use SGs, NACLs, VPC Flow Logs, Network Firewall, GuardDuty, and private endpoints.
+
+7. **What are VPC Flow Logs?**
+   → Capture IP traffic information going to/from network interfaces in your VPC for analysis/troubleshooting.
+
+8. **Can you attach multiple internet gateways to a VPC?**
+   → No, only one IGW per VPC.
+
+9. **What are common VPC design best practices?**
+
+   * Use separate subnets for each tier (web, app, db).
+   * Use CIDR blocks that don’t overlap with on-prem.
+   * Use multiple AZs for HA.
+   * Restrict traffic via SGs/NACLs.
+
+10. **Explain how traffic flows from a private instance to the Internet.**
+    → Private instance → Route table → NAT Gateway (public subnet) → IGW → Internet.
+
+---
+
+## 🎯 **Scenario-Based Questions**
+
+1. Your private EC2 instance needs to download updates — how do you allow this?
+   → Add route to NAT Gateway in the private subnet’s route table.
+
+2. You want to access S3 from a private subnet without using NAT — what do you do?
+   → Use a **Gateway VPC Endpoint** for S3.
+
+3. You want to connect multiple VPCs and on-prem data center — what do you use?
+   → **Transit Gateway** or **VPN + Direct Connect**.
+
+4. A developer can’t SSH into a private EC2 — how do you troubleshoot?
+   → Check route tables, SG rules, Bastion Host access, and NACLs.
+
+5. You have two VPCs with overlapping CIDRs — what’s the solution?
+   → Redesign CIDR or use **PrivateLink** instead of Peering.
+
+---
+
+Would you like me to create a **diagram + explanation** showing **how traffic flows in a VPC (Public subnet, Private subnet, NAT, IGW)** — useful for interviews and notes?
 
