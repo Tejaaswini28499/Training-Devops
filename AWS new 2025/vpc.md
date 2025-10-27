@@ -606,7 +606,17 @@ Here’s a complete list of **AWS VPC (Virtual Private Cloud)** interview questi
 5. You have two VPCs with overlapping CIDRs — what’s the solution?
    → Redesign CIDR or use **PrivateLink** instead of Peering.
 
----
+-----------
+diff btw vpc peering and transit gateway
+-----------
+| **Feature**            | **VPC Peering**                                | **Transit Gateway (TGW)**                             |
+| ---------------------- | ---------------------------------------------- | ----------------------------------------------------- |
+| **Connection Type**    | One-to-one (point-to-point)                    | One-to-many (hub-and-spoke)                           |
+| **Transitive Routing** | ❌ Not supported                                | ✅ Supported                                           |
+| **Scalability**        | Limited — creates many peer links as VPCs grow | Highly scalable — connect 1000s of VPCs via one hub   |
+| **Management**         | Complex when many VPCs                         | Centralized and easier to manage                      |
+| **Cost**               | Cheaper (data transfer only)                   | Costlier (per-attachment + data transfer)             |
+| **Use Case**           | Simple setups — 2–3 VPCs                       | Large / enterprise networks or hybrid (on-prem + AWS) |
+| **Routing**            | Each VPC route table updated manually          | Routes managed centrally in TGW                       |
 
-Would you like me to create a **diagram + explanation** showing **how traffic flows in a VPC (Public subnet, Private subnet, NAT, IGW)** — useful for interviews and notes?
 
