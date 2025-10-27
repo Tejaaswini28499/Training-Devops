@@ -476,10 +476,121 @@ This is useful for **chat applications, live updates,** and **real-time data str
 
 ### 6. How can you achieve zero-downtime deployment using Load Balancer?
 
-* Use **two target groups (blue/green)** behind a load balancer.
-* Deploy the new version to the green group.
-* Test, then switch the listener rule to green group.
-* If issues occur, roll back by switching back to blue.
+Great question 👍 — this is a **common DevOps and AWS interview topic**.
+Let’s break it down step by step 👇
+
+---
+
+## 🚀 **Goal:** Zero-Downtime Deployment using a Load Balancer (across different regions)
+
+---
+
+### 🧩 **Concept**
+
+**Zero-downtime deployment** means **your users never experience service interruption** during application updates — even while deploying new versions.
+
+You achieve this using **Load Balancers + multiple environments (blue/green, canary, etc.)** — so traffic is routed only to healthy instances.
+
+---
+
+## 🏗️ **How it works (AWS example)**
+
+Let’s take AWS as an example.
+
+### ✅ Step-by-Step Process
+
+#### **1. Use Load Balancer (ELB / ALB)**
+
+* The **Load Balancer** routes traffic to multiple EC2 instances, containers, or target groups.
+* If one instance is being updated or restarted, others still serve traffic.
+
+---
+
+#### **2. Deploy in Multiple Regions**
+
+Let’s say:
+
+* **Region A → ap-south-1 (Mumbai)**
+* **Region B → us-east-1 (N. Virginia)**
+
+You can use **Route 53** for global DNS-based load balancing.
+
+* Create **two ALBs**, one in each region.
+* In **Route 53**, set up a **Latency-based routing policy** or **Weighted routing policy**:
+
+  * During deployment, gradually shift small % of traffic from Region A to Region B.
+  * Once the new version is stable in Region B, switch all traffic.
+
+---
+
+#### **3. Use Blue-Green Deployment (per region)**
+
+Inside each region:
+
+* Have **two target groups**:
+
+  * **Blue** = current version
+  * **Green** = new version
+* ALB routes traffic only to Blue initially.
+* Deploy new version (Green), test it.
+* Update the **target group in Load Balancer** to send traffic to Green.
+* If it fails, rollback to Blue instantly.
+
+---
+
+#### **4. Health Checks**
+
+Configure **Load Balancer Health Checks** to:
+
+* Route traffic **only to healthy targets**.
+* During deployment, new instances are added **only when health checks pass**.
+
+---
+
+#### **5. Automation**
+
+Use:
+
+* **AWS CodeDeploy** (with Blue/Green strategy)
+* **Auto Scaling Groups** to manage EC2 instances
+* **CI/CD pipeline (Jenkins / GitHub Actions / AWS CodePipeline)**
+
+  * Automatically deploy to Green
+  * Run tests
+  * Switch Load Balancer target groups
+  * Rollback if failure detected
+
+---
+
+## 🌍 **High-level architecture**
+
+```
+[User]
+   ↓
+[Route 53] — Latency / Weighted Routing
+   ↓
+ ┌─────────────┐      ┌─────────────┐
+ │ ALB (Region A) │    │ ALB (Region B) │
+ │ Blue / Green   │    │ Blue / Green   │
+ └─────────────┘      └─────────────┘
+   ↓                       ↓
+[EC2s/Containers]     [EC2s/Containers]
+```
+
+---
+
+## 🧠 **In short:**
+
+✅ Use **ALB** for routing within a region
+✅ Use **Route 53** for global routing between regions
+✅ Implement **Blue/Green or Canary deployments**
+✅ Use **health checks** to ensure only healthy instances serve traffic
+✅ Automate switching and rollback using **CI/CD tools**
+
+---
+
+Would you like me to show a **real AWS example setup (Route 53 + ALB + EC2)** diagram or **Terraform snippet** for this setup?
+
 
 ---
 
@@ -505,8 +616,138 @@ Gateway Load Balancer operates at **Layer 3 (Network layer)** and is designed to
 
 ### 10. How does AWS ALB integrate with Lambda functions?
 
-ALB can directly invoke **Lambda functions** as targets.
-This enables **serverless web applications**, where ALB handles HTTP(S) requests and Lambda processes them — no EC2 servers needed.
+Excellent question 💡 — this is an important topic for both **DevOps** and **AWS solution architecture** interviews.
+
+Let’s go step by step 👇
+
+---
+
+## ⚙️ **How AWS Application Load Balancer (ALB) integrates with AWS Lambda**
+
+Since **2018**, AWS ALB can **directly invoke Lambda functions** — meaning, you can use Lambda as a backend target **without needing API Gateway**.
+
+---
+
+### 🧩 **1. Architecture Overview**
+
+```
+Client (Browser / API call)
+   ↓
+Application Load Balancer (ALB)
+   ↓
+Target Group (Lambda function)
+   ↓
+AWS Lambda executes your code
+   ↓
+Response returned through ALB → to client
+```
+
+So instead of routing traffic to EC2 instances or containers, the ALB can send requests **straight to a Lambda function**.
+
+---
+
+### 🧠 **2. How It Works**
+
+#### ✅ Step 1: Create a Target Group for Lambda
+
+* Go to **EC2 → Target Groups → Create Target Group**
+* Choose **Target Type = Lambda function**
+* Select your **Lambda function**
+
+#### ✅ Step 2: Attach Target Group to ALB Listener Rule
+
+* Go to **Load Balancer → Listeners → View/Edit Rules**
+* Create a rule like:
+
+  * If path = `/api/*`
+  * Then forward to **Lambda target group**
+
+#### ✅ Step 3: ALB Invokes Lambda
+
+* ALB converts the HTTP request (method, headers, body, etc.) into a JSON event
+* Invokes the Lambda function synchronously
+* Lambda executes and returns a JSON response to ALB
+* ALB translates it back to HTTP response → sends to client
+
+---
+
+### 🧾 **3. Example Request Flow**
+
+**Request from client:**
+
+```
+GET /hello HTTP/1.1
+Host: app.example.com
+```
+
+**Event ALB sends to Lambda:**
+
+```json
+{
+  "httpMethod": "GET",
+  "path": "/hello",
+  "headers": {
+    "host": "app.example.com"
+  },
+  "body": "",
+  "isBase64Encoded": false
+}
+```
+
+**Lambda Response:**
+
+```json
+{
+  "statusCode": 200,
+  "statusDescription": "200 OK",
+  "isBase64Encoded": false,
+  "headers": {
+    "Content-Type": "text/plain"
+  },
+  "body": "Hello from Lambda!"
+}
+```
+
+ALB sends that response back to the client ✅
+
+---
+
+### ⚡ **4. Benefits**
+
+| Feature                   | Description                                                 |
+| ------------------------- | ----------------------------------------------------------- |
+| **Serverless backend**    | No need for EC2 or ECS                                      |
+| **Pay per use**           | You pay only when requests are processed                    |
+| **Native HTTP/S support** | ALB natively handles SSL termination, routing, and scaling  |
+| **Seamless CI/CD**        | Deploy Lambda with pipelines and switch ALB target easily   |
+| **VPC + Security**        | ALB and Lambda can both run inside a VPC for private access |
+
+---
+
+### 🧱 **5. Common Use Cases**
+
+* Serverless web APIs (without API Gateway)
+* Event-driven microservices
+* Lightweight authentication or request filtering
+* Canary or blue-green testing with Lambda + ALB routing rules
+
+---
+
+### 🚨 **6. Limitations / Gotchas**
+
+* Only **HTTP(S)** traffic is supported (not WebSocket).
+* **Lambda timeout** max is 30 seconds for ALB.
+* **Response size** limited to **1 MB**.
+* No direct access to **ALB stickiness or WebSocket sessions**.
+
+---
+
+### ✅ **Example Real-World Setup**
+
+* `/api/*` routes → go to **Lambda Target Group**
+* `/app/*` routes → go to **ECS Target Group**
+  This hybrid model helps mix serverless and container backends under the same ALB.
+
 
 ---
 
