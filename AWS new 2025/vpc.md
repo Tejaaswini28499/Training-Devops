@@ -401,4 +401,70 @@ we can reassign different IP to private IP
 Can you change a private IP of an instance?”
 Answer like this 👇
 The primary private IP can’t be changed directly, but I can assign a secondary private IP or attach a new ENI with a different primary IP to achieve the same result.
+You use **VPC Peering** when you want **two VPCs to communicate privately** with each other — **without using the public internet**. 🌐🚫
+
+Here’s a clear and brief explanation 👇
+
+---
+
+### 🔹 **What is VPC Peering?**
+
+VPC Peering is a **network connection between two VPCs** that enables traffic to flow **as if they are part of the same network**.
+
+It allows resources (like EC2, RDS, etc.) in one VPC to communicate with resources in another VPC **using private IP addresses**.
+
+---
+
+### 🔹 **When to use VPC Peering**
+
+You use VPC Peering when:
+
+1. ✅ **You have multiple VPCs** that need to communicate securely.
+   Example:
+
+   * One VPC for **production**, another for **testing** — and you want them to exchange data.
+
+2. ✅ **You need cross-account communication**.
+
+   * Example: Your company has separate AWS accounts for Dev and QA, but both need to share a database or API privately.
+
+3. ✅ **You want private communication across regions**.
+
+   * VPC peering supports **inter-region peering**, so your apps can talk securely between regions (like Mumbai ↔ Singapore).
+
+4. ✅ **You don’t want to use VPN or Transit Gateway** because the setup is simple and there’s **no bandwidth bottleneck**.
+
+---
+
+### 🔹 **Example Use Case**
+
+* **VPC A (App Layer)** → EC2 servers
+* **VPC B (Database Layer)** → RDS instance
+
+You can peer VPC A and VPC B, and route private traffic between them — your app in VPC A can query the database in VPC B without going over the internet.
+
+---
+
+### 🔹 **Important Notes**
+
+* ❌ No transitive peering (A↔B↔C — C won’t see A).
+* ❌ You must update route tables in both VPCs to enable communication.
+* ❌ CIDR blocks of both VPCs **must not overlap**.
+
+---
+
+### ✅ **Summary**
+
+| Feature              | Description                            |
+| -------------------- | -------------------------------------- |
+| Purpose              | Private communication between two VPCs |
+| Type                 | Point-to-point                         |
+| Works across         | Same or different regions/accounts     |
+| Internet needed      | ❌ No                                   |
+| CIDR overlap allowed | ❌ No                                   |
+| Transitive routing   | ❌ No                                   |
+
+---
+
+Would you like me to explain **when to use VPC Peering vs Transit Gateway** (since that’s a common interview question)?
 
