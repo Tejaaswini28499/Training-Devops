@@ -1150,7 +1150,8 @@ If your RDS snapshot is **encrypted**:
 
 ---
 
-
+storage type
+--------
 
 | Storage Type                                   | Description                             | Best For                  | Key Feature          |
 | ---------------------------------------------- | --------------------------------------- | ------------------------- | -------------------- |
