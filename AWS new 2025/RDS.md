@@ -1152,6 +1152,11 @@ If your RDS snapshot is **encrypted**:
 
 
 
+| Storage Type                                   | Description                             | Best For                  | Key Feature          |
+| ---------------------------------------------- | --------------------------------------- | ------------------------- | -------------------- |
+| **1️⃣ General Purpose (SSD)** — `gp3` / `gp2`  | Balanced price and performance          | Most production workloads | Scalable IOPS        |
+| **2️⃣ Provisioned IOPS (SSD)** — `io1` / `io2` | High performance, low-latency workloads | Critical production DBs   | Consistent high IOPS |
+| **3️⃣ Magnetic (Standard)**                    | Old HDD-based storage                   | Legacy, dev/test only     | Cheapest, slowest    |
 
 
 
