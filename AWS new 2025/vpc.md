@@ -827,6 +827,100 @@ Instead of 3 peering links, all connect once to **Transit Gateway**, and automat
 
 ---
 
-Would you like me to show how to **create this via Terraform or AWS CLI** next?
+if there is no IGW only if the NAT can we connect to private instance 
+Good question 👏 — this is a key AWS networking concept!
+
+Let’s break it down clearly 👇
+
+---
+
+## ❓ **Scenario**
+
+You have a **private subnet** that uses a **NAT Gateway**, but there is **no Internet Gateway (IGW)** in the VPC.
+
+You’re asking:
+➡️ *Can I connect to a private instance in that subnet?*
+
+---
+
+## 🔹 **Answer: No (not directly)** ❌
+
+You **cannot connect directly** (e.g., via SSH from your local machine) to a private instance if there’s **no Internet Gateway**, because:
+
+* A **NAT Gateway** only allows **outbound** traffic (from private → internet).
+* It does **not allow inbound** connections from the internet.
+
+---
+
+## 🔹 **How it works**
+
+| Gateway                    | Direction of traffic | Purpose                                                         |
+| -------------------------- | -------------------- | --------------------------------------------------------------- |
+| **Internet Gateway (IGW)** | Inbound + Outbound   | Public access (two-way)                                         |
+| **NAT Gateway**            | Outbound only        | Allows private instances to access internet (e.g., for updates) |
+
+So:
+
+* ✅ Private instance → NAT Gateway → Internet (works)
+* ❌ Internet → NAT Gateway → Private instance (does NOT work)
+
+---
+
+## 🔹 **How to Access Private Instances (when no IGW)**
+
+Here are the valid options:
+
+### ✅ Option 1: **Use a Bastion Host (Jump Server)**
+
+* Create one **public EC2** in a **public subnet** with an **IGW**.
+* SSH into that instance first.
+* From there, SSH into the private instance (using its private IP).
+
+  ```bash
+  ssh -i my-key.pem ec2-user@<bastion-public-ip>
+  ssh ec2-user@<private-instance-private-ip>
+  ```
+
+---
+
+### ✅ Option 2: **Use Systems Manager (SSM) Session Manager**
+
+* Attach **SSM IAM role** to the private instance.
+* Ensure the instance can reach the internet (via NAT Gateway).
+* Connect via **AWS Console → Session Manager** (no SSH keys or IGW needed).
+
+This is a secure, IGW-free method recommended by AWS.
+
+---
+
+### ✅ Option 3: **Use VPN or Direct Connect**
+
+If you have on-prem or another VPC, you can reach the private instance over:
+
+* **Site-to-Site VPN**
+* **Transit Gateway**
+* **VPC Peering**
+
+---
+
+## 🧠 **Summary**
+
+| Feature                                 | IGW                | NAT Gateway     |
+| --------------------------------------- | ------------------ | --------------- |
+| Direction                               | Inbound + Outbound | Outbound only   |
+| Used in                                 | Public Subnet      | Private Subnet  |
+| Access instance directly from internet? | ✅ Yes              | ❌ No            |
+| Instance access internet?               | ✅ Yes              | ✅ Yes (via NAT) |
+
+---
+
+**👉 In short:**
+
+> You can’t connect *from* the internet to a private instance using only NAT Gateway.
+> Use **Bastion Host**, **SSM Session Manager**, or **VPN/Transit Gateway** instead.
+
+---
+
+
 
 
