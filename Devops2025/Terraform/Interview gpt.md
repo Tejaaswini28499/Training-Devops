@@ -71,6 +71,104 @@ Here’s a comprehensive list of **Terraform interview questions**, organized fr
 
 ---
 
-If you want, I can also make a **ready-to-use table of 50+ Terraform questions with answers** for **basic → advanced → scenarios**, so you can revise before interviews in a structured way.
+Diff btw data souce and import
+------------
+Let’s break it down super clearly 👇
 
-Do you want me to prepare that?
+---
+
+## 🧩 1️⃣ Terraform **Data Source**
+
+### 🧠 What it is:
+
+A **data source** is a **read-only view** of an existing resource.
+It *fetches information* from AWS (or any provider) for use in your Terraform configuration — but **it doesn’t manage** that resource.
+
+---
+
+### ✅ Example:
+
+```hcl
+# Fetch existing VPC
+data "aws_vpc" "default" {
+  default = true
+}
+
+# Use its ID to create a subnet
+resource "aws_subnet" "mysubnet" {
+  vpc_id     = data.aws_vpc.default.id
+  cidr_block = "10.0.1.0/24"
+}
+```
+
+Here:
+
+* Terraform does **not** create or modify the VPC.
+* It only *reads* details (like the VPC ID) using the data source.
+
+🟢 **Data Source = Read-only information lookup**
+
+---
+
+## 🧩 2️⃣ Terraform **Import**
+
+### 🧠 What it is:
+
+`terraform import` brings an **existing real resource** into **Terraform’s state file** — so Terraform can start **managing** it as if it was created by Terraform.
+
+It does **not** create or change the resource — it just links it to your `.tf` configuration.
+
+---
+
+### ✅ Example:
+
+Let’s say you already have an EC2 instance in AWS:
+
+```
+i-0abcd12345
+```
+
+You write a Terraform configuration for it:
+
+```hcl
+resource "aws_instance" "myserver" {
+  ami           = "ami-12345"
+  instance_type = "t2.micro"
+}
+```
+
+Now import it into Terraform state:
+
+```bash
+terraform import aws_instance.myserver i-0abcd12345
+```
+
+✅ This command updates the **state file** so Terraform knows that
+`aws_instance.myserver` = `i-0abcd12345` in AWS.
+
+🟢 **Import = Bring existing resource into Terraform’s control**
+
+---
+
+## ⚖️ Summary Table
+
+| Feature                | **Data Source**                  | **Import**                              |
+| ---------------------- | -------------------------------- | --------------------------------------- |
+| Purpose                | Read info from existing resource | Manage existing resource with Terraform |
+| Modifies state?        | No                               | Yes (adds to state)                     |
+| Creates resource?      | No                               | No                                      |
+| Requires config block? | Yes (`data` block)               | Yes (`resource` block)                  |
+| Read-only or managed?  | Read-only                        | Managed by Terraform after import       |
+| Example use            | Use an existing VPC ID           | Manage an existing EC2 created manually |
+
+---
+
+### 🧠 Interview Summary Answer:
+
+> “A Terraform **data source** reads existing infrastructure data without managing it.
+> A **Terraform import** brings an existing real resource into Terraform’s state, allowing Terraform to manage it going forward.”
+
+---
+
+Would you like me to show a **real example** where both are used together (like using a data source for an existing VPC and importing an EC2)? It’s a great hands-on interview example.
+
