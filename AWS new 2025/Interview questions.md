@@ -621,7 +621,7 @@ Here’s a comprehensive set of **RDS (Relational Database Service) interview qu
 
 ## **3. Advanced RDS Questions**
 
-1. How do you monitor RDS performance? Which CloudWatch metrics are important?
+1. How do you monitor RDS performance? Which CloudWatch metrics are important?“I monitor RDS using CloudWatch for system metrics like CPU, memory, storage, and I/O. For detailed performance, I enable Enhanced Monitoring and Performance Insights to identify query-level bottlenecks. I also stream RDS logs to CloudWatch for analysis and alerting.”
 2. How does RDS handle storage auto-scaling?
 3. How do you troubleshoot an RDS instance running slowly?
 4. What is Aurora Global Database? How is it different from Multi-AZ?
