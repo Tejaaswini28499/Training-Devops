@@ -362,7 +362,7 @@ Here’s a set of **scenario-based IAM (Identity and Access Management) question
 * Can Lambda connect to **private RDS in a VPC**? How?
 * How do you design a Lambda function for processing **high-volume S3 uploads**?
 * Explain a Lambda architecture where you process streaming data from **Kinesis/DynamoDB Streams**.
-
+https://www.datacamp.com/blog/aws-lambda-interview-questions
 ---
 
 💡 **Tips for interviews:**
