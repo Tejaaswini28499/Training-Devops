@@ -227,6 +227,24 @@ Can Lambda be triggered by multiple sources simultaneously?
 Yes, a Lambda function can be triggered by multiple sources. Each event source can invoke the same function independently, and Lambda automatically scales to handle concurrent invocations from different sources.”
 
 ------------------------------
+Explain the Lambda execution environment.
+Here’s a **simple interview-friendly answer** 👇
+
+---
+
+**AWS Lambda Execution Environment** is the **isolated container** where your Lambda function runs.
+It includes the **runtime (like Python or Node.js)**, your **function code**, **temporary storage (/tmp)**, and **environment variables**.
+
+When Lambda is invoked:
+
+1. AWS **creates the environment** and loads your code — this is called a **cold start**.
+2. Next time, it may **reuse the same environment** — called a **warm start**, which is faster.
+3. If idle for a while, AWS **stops (freezes)** the environment.
+
+Each environment is **secure and isolated**, and runs with the **IAM role** you assign.
+
+---------------------
+
 Explain event object in Lambda — give an example for S3 or API Gateway.
 ✅ **Event object in AWS Lambda**
 
@@ -842,7 +860,9 @@ How do you handle large payloads in Lambda?
 Lambda has payload size limits (6 MB sync, 256 KB async). For large payloads, store the data in S3 and pass only the object key to Lambda.
 You can also use streaming, chunking, or pre-signed URLs to handle large files efficiently without exceeding Lambda limits.
 
----------------
+
+
+---
 
 
 
