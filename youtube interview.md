@@ -92,3 +92,4 @@ In Docker, images are immutable, meaning their layers cannot be changed after cr
    “If I notice latency between microservices in Kubernetes, I first check if it’s application-level (CPU, memory, or logs). Then I verify DNS resolution, network latency using ping/curl, and check for any issues in the CNI or service mesh proxies. I also use tools like Prometheus, Jaeger, and Kiali to visualize latency between services. Finally, I inspect node health and recent deployments to identify any regressions.”
 
 3. Why should we hire you
+4. while enabled the autoscaling there is a launch in ec2 and sudden termination what may be the reason (grace period, health checks, security group)
