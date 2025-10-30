@@ -100,7 +100,10 @@ Here’s a tailored set of **Ingress interview questions** (beyond basics), suit
 1. How does Ingress differ from LoadBalancer and NodePort?
 2. Explain host-based vs path-based routing with examples.
 3. How do you configure TLS/HTTPS in Ingress?
-4. What are some common NGINX Ingress annotations you have used?
+Create a TLS Secret with your certificate and key:
+Reference the Secret in your Ingress YAML:
+The Ingress Controller (e.g., NGINX) terminates HTTPS using the certificate in the secret.
+5. What are some common NGINX Ingress annotations you have used?
 
 * `nginx.ingress.kubernetes.io/rewrite-target` → rewrites request paths
 * `nginx.ingress.kubernetes.io/ssl-redirect` → forces HTTPS
