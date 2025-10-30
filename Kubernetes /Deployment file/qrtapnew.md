@@ -1,3 +1,10 @@
+Perfect 👍 You want to understand **what kubectl commands relate to each section** in your Deployment YAML.
+
+Here’s your same YAML with matching **kubectl commands as inline comments** 👇
+
+---
+
+```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -51,3 +58,21 @@ spec:
       imagePullSecrets:
         - name: yogi-ass                    # → kubectl get secret yogi-ass -o yaml
       restartPolicy: Always                 # → kubectl describe pod <pod-name> | grep Restart
+```
+
+---
+
+### 🧩 **Other Useful Commands**
+
+| Purpose                | Command                                            |
+| ---------------------- | -------------------------------------------------- |
+| Apply this deployment  | `kubectl apply -f qrtap-deployment.yaml`           |
+| View deployment status | `kubectl get deployment qrtap-redirect`            |
+| Check rollout progress | `kubectl rollout status deployment qrtap-redirect` |
+| View pod logs          | `kubectl logs -f <pod-name>`                       |
+| Describe pod details   | `kubectl describe pod <pod-name>`                  |
+| Delete deployment      | `kubectl delete deployment qrtap-redirect`         |
+
+---
+
+Would you like me to show this same YAML again but with **probes and resource limits** added (production-ready version with commands)?
