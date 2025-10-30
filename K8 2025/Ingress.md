@@ -122,6 +122,14 @@ The Ingress Controller (e.g., NGINX) terminates HTTPS using the certificate in t
 9. What’s the difference between **Ingress resource** and **Ingress Controller**? Can you have multiple Ingress controllers in one cluster?
 10. How does Ingress work with external DNS? (e.g., cert-manager + external-dns setup)
 11. How do you secure Ingress with authentication and IP whitelisting?
+nginx.ingress.kubernetes.io/auth-type: basic
+nginx.ingress.kubernetes.io/auth-secret: basic-auth
+nginx.ingress.kubernetes.io/auth-realm: "Authentication Required"
+
+nginx.ingress.kubernetes.io/whitelist-source-range: "10.0.0.0/24,192.168.1.0/24"
+Allow access only from specific IP ranges
+✅ Only clients from these IPs can reach the service; others are blocked with 403 Forbidden
+
 12. Have you implemented **rate limiting, WAF, or ModSecurity** with Ingress? How?
 13. How do you troubleshoot when an Ingress route is not working? Walk through your debugging steps.
 14. Can Ingress handle TCP/UDP traffic? If yes, how?
