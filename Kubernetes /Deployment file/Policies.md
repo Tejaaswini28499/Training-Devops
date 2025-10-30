@@ -1,6 +1,9 @@
 restart policy- Onfailure, Never, always
+----------------------
 reclaim policy-retain, delete, recycle
+--------------------
 imagepull policy- always, ifpresent, Never
+----------------
 
 
 | Policy                     | Description                                  | Data Retained? | Manual Action Needed? | Use Case                          |
