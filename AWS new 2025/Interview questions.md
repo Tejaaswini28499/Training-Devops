@@ -599,6 +599,10 @@ Here’s a comprehensive set of **RDS (Relational Database Service) interview qu
 6. What is a Read Replica, and how does it work?
 7. How do automated backups in RDS work?
 8. What is the difference between RDS snapshots and automated backups?
+---
+
+### ✅ **Summary Table**
+
 | Criteria               | **Automated Backup**  | **Manual Snapshot**                 |
 | ---------------------- | --------------------- | ----------------------------------- |
 | Created by             | AWS                   | User                                |
@@ -607,6 +611,8 @@ Here’s a comprehensive set of **RDS (Relational Database Service) interview qu
 | Long-term backup       | ❌ No                  | ✅ Yes                               |
 | Cost                   | Covered up to DB size | Charged per GB                      |
 | Ideal for              | Routine backup & DR   | Pre-deployment, migration, archival |
+
+---
 
 10. How do you connect to an RDS instance?
 11. What is RDS storage type? Explain general-purpose, provisioned IOPS, and magnetic storage.
