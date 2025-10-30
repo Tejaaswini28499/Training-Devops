@@ -101,7 +101,13 @@ Here’s a tailored set of **Ingress interview questions** (beyond basics), suit
 2. Explain host-based vs path-based routing with examples.
 3. How do you configure TLS/HTTPS in Ingress?
 4. What are some common NGINX Ingress annotations you have used?
-5. How do you implement HTTP → HTTPS redirection in Ingress?
+
+* `nginx.ingress.kubernetes.io/rewrite-target` → rewrites request paths
+* `nginx.ingress.kubernetes.io/ssl-redirect` → forces HTTPS
+* `nginx.ingress.kubernetes.io/proxy-body-size` → limits upload size
+* `nginx.ingress.kubernetes.io/proxy-read-timeout` → sets backend timeout
+
+5. How do you implement HTTP → HTTPS redirection in Ingress?-> annotations and tls section of ingress
 6. Can multiple services use port 80 behind the same Ingress? Why is it not a conflict?
 7. How do you handle URL rewrites in Ingress (e.g., `/shop` → `/`)?
 
