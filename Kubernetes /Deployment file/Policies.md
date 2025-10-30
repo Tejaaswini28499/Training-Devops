@@ -1,8 +1,11 @@
-restart policy- Onfailure, Never, always
+restart policy- Onfailure, Never, always - deployment
+
 ----------------------
-reclaim policy-retain, delete, recycle
+reclaim policy-retain, delete, recycle - storage 
+
 --------------------
-imagepull policy- always, ifpresent, Never
+imagepull policy- always, ifpresent, Never - image pulling from registry
+
 ----------------
 
 
