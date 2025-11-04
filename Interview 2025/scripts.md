@@ -1,3 +1,4 @@
+```
 #!/bin/bash
 # health_backup_check.sh
 # Basic system health and backup check script
@@ -22,7 +23,7 @@ df -h
 echo
 echo "--- Top 5 CPU consuming processes ---"
 ps -eo pid,comm,%cpu,%mem --sort=-%cpu | head -n 6
-
+```
 -------------------------------
 backup script
 ------------------------------
@@ -49,7 +50,7 @@ if [ $? -eq 0 ]; then
 else
     echo "❌ Backup failed!"
 fi
-
+```````
 ------------------------------
 Log rotation
 ------------------------------
@@ -84,3 +85,4 @@ df -h >> $LOG_FILE
 
 echo "===== Cleanup Completed at $(date) =====" >> $LOG_FILE
 echo "" >> $LOG_FILE
+`````
