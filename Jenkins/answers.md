@@ -1,24 +1,29 @@
 Installation of Jenkins 
 Installation of Docker 
 Installtion of kubectl
+```
 Installtion of terraform 
 maven version 
 Jenkins port
 sonar port number 
 ArgoCD
+````
 
-
+```
 Jenkins - 
 configure systems - is where you will configure other server url 
 global configuration we configure the JAVA jdk version , Maven, Ant , sonar tools configuration will be done here
 plugins - want to use any tech we need to install those plugins
 Node is like a machine on which you execute our code, if you want new node you can configure that also
-
-
+```
+----------------------------------
 What is Jenkins
 Jenkins is an open-source automation server used mainly for Continuous Integration (CI) and Continuous Delivery/Deployment (CD).
 
+---------------------------------
 In simple words — Jenkins helps automate the process of building, testing, and deploying applications so developers don’t have to do these steps manually every time code changes.
+
+--------------------------------
 
 | Stage                           | Description                                                           | Example                               |
 | ------------------------------- | --------------------------------------------------------------------- | ------------------------------------- |
