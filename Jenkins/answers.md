@@ -1989,6 +1989,23 @@ You need to promote builds from dev → test → prod automatically — how?
 
 
 
+----------------------------
+Jenkins Installation
+
+---------------------------
+
+| Step | Description            | Command / Action                                    |
+| ---- | ---------------------- | --------------------------------------------------- |
+| 1    | Install Java           | `sudo apt install openjdk-17-jdk`                   |
+| 2    | Add Jenkins repo       | `curl -fsSL ...`                                    |
+| 3    | Install Jenkins        | `sudo apt install jenkins -y`                       |
+| 4    | Start & enable service | `sudo systemctl start jenkins`                      |
+| 5    | Open port 8080         | `sudo ufw allow 8080`                               |
+| 6    | Access web UI          | `http://server-ip:8080`                             |
+| 7    | Unlock Jenkins         | `cat /var/lib/jenkins/secrets/initialAdminPassword` |
+| 8    | Install plugins        | “Install suggested plugins”                         |
+| 9    | Create admin user      | Via web UI                                          |
+| 10   | Jenkins ready          | Start using dashboard                               |
 
 
 
