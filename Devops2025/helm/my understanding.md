@@ -2,6 +2,13 @@ helm:
 Its a package manager for Kubernetes which helps you to install k8 controllers or the third party applications you can install, update uninstall or package appln as helm charts and help others to download and package and use the appln
 step 1: add the repo
 step 2: Install helm command 
+step 3: Once Helm is installed and the repo is added
+step 4: Pull the NGINX chart from Bitnami’s repo
+helm repo add bitnami https://charts.bitnami.com/bitnami
+helm install my-nginx bitnami/nginx
+step 5: Create all required Kubernetes objects (Deployment, Service, etc.)
+step 6: Deploy it to your cluster
+
 using helm command we can install Grafana, argocd, Prometheus or third party appln like nginx
 
 why helm??
