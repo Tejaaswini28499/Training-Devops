@@ -96,8 +96,8 @@ docker ps - options(a,l,q)
 docker rm - options(f,v,l)
 docker exec - options(d,i,e)                                   
 ------------
-docker ps
-docker login
+docker ps- lists all running Docker containers
+docker login - 
 docker run -d -p <hostport:container port> <image_name>
 docker build -t <image_name> . 
 docker images
@@ -110,7 +110,7 @@ docker container restart
 docker push
 docker container top <container_id_or_name>
 
-docker image prune
+docker image prune - remove unused Docker images
 ---------------------------
 Docker:
 
