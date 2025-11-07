@@ -74,9 +74,10 @@ Docker daemon lifecycle: you need a docker file(set of instructions) and build i
 
 <img width="1014" height="514" alt="image" src="https://github.com/user-attachments/assets/0148699a-fd3b-417a-972b-849055b6ba78" />
 
-docker build - using docker file it will build the image 
-docker run - the image will run and create a container 
-docker pull - pull the image from the registry 
+docker build - using docker file it will build the image (docker build -t <image_name> . )
+docker run - the image will run and create a container (docker run -d -p <hostport:container port> <image_name>)
+docker push - (docker push image name)
+docker pull - pull the image from the registry (docker pull <image_name>)
  
 the commands will be run on docker client or docker engine and it will go to docker daemon which is heart of docker if it fails the containers will not work 
  
