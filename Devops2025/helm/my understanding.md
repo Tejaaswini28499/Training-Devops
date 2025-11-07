@@ -140,7 +140,7 @@ helm search repo bitnami | grep nginx
 Install helm(helm install nginxv1 bitnami/nginx) nginxv1- is a release name
 check in the default namespace the nginx get deployed (kubectl get pods)
 
-release name - why we need to provide this while installing why chart - its a deployed instance of our chart 
+release name - why we need to provide this while installing helm chart - its a deployed instance of our chart 
 
 how to install which is not a part of bitnami eg aws load balancer
 go to AWS official website from there you can install 
