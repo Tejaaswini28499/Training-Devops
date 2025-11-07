@@ -1,7 +1,7 @@
 virtual machine: 
 
 server which can be provided by IBM or HP upon that you will install hypervisor 
-hypervisor: is a software that can install your VM's on BareMetal or physical servers
+hypervisor: is a software that can install your VM's on BareMetal(ec2VM) or host OS(Runs on top of a host operating system)
 
 Instead of one server you are logically isolation breaking that into many and calling as VM's 
 
