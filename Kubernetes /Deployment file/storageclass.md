@@ -1,3 +1,4 @@
+```
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
@@ -9,7 +10,7 @@ parameters:
 reclaimPolicy: Retain
 allowVolumeExpansion: True
 volumeBindingMode: WaitForFirstConsumer
-
+```
 
 
 note: there are 14 types of storage classes based on the requriement we can use it accordingly
@@ -102,6 +103,7 @@ Kubernetes lets you define different **StorageClasses** for different **performa
 ```yaml
 storageClassName: <class-name>
 ```
+
 
 
 
