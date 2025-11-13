@@ -91,9 +91,18 @@ Here’s how you can structure your answer 👇
 
 ---
 How do you optimize CloudWatch costs for high-volume log data and custom metrics?
-
+---------
 
 We had over 200 microservices pushing debug logs every second, which caused monthly CloudWatch bills to spike.
 I implemented log retention policies (14 days), reduced log levels in production, and exported old logs to S3.
 I also consolidated 10+ per-instance custom metrics into aggregated ones using metric math.
 These optimizations cut our CloudWatch costs by around 65%.”
+
+-----------------------
+combine cloud watch and log rotation 
+-----------------------
+
+“In our production EC2 and EKS workloads, we implemented CloudWatch Agent with log rotation.
+The local logs were rotated daily using logrotate, while CloudWatch retained logs for 14 days.
+We also pushed critical app logs to S3 for audit purposes.
+This approach prevented EC2 disks from filling up and reduced CloudWatch log costs by nearly 50%.”
