@@ -151,7 +151,8 @@ To control who can use cron:
 > The `cron` daemon is like your **system’s personal scheduler** — quietly automating tasks so you don’t have to run them manually.
 
 ---
-
+------------------------
+`````
 * * * * * command
 │ │ │ │ │
 │ │ │ │ └── Day of week (0–6) (Sunday = 0)
@@ -159,4 +160,5 @@ To control who can use cron:
 │ │ └────── Day of month (1–31)
 │ └──────── Hour (0–23)
 └────────── Minute (0–59)
-
+``````
+-------------------------
