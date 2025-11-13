@@ -152,4 +152,11 @@ To control who can use cron:
 
 ---
 
-Would you like me to explain the **difference between `cron` and `systemd timers`** (a common interview question for modern Linux systems)?
+* * * * * command
+│ │ │ │ │
+│ │ │ │ └── Day of week (0–6) (Sunday = 0)
+│ │ │ └──── Month (1–12)
+│ │ └────── Day of month (1–31)
+│ └──────── Hour (0–23)
+└────────── Minute (0–59)
+
