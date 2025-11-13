@@ -90,6 +90,10 @@ Here’s how you can structure your answer 👇
 > “We once had an RDS CPU spike issue. Using CloudWatch metrics and Logs Insights, I correlated high CPU usage with specific SQL queries. After optimizing the queries, CPU utilization dropped by 40%. This experience helped us tune monitoring thresholds for proactive alerts.”
 
 ---
+How do you optimize CloudWatch costs for high-volume log data and custom metrics?
 
-Would you like me to tailor this answer **specifically for a DevOps engineer** (with EKS, CI/CD, and Terraform context)?
-That version sounds more senior and matches your profile perfectly.
+
+We had over 200 microservices pushing debug logs every second, which caused monthly CloudWatch bills to spike.
+I implemented log retention policies (14 days), reduced log levels in production, and exported old logs to S3.
+I also consolidated 10+ per-instance custom metrics into aggregated ones using metric math.
+These optimizations cut our CloudWatch costs by around 65%.”
