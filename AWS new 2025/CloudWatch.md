@@ -765,3 +765,15 @@ It’s useful for **proactive monitoring** without manually setting static thres
 
 CloudWatch Events, now part of EventBridge, is an event-driven service that monitors AWS resources and routes events to targets like Lambda, SNS, or Step Functions. It helps automate responses to state changes or run scheduled tasks.
 For example, I can create a rule to trigger a Lambda function whenever an EC2 instance stops or a CodePipeline build fails. It’s event-based, unlike CloudWatch Alarms which are metric-based.”
+
+
+| Feature            | **CloudWatch**                                          | **CloudTrail**                                                  |
+| ------------------ | ------------------------------------------------------- | --------------------------------------------------------------- |
+| **Main Purpose**   | Monitoring and performance management                   | Auditing and security tracking                                  |
+| **Data Collected** | Metrics, logs, and events                               | API calls and user activities                                   |
+| **Focus Area**     | Resource performance and health                         | Account activity and compliance                                 |
+| **Use Case**       | Monitor EC2 CPU usage, set alarms, visualize dashboards | Track who created/deleted resources, detect unauthorized access |
+| **Data Source**    | AWS resources and applications                          | AWS API calls (Console, CLI, SDKs)                              |
+| **Storage**        | CloudWatch Logs & Metrics                               | S3 bucket (where logs are delivered)                            |
+| **Integration**    | Works with alarms, dashboards, auto-scaling             | Works with AWS Config, GuardDuty, Security Hub                  |
+
