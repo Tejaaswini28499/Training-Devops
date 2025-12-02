@@ -17,6 +17,7 @@ Got it 👍 Since you already have **5 years of DevOps experience**, I'll prepar
 ### 2. Images & Containers
 
 * What happens internally when you run `docker run`?
+* docker run pulls the image if needed, creates a container filesystem using UnionFS, sets up namespaces and cgroups for isolation, configures networking, and finally starts the container’s main process as PID 1.
 * Difference between `docker run`, `docker exec`, and `docker attach`?
 * Why is `docker commit` not recommended in production?
 * How do you reduce the size of a Docker image?
