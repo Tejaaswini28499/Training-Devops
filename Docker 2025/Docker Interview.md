@@ -17,9 +17,11 @@ Got it 👍 Since you already have **5 years of DevOps experience**, I'll prepar
 ### 2. Images & Containers
 
 * What happens internally when you run `docker run`?
-* docker run pulls the image if needed, creates a container filesystem using UnionFS, sets up namespaces and cgroups for isolation, configures networking, and finally starts the container’s main process as PID 1.
+docker run pulls the image if needed, creates a container filesystem using UnionFS, sets up namespaces and cgroups for isolation, configures networking, and finally starts the container’s main process as PID 1.
 * Difference between `docker run`, `docker exec`, and `docker attach`?
+docker attach connects your terminal to a running container's main process (PID 1). You see the same output and can interact with it. It does not start a new shell; for that, we use docker exec.
 * Why is `docker commit` not recommended in production?
+docker commit takes the current state of a container and creates a new Docker image from it by converting the container’s writable layer into a permanent image layer. It is useful for quick snapshots but not recommended for production; Dockerfile is preferred.
 * How do you reduce the size of a Docker image?
 * What is a multi-stage Dockerfile? Why use it?
 
